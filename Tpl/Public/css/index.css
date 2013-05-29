@@ -1,0 +1,51 @@
+#indexBg
+{
+	margin-top:100px;
+	height:400px;
+	background-image:url(../img/slide-0.jpg);
+}
+
+.bgstretcher-area { text-align: left; }
+.bgstretcher, .bgstretcher UL, .bgstretcher UL LI {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.bgstretcher UL, .bgstretcher UL LI {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.bgstretcher {
+	background: black;
+	overflow: hidden;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	_position: absolute; /*IE6 doesn't support fixed positioning*/
+	top: 0;
+	left: 0;
+}
+#navBar{
+	position:relative;
+	background-color:#eee;
+	width:960px;
+	margin:0 auto;
+	text-align:right;
+}
+#container{
+	position:relative;
+	width:960px;
+	margin:0 auto;
+}
+#login{
+	float:right;
+	width:250px;
+	height:268px;
+	background-color:#000;
+	opacity:0.5;
+}
+.wrapper{
+	width:960px;
+	margin:0 auto;
+}

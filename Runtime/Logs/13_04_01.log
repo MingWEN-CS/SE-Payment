@@ -1,0 +1,1714 @@
+[ 2013-04-01T16:40:36+08:00 ] ERR: [4] parse error, expecting `T_VARIABLE' /Users/Civi/Sites/Payment/Lib/Model/UserModel.class.php 第 4 行.
+[ 2013-04-01T16:40:36+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000588s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000720s ]
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Common/functions.php 第 39 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Common/functions.php 第 39 行.
+NOTIC: [8] Undefined index: file /Users/Civi/Sites/Payment/ThinkPHP/Common/functions.php 第 38 行.
+NOTIC: [8] Undefined index: line /Users/Civi/Sites/Payment/ThinkPHP/Common/functions.php 第 38 行.
+
+[ 2013-04-01T16:44:15+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000237s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000315s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.037424s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000183s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.008381s ]
+INFO: [ view_template ] --END-- [ RunTime:0.008457s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.007221s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007280s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.001013s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000523s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000340s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000567s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002619s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000537s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000582s ]
+
+[ 2013-04-01T16:54:58+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000263s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000344s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001435s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000125s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000206s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000245s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003774s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003813s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000144s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000148s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000097s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000191s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000665s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000254s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000284s ]
+
+[ 2013-04-01T16:54:59+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000238s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000290s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001546s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000157s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000197s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000233s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004832s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004877s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000142s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000138s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000094s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000226s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000688s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000251s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000279s ]
+
+[ 2013-04-01T16:54:59+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000285s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000360s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.000970s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000155s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000265s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000317s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.005276s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.005343s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000218s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000219s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000127s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000264s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000974s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000379s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000426s ]
+
+[ 2013-04-01T17:08:07+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000199s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000241s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001487s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000160s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000197s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000233s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003542s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003574s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000144s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000141s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000085s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000163s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000610s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000220s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000245s ]
+
+[ 2013-04-01T17:08:08+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000217s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000270s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001133s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000195s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000287s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000353s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003322s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003366s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000136s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000131s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000089s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000160s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000595s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000215s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000242s ]
+
+[ 2013-04-01T17:09:07+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000211s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000260s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.000915s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000117s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000196s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000242s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003316s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003349s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000149s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000143s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000207s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000171s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000758s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000245s ]
+
+[ 2013-04-01T17:09:08+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000320s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000391s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.005757s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000181s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000203s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000239s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003343s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003381s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000130s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000148s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000183s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000628s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000354s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000395s ]
+
+[ 2013-04-01T17:10:34+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000195s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000240s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.013965s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000247s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000262s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000314s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004651s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004692s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000155s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000161s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000100s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000204s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000716s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000267s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000300s ]
+
+[ 2013-04-01T17:10:35+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000265s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000325s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.000954s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000116s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000147s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000183s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003175s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003207s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000134s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000129s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000158s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000578s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000243s ]
+
+[ 2013-04-01T17:11:42+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000361s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000464s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.023896s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000262s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000266s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000318s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004405s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004448s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000155s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000161s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000100s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000224s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000735s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000275s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000309s ]
+
+[ 2013-04-01T17:13:08+08:00 ] 127.0.0.1 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000212s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000258s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001080s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000139s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000196s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000243s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003667s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003702s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000144s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000135s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000085s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000215s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000664s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000279s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000314s ]
+
+[ 2013-04-01T17:49:00+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000216s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000261s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.042814s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000193s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000190s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000223s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003627s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003663s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000145s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000134s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000185s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000638s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000245s ]
+
+[ 2013-04-01T18:46:23+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000404s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000483s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001047s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000175s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000251s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000291s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003621s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003666s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000168s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000152s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000089s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000214s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000720s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000235s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000263s ]
+
+[ 2013-04-01T18:46:23+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000311s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000391s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001003s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000157s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000148s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000182s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003518s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003549s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000134s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000128s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000077s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000158s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000575s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000214s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000239s ]
+
+[ 2013-04-01T18:46:24+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000335s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000416s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.004226s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000214s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000186s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000221s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003668s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003710s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000196s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000190s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000128s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000272s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000935s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000350s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000398s ]
+
+[ 2013-04-01T18:46:44+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000279s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000374s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001098s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000115s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000205s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000245s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004143s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004182s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000151s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000146s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000094s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000207s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000687s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000259s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000289s ]
+
+[ 2013-04-01T18:46:45+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000342s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000418s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001160s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000140s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000156s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000191s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003642s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003673s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000142s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000129s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000078s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000165s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000591s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000225s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000252s ]
+
+[ 2013-04-01T18:47:03+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000245s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000313s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001169s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000131s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000149s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000184s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003648s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003681s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000141s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000156s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000221s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000699s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000236s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000264s ]
+
+[ 2013-04-01T18:47:22+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000401s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000524s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.013348s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000201s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000211s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000250s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.005603s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.005646s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000159s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000148s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000086s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000190s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000668s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000274s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000306s ]
+
+[ 2013-04-01T18:47:23+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000253s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000316s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001044s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000116s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000147s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000182s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003478s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003519s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000139s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000130s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000078s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000167s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000596s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000270s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000298s ]
+
+[ 2013-04-01T18:47:47+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000211s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000261s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.000925s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000117s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000161s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000207s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003723s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003768s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000164s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000142s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000173s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000650s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000233s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000260s ]
+
+[ 2013-04-01T18:47:48+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000266s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000320s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001151s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000197s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000228s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000288s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004874s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004917s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000149s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000143s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000176s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000636s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000219s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000246s ]
+
+[ 2013-04-01T18:48:50+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000420s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000508s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001522s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000163s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000192s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000236s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003611s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003643s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000140s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000132s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000160s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000590s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000217s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000244s ]
+
+[ 2013-04-01T18:49:14+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000220s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000272s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001025s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000155s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000193s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000230s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003968s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004006s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000157s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000167s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000105s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000178s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000696s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000481s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000519s ]
+
+[ 2013-04-01T18:49:15+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000346s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000419s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001522s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000156s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000238s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000275s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004295s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004333s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000185s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000137s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000188s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000674s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000220s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000246s ]
+
+[ 2013-04-01T18:51:14+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000199s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000243s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.000943s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000116s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000150s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000186s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003554s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003593s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000154s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000145s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000184s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000653s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000226s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000252s ]
+
+[ 2013-04-01T18:51:15+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000227s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000279s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.005183s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000268s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000189s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000223s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003205s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003291s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000135s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000128s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000077s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000166s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000585s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000211s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000237s ]
+
+[ 2013-04-01T18:52:04+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000353s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000427s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001741s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000151s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000199s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000234s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004263s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004315s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000178s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000147s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000102s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000193s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000711s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000240s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000268s ]
+
+[ 2013-04-01T18:52:04+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000318s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000400s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001798s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000224s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000168s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000203s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003570s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003613s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000185s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000213s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000138s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000290s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000952s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000249s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000288s ]
+
+[ 2013-04-01T18:52:05+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000216s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000266s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.051983s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000248s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000314s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000388s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004726s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004770s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000158s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000164s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000101s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000200s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000716s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000266s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000298s ]
+
+[ 2013-04-01T18:52:09+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000317s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000391s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001635s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000207s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000234s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000275s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004185s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004223s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000141s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000134s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000164s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000606s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000244s ]
+
+[ 2013-04-01T18:52:10+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000218s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000268s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001727s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000180s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000222s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000258s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003980s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004015s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000141s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000133s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000082s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000194s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000637s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000219s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000245s ]
+
+[ 2013-04-01T18:52:37+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000217s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000268s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.041325s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000251s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000223s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000264s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004477s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004517s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000176s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000170s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000105s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000213s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000755s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000236s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000264s ]
+
+[ 2013-04-01T18:54:00+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000220s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000270s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001590s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000165s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000185s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000223s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003572s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003611s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000140s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000133s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000163s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000592s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000216s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000243s ]
+
+[ 2013-04-01T18:54:01+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000365s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000437s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001754s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000217s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000173s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000208s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003376s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003407s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000128s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000138s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000082s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000166s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000594s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000225s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000253s ]
+
+[ 2013-04-01T18:54:57+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000214s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000272s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.004038s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000271s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000196s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000230s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003446s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003478s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000135s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000131s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000080s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000170s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000593s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000225s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000251s ]
+
+[ 2013-04-01T18:54:58+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000342s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000413s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.057408s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000217s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000210s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000251s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003855s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003889s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000136s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000143s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000175s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000623s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000235s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000264s ]
+
+[ 2013-04-01T18:55:23+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000340s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000415s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.063808s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000175s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000190s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000225s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003432s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003465s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000137s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000131s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000161s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000588s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000254s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000292s ]
+
+[ 2013-04-01T19:02:45+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000281s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000328s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.011684s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000162s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000274s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000337s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003459s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003499s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000139s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000133s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000094s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000173s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000619s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000215s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000242s ]
+
+[ 2013-04-01T19:03:46+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000244s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000296s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.001834s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.000191s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000212s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000247s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.003374s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003405s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000133s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000129s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000167s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000595s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000215s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000241s ]
+
+[ 2013-04-01T19:03:47+08:00 ] ERR: (ThinkException) 非法操作:register
+[ 2013-04-01T19:03:47+08:00 ] 0.0.0.0 /~Civi/Payment/index.php/Index/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.031197s ]
+INFO: [ route_check ] --END-- [ RunTime:0.031268s ]
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000252s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000283s ]
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: file /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [8] Undefined index: line /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [4096] Object of class IndexAction could not be converted to string /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Array to string conversion /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+
+[ 2013-04-01T19:03:51+08:00 ] ERR: (ThinkException) 无法加载模块:php
+[ 2013-04-01T19:03:54+08:00 ] ERR: (ThinkException) 非法操作:register
+[ 2013-04-01T19:03:54+08:00 ] 0.0.0.0 /~Civi/Payment/index.php/Index/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000294s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000346s ]
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000188s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000218s ]
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: file /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [8] Undefined index: line /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [4096] Object of class IndexAction could not be converted to string /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Array to string conversion /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+
+[ 2013-04-01T19:05:13+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000249s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000311s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000129s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000168s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+NOTIC: [8] Undefined variable: data /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 24 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004355s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004393s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000164s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000140s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000090s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000217s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000697s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000245s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000274s ]
+
+[ 2013-04-01T19:05:14+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000237s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000292s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000157s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000205s ]
+INFO: [ view_parse ] --START--
+NOTIC: [8] Undefined variable: name /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 3 行.
+NOTIC: [8] Undefined variable: data /Users/Civi/Sites/Payment/Runtime/Cache/743ac6737cc8755a2b18d65ea45153f8.php 第 24 行.
+INFO: Run ParseTemplate Behavior [ RunTime:0.004707s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004751s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000163s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000139s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000089s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000197s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000685s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000249s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000287s ]
+
+[ 2013-04-01T19:05:20+08:00 ] ERR: (ThinkException) 非法操作:register
+[ 2013-04-01T19:05:20+08:00 ] 0.0.0.0 /~Civi/Payment/index.php/Index/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000305s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000353s ]
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000192s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000222s ]
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: file /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [8] Undefined index: line /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [4096] Object of class IndexAction could not be converted to string /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Array to string conversion /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+
+[ 2013-04-01T19:25:09+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000220s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000270s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000194s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000251s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003014s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003071s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000148s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000154s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000097s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000204s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000702s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000416s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000478s ]
+
+[ 2013-04-01T19:25:33+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000360s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000439s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000185s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000230s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003156s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003200s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000168s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000132s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000083s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000164s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000627s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000219s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000248s ]
+
+[ 2013-04-01T19:26:11+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000217s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000267s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000120s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000155s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002958s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002999s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000156s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000162s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000080s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000163s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000643s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000231s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000286s ]
+
+[ 2013-04-01T19:26:12+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000211s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000262s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000154s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000198s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002947s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003003s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000143s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000132s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000082s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000165s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000619s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000247s ]
+
+[ 2013-04-01T19:26:13+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000244s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000305s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000121s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000155s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003069s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003115s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000162s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000137s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000085s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000172s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000647s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000249s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000279s ]
+
+[ 2013-04-01T19:26:25+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000338s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000413s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000182s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000235s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003325s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003378s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000141s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000146s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000086s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000195s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000654s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000233s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000263s ]
+
+[ 2013-04-01T19:26:56+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000260s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000324s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000118s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000152s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002747s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002792s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000155s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000135s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000117s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000178s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000682s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000246s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000277s ]
+
+[ 2013-04-01T19:28:01+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000205s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000250s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000111s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000143s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002831s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002876s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000164s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000134s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000182s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000650s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000239s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000270s ]
+
+[ 2013-04-01T19:28:20+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000223s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000287s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000175s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000227s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004383s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004441s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000163s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000141s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000182s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000659s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000232s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000262s ]
+
+[ 2013-04-01T19:30:35+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000200s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000246s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000117s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000150s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002575s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002606s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000147s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000134s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000085s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000164s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000609s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000218s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000247s ]
+
+[ 2013-04-01T19:31:26+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000215s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000265s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000136s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000170s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002981s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003024s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000174s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000131s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000173s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000645s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000258s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000297s ]
+
+[ 2013-04-01T19:31:27+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000211s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000260s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000120s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000156s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002803s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002842s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000127s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000129s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000081s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000163s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000581s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000217s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000245s ]
+
+[ 2013-04-01T19:32:02+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000333s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000407s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000191s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000248s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003411s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003465s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000165s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000141s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000089s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000189s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000679s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000280s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000310s ]
+
+[ 2013-04-01T19:32:03+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000313s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000383s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000172s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000226s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003335s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003392s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000154s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000135s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000083s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000171s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000635s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000230s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000260s ]
+
+[ 2013-04-01T19:32:09+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000252s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000312s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000203s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000267s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004258s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004333s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000239s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000229s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000135s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000280s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001031s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000394s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000450s ]
+
+[ 2013-04-01T19:32:38+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000345s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000424s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000190s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000247s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003535s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003593s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000176s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000140s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000175s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000668s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000392s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000440s ]
+
+[ 2013-04-01T19:32:40+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000216s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000268s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000121s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000155s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003262s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003325s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000149s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000154s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000175s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000656s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000238s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000268s ]
+
+[ 2013-04-01T19:32:48+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000218s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000275s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000123s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000161s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003029s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003077s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000162s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000138s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000084s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000195s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000668s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000244s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000304s ]
+
+[ 2013-04-01T19:32:59+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000238s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000292s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000135s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000175s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003124s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003182s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000149s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000141s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000087s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000174s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000638s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000322s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000357s ]
+
+[ 2013-04-01T19:32:59+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000216s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000268s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000121s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000157s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002869s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002915s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000146s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000137s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000084s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000204s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000665s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000241s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000272s ]
+
+[ 2013-04-01T19:33:11+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000214s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000264s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000125s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000161s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003190s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003251s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000204s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000205s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000126s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000324s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000990s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000245s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000277s ]
+
+[ 2013-04-01T19:33:49+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000248s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000292s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000109s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000141s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002700s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002745s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000147s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000145s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000084s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000179s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000652s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000235s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000266s ]
+
+[ 2013-04-01T19:33:50+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000211s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000259s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000120s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000156s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002936s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002983s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000151s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000138s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000084s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000171s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000635s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000228s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000259s ]
+
+[ 2013-04-01T19:34:32+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000197s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000241s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000111s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000144s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002922s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002978s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000152s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000138s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000085s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000184s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000645s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000233s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000261s ]
+
+[ 2013-04-01T19:34:33+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000212s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000263s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000120s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000155s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003922s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003989s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000191s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000246s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000145s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000287s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001014s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000377s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000432s ]
+
+[ 2013-04-01T19:34:40+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000350s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000433s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000190s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000248s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004373s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004452s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000244s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000224s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000133s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000183s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000918s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000238s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000269s ]
+
+[ 2013-04-01T19:34:45+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000232s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000284s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000132s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000174s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003563s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003631s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000236s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000212s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000134s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000292s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001028s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000342s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000387s ]
+
+[ 2013-04-01T19:34:51+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000351s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000432s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000194s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000253s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004808s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004883s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000237s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000221s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000135s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000283s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001022s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000388s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000446s ]
+
+[ 2013-04-01T19:35:05+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000238s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000290s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000165s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000210s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002862s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002910s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000146s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000139s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000098s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000278s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000771s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000418s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000469s ]
+
+[ 2013-04-01T19:35:13+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000333s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000404s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000195s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000247s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.003421s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.003475s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000159s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000154s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000086s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000174s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000661s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000232s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000262s ]
+
+[ 2013-04-01T19:37:12+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000205s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000251s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000116s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000148s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002599s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002629s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000165s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000133s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000084s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000194s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000658s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000220s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000250s ]
+
+[ 2013-04-01T19:37:29+08:00 ] 0.0.0.0 /~Civi/Payment/
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000197s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000240s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000112s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000145s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.002600s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.002632s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000160s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000128s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000080s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000158s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000607s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000215s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000243s ]
+
+[ 2013-04-01T19:39:53+08:00 ] ERR: (ThinkException) 非法操作:register
+[ 2013-04-01T19:39:53+08:00 ] 0.0.0.0 /~Civi/Payment/index.php/Index/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000330s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000379s ]
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000202s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000234s ]
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: file /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [8] Undefined index: line /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 62 行.
+NOTIC: [4096] Object of class IndexAction could not be converted to string /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Array to string conversion /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 64 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: class /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+NOTIC: [8] Undefined index: type /Users/Civi/Sites/Payment/ThinkPHP/Lib/Core/ThinkException.class.php 第 63 行.
+
