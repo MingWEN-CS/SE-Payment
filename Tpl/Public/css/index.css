@@ -1,51 +1,33 @@
-#indexBg
-{
-	margin-top:100px;
-	height:400px;
-	background-image:url(../img/slide-0.jpg);
+h1,h2,h3{
+	color:#666;
+}
+body{
+    color:#666;
+    font-size:13px;
+    background: #ffffff;
+    font-family:"Century Gothic", Helvetica, sans-serif;
 }
 
-.bgstretcher-area { text-align: left; }
-.bgstretcher, .bgstretcher UL, .bgstretcher UL LI {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-.bgstretcher UL, .bgstretcher UL LI {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.bgstretcher {
-	background: black;
-	overflow: hidden;
-	width: 100%;
-	position: fixed;
-	z-index: 1;
-	_position: absolute; /*IE6 doesn't support fixed positioning*/
-	top: 0;
-	left: 0;
-}
-#navBar{
-	position:relative;
-	background-color:#eee;
-	width:960px;
-	margin:0 auto;
-	text-align:right;
-}
 #container{
+	padding:20px;
 	position:relative;
 	width:960px;
 	margin:0 auto;
 }
-#login{
-	float:right;
-	width:250px;
-	height:268px;
-	background-color:#000;
-	opacity:0.5;
+
+.left-center{
+	margin-top:40px;
+
 }
-.wrapper{
-	width:960px;
+.header{
 	margin:0 auto;
+	width:960px;
+}
+
+.footer{
+	/*border:1px solid #999;*/
+	margin-top: 100px;
+	width: 960px;
+	margin: 0 auto;
+	text-align: center;
 }

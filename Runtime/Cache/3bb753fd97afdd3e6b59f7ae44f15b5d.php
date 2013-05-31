@@ -15,14 +15,14 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 <div class="navbar-inner">
   <div class="container">
-  <a class="brand" href="__APP__/">Online Payment System</a>
+  <a class="brand" href="#">Online Payment System</a>
     <div class="nav-collapse collapse">
       <ul class="nav">
         <li class="">
-          <a href="__APP__/User/register">Register</a>
+          <a href="./index.php/Index/register">Register</a>
         </li>
         <li class="">
-          <a href="__APP__/User/home">Home</a>
+          <a href="./index/php/Index/login">Home</a>
         </li>
       </ul>    
     </div>
@@ -30,7 +30,7 @@
 </div>
 </div>
 
-<div id = "container" style="margin-top:100px;height:400px;width:900px;">
+<div id = "container" style="margin-top:100px;height:400px;">
 	<image src="../Public/img/meng.jpg" class = "span7"/>
 	<div class="left-center">
 	<form class="span3" method="post">
@@ -49,9 +49,9 @@
 		<a href="#">About </a>|
 		<a href="#">Manage </a>|
 		<a href="#">Contact Us </a>
-		<p>All Copyright Reserved By Civi@2013</p>
 	</div>
-	
+
+	All Copyright Reserved By Civi@2013
 </div>
 </body>
 </html>

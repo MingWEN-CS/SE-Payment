@@ -4,14 +4,21 @@
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
    	<link rel="stylesheet" href="../Public/css/index.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
 </head>
 
+<script>
+$(function(){
+	num = 3;	
+	for (i = 1; i <=3; i++){
+		if (i==num)
+			$('#userNavbar .nav .nav'+i).addClass("active");
+		else $('#userNavbar .nav .nav'+i).removeClass("active");
+	}
+});
+</script>
+
 <body>
-<!--
-<div class = "header">
-	<h1>Online Payment System/<span style="font-size:24px;">Login</span></h1>
-</div>
--->
 <div class="navbar navbar-inverse navbar-fixed-top">
 <div class="navbar-inner">
   <div class="container">
@@ -30,20 +37,31 @@
 </div>
 </div>
 
-<div id = "container" style="margin-top:100px;height:400px;width:900px;">
-	<image src="../Public/img/meng.jpg" class = "span7"/>
-	<div class="left-center">
-	<form class="span3" method="post">
-		<h4>Login the system</h4>
-		<label for="inputEmail">Username:</label>
-		<input type="text" name="username" placeholder="Username">
-		<label for="inputPassword">Password:</label>
-		<input type="password" name="password" placeholder="Password">
-		<button type="submit" class="btn btn-success">Sign In</button>
-	</form>
+<div id = "container" style="margin-top:10px;">
+<script>
+function changeNav(num){
+	for (i = 1; i <=3; i++){
+		if (i==num)
+			$('#userNavbar .nav .nav'+i).addClass("active");
+		else $('#userNavbar .nav .nav'+i).removeClass("active");
+	}
+}	
+	
+</script>
+
+<div style="margin-top:40px;">
+	<div class="navbar">
+		<div id="userNavbar" class="navbar-inner">
+			<ul class="nav">
+				<li class="nav1"><a href="__APP__/User/home" onclick="changeNav(1);">Home</a></li>
+				<li class="nav2"><a href="__APP__/User/account" onclick="changeNav(2);">Account Management</a></li>
+				<li class="nav3"><a href="__APP__/User/record" onclick="changeNav(3);">Payment Record</a></li>
+			</ul>
+		</div>
 	</div>
 </div>
-
+<h3>Record</h3>
+</div>
 <div class="footer">
 	<div id="footer-link">
 		<a href="#">About </a>|

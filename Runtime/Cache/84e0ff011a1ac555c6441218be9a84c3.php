@@ -1,4 +1,4 @@
-<html>
+<?php if (!defined('THINK_PATH')) exit();?><html>
 <head>
    	<title>Online Payment System</title>
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
