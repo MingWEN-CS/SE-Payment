@@ -24,7 +24,10 @@
         <li class="">
           <a href="__APP__/User/home">Home</a>
         </li>
-      </ul>    
+        <li class="">
+          <a href="__APP__/Purchase/index">Purchase</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -49,7 +52,7 @@
 		<a href="#">About </a>|
 		<a href="#">Manage </a>|
 		<a href="#">Contact Us </a>
-		<p>All Copyright Reserved By Civi@2013</p>
+		<p>All Copyright Reserved By Red One@2013</p>
 	</div>
 	
 </div>

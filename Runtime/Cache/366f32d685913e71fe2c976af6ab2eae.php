@@ -2,7 +2,7 @@
 <head>
    	<title>Online Payment System</title>
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
-   	<link rel="stylesheet" href="../Public/css/index.css"/>
+   	<link rel="stylesheet" href="../Public/css/group1.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
 </head>
@@ -31,7 +31,10 @@ $(function(){
         <li class="">
           <a href="__APP__/User/home">Home</a>
         </li>
-      </ul>    
+        <li class="">
+          <a href="__APP__/Purchase/index">Purchase</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -53,7 +56,7 @@ function changeNav(num){
 	<div class="navbar">
 		<div id="userNavbar" class="navbar-inner">
 			<ul class="nav">
-				<li class="nav1"><a href="__APP__/User/home" onclick="changeNav(1);">Home</a></li>
+				<li class="nav1"><a href="__APP__/User/home" onclick="changeNav(1);">Basic Information</a></li>
 				<li class="nav2"><a href="__APP__/User/account" onclick="changeNav(2);">Account Management</a></li>
 				<li class="nav3"><a href="__APP__/User/record" onclick="changeNav(3);">Payment Record</a></li>
 			</ul>
