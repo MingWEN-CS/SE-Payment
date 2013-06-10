@@ -30,7 +30,10 @@ $(function(){
         <li class="">
           <a href="__APP__/User/home">Home</a>
         </li>
-      </ul>    
+        <li class="">
+          <a href="__APP__/Purchase/index">Purchase</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
