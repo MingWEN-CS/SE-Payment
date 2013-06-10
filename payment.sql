@@ -1,20 +1,29 @@
 DROP DATABASE IF EXISTS payment;
 CREATE DATABASE payment;
-CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao';
+/* if failed on following CREATE USER sql due to exits laolao already just delete it and redo >.<*/
+CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao' IF NOT EXISTS USER 'laolao';
 GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
 USE payment;
-DROP TABLE IF EXISTS User;
-CREATE TABLE User(
+DROP TABLE IF EXISTS user;
+/* group 1 */
+CREATE TABLE user(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
 
-DROP TABLE IF EXISTS Goods;
-CREATE TABLE Goods(
+/* group 2 */
+CREATE TABLE transaction(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
 
-DROP TABLE IF EXISTS GeneralGoods;
-CREATE TABLE GeneralGoods(
+/* group 3 */
+DROP TABLE IF EXISTS goods;
+CREATE TABLE goods(
+	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	type INTEGER NOT NULL
+);
+
+DROP TABLE IF EXISTS general_goods;
+CREATE TABLE general_goods(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	price numeric(15,2),
@@ -25,11 +34,13 @@ CREATE TABLE GeneralGoods(
 	place VARCHAR(64),
 	image_uri VARCHAR(256),
 	stock INTEGER,
-	description VARCHAR(1024)
+	description VARCHAR(1024),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS HotelRoom;
-CREATE TABLE HotelRoom(
+DROP TABLE IF EXISTS hotel_room;
+CREATE TABLE hotel_room(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	price numeric(15,2),
@@ -42,11 +53,13 @@ CREATE TABLE HotelRoom(
 	stock INTEGER,
 	description VARCHAR(1024),
 	date_time BIGINT,
-	suit_type VARCHAR(32)
+	suit_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS AirplaneTicket;
-CREATE TABLE AirplaneTicket(
+DROP TABLE IF EXISTS airplane_ticket;
+CREATE TABLE airplane_ticket(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	seller_id INTEGER,
@@ -62,36 +75,52 @@ CREATE TABLE AirplaneTicket(
 	departue_place VARCHAR(64),
 	arrival_place VARCHAR(64),
 	non_stop BOOLEAN,
-	carbin_type VARCHAR(32)
+	carbin_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS BrowseHistory;
-CREATE TABLE BrowseHistory(
+DROP TABLE IF EXISTS browse_history;
+CREATE TABLE browse_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	good_id INTEGER,
-	date_time BIGINT
+	user_id INTEGER,
+	date_time BIGINT,
+	foreign key (good_id) references goods(id) on delete cascade,
+	foreign key (user_id) references user(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS SearchHistory;
-CREATE TABLE SearchHistory(
+DROP TABLE IF EXISTS search_history;
+CREATE TABLE search_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	search_key VARCHAR(256),
-	date_time BIGINT
+	user_id INTEGER,
+	date_time BIGINT,
+	foreign key (user_id) references user(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS Feedback;
-CREATE TABLE Feedback(
+DROP TABLE IF EXISTS feedback;
+CREATE TABLE feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	user_id INTEGER,
+	transaction_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
-	date_time BIGINT
+	date_time BIGINT,
+	foreign key (user_id) references user(id) on delete cascade,	
+	foreign key (transaction_id) references transaction(id) on delete cascade
 );
 
-DROP TABLE IF EXISTS ShoppingCart;
-CREATE TABLE ShoppingCart(
+DROP TABLE IF EXISTS shopping_cart;
+CREATE TABLE shopping_cart(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	user_id INTEGER,
 	good_id INTEGER,
-	good_count INTEGER
+	good_count INTEGER,
+	foreign key (good_id) references goods(id) on delete cascade,
+	foreign key (user_id) references user(id) on delete cascade
 );
+
+/* group 4 */
+
+/* group 5 */

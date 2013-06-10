@@ -11,6 +11,15 @@ class PurchaseAction extends Action {
     }
 
     public function search(){
-    	$this->display();
+		$this->display();
+		//     	$keywords = $this->_post('keywords');
+		// $goods = D('Goods');
+		// if($goods->add()) {
+		// 	$this->success("s");
+		// }
+		// else {
+		// 	echo ($goods->getError());
+		// 	echo 3;
+		// }
     }
 }
