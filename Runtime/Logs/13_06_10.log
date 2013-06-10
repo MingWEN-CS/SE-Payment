@@ -711,3 +711,128 @@ INFO: [ view_end ] --START--
 INFO: Run ShowPageTrace Behavior [ RunTime:0.000172s ]
 INFO: [ view_end ] --END-- [ RunTime:0.000260s ]
 
+[ 2013-06-10T11:42:37+08:00 ] 127.0.0.1 /SE-Payment/index.php/Purchase/search
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000193s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000318s ]
+NOTIC: [2] ob_start(): output handler 'ob_gzhandler' conflicts with 'zlib output compression' /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+NOTIC: [8] ob_start(): failed to create buffer /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000187s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000301s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000141s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000246s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004340s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004453s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000192s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000156s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000092s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000206s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000885s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000163s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000248s ]
+
+[ 2013-06-10T11:44:04+08:00 ] 127.0.0.1 /SE-Payment/index.php/Purchase/index
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000319s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000616s ]
+NOTIC: [2] ob_start(): output handler 'ob_gzhandler' conflicts with 'zlib output compression' /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+NOTIC: [8] ob_start(): failed to create buffer /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000217s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000362s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000146s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000267s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.004522s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.004642s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000200s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000156s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000093s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000209s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000892s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000164s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000248s ]
+
+[ 2013-06-10T11:44:06+08:00 ] 127.0.0.1 /SE-Payment/index.php/User/home
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000235s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000391s ]
+NOTIC: [2] ob_start(): output handler 'ob_gzhandler' conflicts with 'zlib output compression' /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+NOTIC: [8] ob_start(): failed to create buffer /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000298s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000514s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000166s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000311s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.005075s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.005238s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000258s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000160s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000088s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000205s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000967s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000166s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000250s ]
+
+[ 2013-06-10T11:44:07+08:00 ] 127.0.0.1 /SE-Payment/index.php/User/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000186s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000313s ]
+NOTIC: [2] ob_start(): output handler 'ob_gzhandler' conflicts with 'zlib output compression' /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+NOTIC: [8] ob_start(): failed to create buffer /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000599s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000709s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000125s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000234s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.006370s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.006535s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000214s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000152s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000086s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000207s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000905s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000157s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000242s ]
+
+[ 2013-06-10T11:44:12+08:00 ] 127.0.0.1 /SE-Payment/index.php/User/register
+INFO: [ route_check ] --START--
+INFO: Run CheckRoute Behavior [ RunTime:0.000194s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000328s ]
+NOTIC: [2] ob_start(): output handler 'ob_gzhandler' conflicts with 'zlib output compression' /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+NOTIC: [8] ob_start(): failed to create buffer /Users/yangjueji/Documents/Codes/se/SE-Payment/ThinkPHP/Lib/Core/App.class.php 第 49 行.
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000188s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000284s ]
+INFO: [ view_template ] --START--
+INFO: Run LocationTemplate Behavior [ RunTime:0.000144s ]
+INFO: [ view_template ] --END-- [ RunTime:0.000246s ]
+INFO: [ view_parse ] --START--
+INFO: Run ParseTemplate Behavior [ RunTime:0.007041s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007162s ]
+INFO: [ view_filter ] --START--
+INFO: Run ContentReplace Behavior [ RunTime:0.000235s ]
+INFO: Run TokenBuild Behavior [ RunTime:0.000152s ]
+INFO: Run WriteHtmlCache Behavior [ RunTime:0.000089s ]
+INFO: Run ShowRuntime Behavior [ RunTime:0.000210s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000927s ]
+INFO: [ view_end ] --START--
+INFO: Run ShowPageTrace Behavior [ RunTime:0.000157s ]
+INFO: [ view_end ] --END-- [ RunTime:0.000252s ]
+
