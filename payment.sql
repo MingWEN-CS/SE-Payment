@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS payment;
 CREATE DATABASE payment;
 /* if failed on following CREATE USER sql due to exits laolao already just delete it and redo >.<*/
-CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao' IF NOT EXISTS USER 'laolao';
+CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao';
 GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
 USE payment;
 DROP TABLE IF EXISTS user;
@@ -119,6 +119,11 @@ CREATE TABLE shopping_cart(
 	good_count INTEGER,
 	foreign key (good_id) references goods(id) on delete cascade,
 	foreign key (user_id) references user(id) on delete cascade
+);
+
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders(
+	id INTEGER NOT NULL PRIMARY KEY
 );
 
 /* group 4 */

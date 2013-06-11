@@ -1,0 +1,37 @@
+h1,h2,h3{
+	color:#666;
+}
+body{
+    color:#666;
+    font-size:13px;
+    background: #ffffff;
+    font-family:"Century Gothic", Helvetica, sans-serif;
+}
+
+#container{
+	padding:20px;
+	position:relative;
+	width:960px;
+	margin:0 auto;
+}
+
+#search-wrapper{
+	text-align:center;
+}
+
+.left-center{
+	margin-top:40px;
+
+}
+.header{
+	margin:0 auto;
+	width:960px;
+}
+
+.footer{
+	/*border:1px solid #999;*/
+	margin-top: 100px;
+	width: 960px;
+	margin: 0 auto;
+	text-align: center;
+}
