@@ -1,7 +1,7 @@
 <?php
-class AirplaneTicketModel extends Model{
-	public function addAirplaneTicket(){
-		return $this->add();
-	}	
+class AirplaneTicketModel extends GeneralGoodsModel{
+	public function getDataName() {
+		return 'airplane_ticket';
+	}
 }
 ?>

@@ -9,5 +9,10 @@ class GeneralGoodsModel extends Model{
 		$result =  $this->where($condition)->select();
 		return $result;
 	}
+	
+	public function getDataName() {
+		//本来想写general-goods的可是volist不认识。
+		return 'general_goods';
+	}
 }
 ?>

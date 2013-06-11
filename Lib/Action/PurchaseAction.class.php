@@ -11,10 +11,19 @@ class PurchaseAction extends Action {
     }
 
     public function search(){
+		$goods_type = $this->_get('goods-type');
 		$keywords = $this->_get('keywords');
-		$generalGoods = D('GeneralGoods');
-		$searchResult = $generalGoods->getGoodsWithKeyWords($keywords);
-		$this->assign('goods', $searchResult);
+		if($goods_type == 'general-goods') {
+			$goods = D('GeneralGoods');
+		}
+		else if($goods_type == 'airplane-ticket') {
+			$goods = D('AirplaneTicket');
+		}
+		else if($goods_type == 'hotel-room') {
+			$goods = D('HotelRoom');
+		}
+		$searchResult = $goods->getGoodsWithKeyWords($keywords);
+		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
 		$this->display();
 		// $goods = D('Goods');

@@ -4,6 +4,8 @@
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
    	<link rel="stylesheet" href="../Public/css/index.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="../Public/js/purchase_search.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -11,19 +13,61 @@
 <include file="../header"/>
 
 <div id="container" style="margin-top:100px;height:400px;">
-	<form class="form-search" method="get" action="__APP__/Purchase/search">
-	    <div class="input-append">
-		    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-		    <button type="submit" class="btn btn-primary">Search</button>
+	<ul class="nav nav-tabs" id="goods-type-tab">
+	  <li class="active"><a href="#general-goods" data-toggle="tab">Gernal Goods</a></li>
+	  <li><a href="#hotel-room" data-toggle="tab">Hotel Rooms</a></li>
+	  <li><a href="#airplane-ticket" data-toggle="tab">Airplane Tickets</a></li>
+	</ul>
+	<div id="goods-type-tab_content" class="tab-content">
+		<div class="tab-pane active" id="general-goods">
+			<form class="form-search" method="get" action="__APP__/Purchase/search">
+			    <div class="input-append">
+					<input name="goods-type" type="hidden" value="general-goods">
+				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+				    <button type="submit" class="btn btn-primary">Search</button>
+				</div>
+			</form>
+			<h4>General Goods Search results</h4>
+
+			<volist name="general_goods" id="eachgoodes">
+				{$eachgoodes.name}
+				{$eachgoodes.price}
+			</volist>
 		</div>
-	</form>
+		
+		<div class="tab-pane" id="hotel-room">
+			<form class="form-search" method="get" action="__APP__/Purchase/search">
+			    <div class="input-append">
+					<input name="goods-type" value="hotel-room" type="hidden">
+				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+				    <button type="submit" class="btn btn-primary">Search</button>
+				</div>
+			</form>
+			<h4>Hotel Room Search results</h4>
 
-	<h4>Search results</h4>
+			<volist name="hotel_room" id="eachgoodes">
+				{$eachgoodes.name}
+				{$eachgoodes.price}
+			</volist>
+		</div>
+		
+		<div class="tab-pane" id="airplane-ticket">
+			<form class="form-search" method="get" action="__APP__/Purchase/search">
+			    <div class="input-append">
+					<input name="goods-type" value="airplane-ticket" type="hidden">
+				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+				    <button type="submit" class="btn btn-primary">Search</button>
+				</div>
+			</form>
+			<h4>Airplane Ticket Search results</h4>
 
-	<volist name="goods" id="eachgoodes">
-		{$eachgoodes.name}
-		{$eachgoodes.price}
-	</volist>
+			<volist name="airplane_ticket" id="eachgoodes">
+				{$eachgoodes.name}
+				{$eachgoodes.price}
+			</volist>
+		</div>
+		
+	</divd>
 </div>
 
 <include file="../footer"/>
