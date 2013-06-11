@@ -10,7 +10,21 @@
 	
 <include file="../header"/>
 
-<h4>Search results</h4>
+<div id="container" style="margin-top:100px;height:400px;">
+	<form class="form-search" method="get" action="__APP__/Purchase/search">
+	    <div class="input-append">
+		    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+		    <button type="submit" class="btn btn-primary">Search</button>
+		</div>
+	</form>
+
+	<h4>Search results</h4>
+
+	<volist name="goods" id="eachgoodes">
+		{$eachgoodes.name}
+		{$eachgoodes.price}
+	</volist>
+</div>
 
 <include file="../footer"/>
 </body>

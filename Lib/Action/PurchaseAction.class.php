@@ -11,8 +11,12 @@ class PurchaseAction extends Action {
     }
 
     public function search(){
+		$keywords = $this->_get('keywords');
+		$generalGoods = D('GeneralGoods');
+		$searchResult = $generalGoods->getGoodsWithKeyWords($keywords);
+		$this->assign('goods', $searchResult);
+		$this->assign('keywords', $keywords);
 		$this->display();
-		//     	$keywords = $this->_post('keywords');
 		// $goods = D('Goods');
 		// if($goods->add()) {
 		// 	$this->success("s");
