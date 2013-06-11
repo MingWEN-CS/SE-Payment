@@ -11,12 +11,23 @@
 <include file="../header"/>
 
 <div id="container" style="margin-top:100px;height:400px;">
-	<div id="search-wrapper"> 
+	<div id="search-wrapper">
 	<form class="form-search" method="get" action="__APP__/Purchase/search">
 	    <div class="input-append">
 			<h4>Search the items you want</h4>
 		    <input name="keywords" type="text" class="input-xxlarge search-query" placeholder="input the keywords to search">
 		    <button type="submit" class="btn btn-primary">Search</button>
+		</div>
+		<div>
+			<label class='radio'>
+				<input type="radio" name="goods-type" value="general-goods" checked="checked" />General Goods
+			</label>
+			<label class='radio'>
+				<input type="radio" name="goods-type" value="hotel-room" />Hotel Room
+			</label>
+			<label class='radio'>
+				<input type="radio" name="goods-type" value="airplane-ticket" />Airplane Ticket
+			</label>
 		</div>
 	</form>
 	</div>
