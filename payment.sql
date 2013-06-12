@@ -110,8 +110,37 @@ ALTER TABLE `Usercard`
 
 
 /* group 2 */
-CREATE TABLE transaction(
-	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
+
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders(
+	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	buyer char(50) NOT NULL,
+	seller char(50) NOT NULL,
+	totalprice numeric(15,2),
+	isdelete bit(1) NOT NULL,
+	state char(20) NOT NULL,
+	foreign key (buyer) references buyer(USERNAME) on delete cascade,
+	foreign key (seller) references seller(USERNAME) on delete cascade
+);
+DROP TABLE IF EXISTS order_goods;
+CREATE TABLE order_goods(
+	oid INTEGER NOT NULL,
+	gid INTEGER NOT NULL,
+	price numeric(15,2) NOT NULL,
+	number INTEGER NOT NULL,
+	name VARCHAR(256),
+	PRIMARY KEY(oid,gid),
+	foreign key (oid) references orders(id) on delete cascade,
+	foreign key (gid) references goods(id) on delete cascade
+);
+DROP TABLE IF EXISTS order_operation;
+CRAETE TABLE order_operation(
+	oid INTEGER NOT NULL,
+	operation char(20) NOT NULL,
+	time date NOT NULL,
+	operator char(20),
+	primary key(oid,time),
+	foreign key (oid) references orders(id) on delete cascade
 );
 
 /* group 3 */
