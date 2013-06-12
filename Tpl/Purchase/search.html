@@ -26,12 +26,26 @@
 				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
 				    <button type="submit" class="btn btn-primary">Search</button>
 				</div>
+				<p>
+				<div>
+					<select class="span2" name="sort_field">
+						<volist name="general_goods_sort_options" id="each_option">
+							<option value='{$each_option->field}'>{$each_option->display}</option>
+						</volist>
+					</select>
+					<div class="input-prepend input-append" >
+						<span class="add-on">price range</span>
+						<input class="span1" name="price-lower-bound" type="text">
+						<span class="add-on">upto</span>
+						<input class="span1" name="price-upper-bound" type="text">
+					</div>
+				</div>
 			</form>
 			<h4>General Goods Search results</h4>
 
-			<volist name="general_goods" id="eachgoodes">
-				{$eachgoodes.name}
-				{$eachgoodes.price}
+			<volist name="general_goods" id="each_goods">
+				{$each_goods.name}
+				{$each_goods.price}
 			</volist>
 		</div>
 		
@@ -42,12 +56,20 @@
 				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
 				    <button type="submit" class="btn btn-primary">Search</button>
 				</div>
+				<p>
+				<div class="input-prepend">
+					<select class="span2">
+						<volist name="hotel_room_sort_options" id="each_option">
+							<option value='{$each_option->field}'>{$each_option->display}</option>
+						</volist>
+					</select>
+				</div>
 			</form>
 			<h4>Hotel Room Search results</h4>
 
-			<volist name="hotel_room" id="eachgoodes">
-				{$eachgoodes.name}
-				{$eachgoodes.price}
+			<volist name="hotel_room" id="each_goods">
+				{$each_goods.name}
+				{$each_goods.price}
 			</volist>
 		</div>
 		
@@ -58,12 +80,20 @@
 				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
 				    <button type="submit" class="btn btn-primary">Search</button>
 				</div>
+				<p>
+				<div class="input-prepend">
+					<select class="span2">
+						<volist name="airplane_ticket_sort_options" id="each_option">
+							<option value='{$each_option->field}'>{$each_option->display}</option>
+						</volist>
+					</select>
+				</div>
 			</form>
 			<h4>Airplane Ticket Search results</h4>
 
-			<volist name="airplane_ticket" id="eachgoodes">
-				{$eachgoodes.name}
-				{$eachgoodes.price}
+			<volist name="airplane_ticket" id="each_goods">
+				{$each_goods.name}
+				{$each_goods.price}
 			</volist>
 		</div>
 		
