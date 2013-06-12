@@ -1,5 +1,6 @@
 <?php
-// 本类由系统自动生成，仅供测试用途
+import("@.Util.Goods.SourcePlace");
+
 class PurchaseAction extends Action {
 	
     public function index(){
@@ -28,6 +29,7 @@ class PurchaseAction extends Action {
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArray());
 		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArray());
 		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArray());
+		$this->assign('general_goods_source_place', SourcePlace::getSourcePlaceObjectsArray());
 		$this->display();
     }
 }

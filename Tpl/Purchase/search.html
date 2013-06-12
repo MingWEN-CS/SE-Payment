@@ -23,8 +23,8 @@
 			<form class="form-search" method="get" action="__APP__/Purchase/search">
 			    <div class="input-append">
 					<input name="goods-type" type="hidden" value="general-goods">
-				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-				    <button type="submit" class="btn btn-primary">Search</button>
+					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 				<p>
 				<div>
@@ -39,13 +39,24 @@
 						<span class="add-on">upto</span>
 						<input class="span1" name="price-upper-bound" type="text">
 					</div>
+					<select class="span2" name="source_place">
+						<volist name="general_goods_source_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
 				</div>
 			</form>
 			<h4>General Goods Search results</h4>
 
 			<volist name="general_goods" id="each_goods">
 				{$each_goods.name}
+				<p/>
 				{$each_goods.price}
+				<p/>
+				score:{$each_goods.score}
+				<p/>
+				sales:{$each_goods.bought_count}
+				<p/>
 			</volist>
 		</div>
 		
@@ -53,8 +64,8 @@
 			<form class="form-search" method="get" action="__APP__/Purchase/search">
 			    <div class="input-append">
 					<input name="goods-type" value="hotel-room" type="hidden">
-				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-				    <button type="submit" class="btn btn-primary">Search</button>
+					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 				<p>
 				<div class="input-prepend">
@@ -69,7 +80,13 @@
 
 			<volist name="hotel_room" id="each_goods">
 				{$each_goods.name}
+				<p/>
 				{$each_goods.price}
+				<p/>
+				score:{$each_goods.score}
+				<p/>
+				sales:{$each_goods.bought_count}
+				<p/>
 			</volist>
 		</div>
 		
@@ -77,8 +94,8 @@
 			<form class="form-search" method="get" action="__APP__/Purchase/search">
 			    <div class="input-append">
 					<input name="goods-type" value="airplane-ticket" type="hidden">
-				    <input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-				    <button type="submit" class="btn btn-primary">Search</button>
+					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 				<p>
 				<div class="input-prepend">
@@ -93,7 +110,13 @@
 
 			<volist name="airplane_ticket" id="each_goods">
 				{$each_goods.name}
+				<p/>
 				{$each_goods.price}
+				<p/>
+				score:{$each_goods.score}
+				<p/>
+				sales:{$each_goods.bought_count}
+				<p/>
 			</volist>
 		</div>
 		
