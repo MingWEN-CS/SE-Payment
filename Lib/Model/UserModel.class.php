@@ -1,6 +1,25 @@
 <?php
 class UserModel extends Model{
-	
+	protected $_map = array(
+		'name' => 'USERNAME',
+		'pwd' => 'PASSWD',
+		'email' => 'EMAIL',
+		'phone' => 'PHONE',
+		'type' => 'TYPE',
+	);
+
+	protected $_validate = array(
+		array('USERNAME','require','Username is necessary',1),
+		array('USERNAME','','the username has been registered',1,'unique',1),
+		array('EMAIL','require','Email is necessary',1),
+		array('EMAIL','email','Email Format Error',1),	
+		array('PASSWD','require','Password is necessary',1),
+	);
+
+	protected $_auto = array(
+		array('PASSWD','md5',3,'function'),
+	);
+
 	public function addUser($username, $password, $email){
 		$this->NAME = $username;
 		$this->PASSWORD = $password;
@@ -10,6 +29,10 @@ class UserModel extends Model{
 
 	public function selectUser(){
 		return $this->select();
+	}
+
+	public function findUserByName($name){
+		return $this->where('USERNAME ="' . $name .'"')->find();
 	}
 
 	public function selectUserByName($username){
