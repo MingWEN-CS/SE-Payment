@@ -16,47 +16,26 @@ CREATE TABLE user(
 =======
 
 --
--- Tabellenstruktur für Tabelle `account`
---
 
-CREATE TABLE IF NOT EXISTS `account` (
-  `AID` char(50) NOT NULL DEFAULT '',
-  `TYPE` bit(1) DEFAULT NULL,
-  `UID` char(50) DEFAULT NULL,
-  `BALANCE` decimal(12,2) DEFAULT NULL,
-  `BANKACCOUNT` char(50) DEFAULT NULL,
-  PRIMARY KEY (`AID`),
-  KEY `UID` (`UID`,`TYPE`)
+--
+CREATE TABLE IF NOT EXISTS `Buyer` (
+  `UID` int(11) NOT NULL,
+  `PASSWDPAYMENT` char(32) CHARACTER SET utf8 NOT NULL,
+  `CREDIT` int(11) NOT NULL DEFAULT '0',
+  `VIP` tinyint(1) NOT NULL DEFAULT '0',
+  `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `buyer`
+-- Table structure for table `Receiveaddress`
 --
 
-CREATE TABLE IF NOT EXISTS `buyer` (
-  `USERNAME` char(50) DEFAULT NULL,
-  `EMAIL` char(50) NOT NULL DEFAULT '',
-  `PASSWORDLOGIN` char(50) DEFAULT NULL,
-  `PASSWORDPAYMENT` char(50) DEFAULT NULL,
-  `BALANCE` decimal(12,2) DEFAULT NULL,
-  `VIP` bit(1) DEFAULT NULL,
-  `AUTHENTICATED` bit(1) DEFAULT NULL,
-  `CREDIT` char(50) DEFAULT NULL,
-  PRIMARY KEY (`EMAIL`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `receiveaddress`
---
-
-CREATE TABLE IF NOT EXISTS `receiveaddress` (
+CREATE TABLE IF NOT EXISTS `Receiveaddress` (
   `ADDRESSID` char(50) NOT NULL DEFAULT '',
-  `UID` char(50) DEFAULT NULL,
-  `TYPE` bit(1) DEFAULT NULL,
+  `UID` int(11) NOT NULL,
   `RECEIVERNAME` char(50) DEFAULT NULL,
   `RECEIVERPHONE` char(20) DEFAULT NULL,
   `PROVINCE` char(50) DEFAULT NULL,
@@ -64,56 +43,111 @@ CREATE TABLE IF NOT EXISTS `receiveaddress` (
   `STRICT` char(50) DEFAULT NULL,
   `STREET` char(100) DEFAULT NULL,
   PRIMARY KEY (`ADDRESSID`),
-  KEY `UID` (`UID`,`TYPE`)
+  KEY `UID` (`UID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Seller`
+--
+
+CREATE TABLE IF NOT EXISTS `Seller` (
+  `UID` int(11) NOT NULL,
+  `PASSWORDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `seller`
+-- Table structure for table `User`
 --
 
-CREATE TABLE IF NOT EXISTS `seller` (
-  `USERNAME` char(50) DEFAULT NULL,
-  `EMAIL` char(50) NOT NULL DEFAULT '',
-  `PASSWORDLOGIN` char(50) DEFAULT NULL,
-  `BALANCE` decimal(12,2) DEFAULT NULL,
-  PRIMARY KEY (`EMAIL`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `User` (
+  `UID` int(10) NOT NULL AUTO_INCREMENT,
+  `USERNAME` char(20) CHARACTER SET utf8 NOT NULL,
+  `PASSWORD` char(32) CHARACTER SET utf8 NOT NULL,
+  `EMAIL` char(30) CHARACTER SET utf8 NOT NULL,
+  `TYPE` tinyint(1) NOT NULL,
+  `BALANCE` int(11) DEFAULT '0',
+  `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`UID`),
+  UNIQUE KEY `ID` (`UID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `User`
+--
+
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `user`
+-- Table structure for table `Usercard`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `EMAIL` char(50) NOT NULL DEFAULT '',
-  `TYPE` bit(1) NOT NULL DEFAULT b'0',
-  `USERNAME` char(50) DEFAULT NULL,
-  `PHONE` char(20) DEFAULT NULL,
-  PRIMARY KEY (`EMAIL`,`TYPE`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `Usercard` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USERID` int(11) DEFAULT NULL,
+  `CARDID` char(50) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `user_id` (`USERID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Constraints der exportierten Tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Constraints der Tabelle `account`
+-- Constraints for table `Buyer`
 --
-ALTER TABLE `account`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`UID`, `TYPE`) REFERENCES `user` (`EMAIL`, `TYPE`) ON DELETE CASCADE;
+ALTER TABLE `Buyer`
+  ADD CONSTRAINT `buyer_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`);
 
 --
--- Constraints der Tabelle `receiveaddress`
+-- Constraints for table `Receiveaddress`
 --
-ALTER TABLE `receiveaddress`
-  ADD CONSTRAINT `receiveaddress_ibfk_1` FOREIGN KEY (`UID`, `TYPE`) REFERENCES `user` (`EMAIL`, `TYPE`) ON DELETE CASCADE;
+ALTER TABLE `Receiveaddress`
+  ADD CONSTRAINT `receiveaddress_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`);
+
+--
+-- Constraints for table `Usercard`
+--
+ALTER TABLE `Usercard`
+  ADD CONSTRAINT `usercard_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `USER` (`UID`);
 
 /* group 2 */
-CREATE TABLE transaction(
-	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
+
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders(
+	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	buyer char(50) NOT NULL,
+	seller char(50) NOT NULL,
+	totalprice numeric(15,2),
+	isdelete bit(1) NOT NULL,
+	state char(20) NOT NULL,
+	foreign key (buyer) references buyer(USERNAME) on delete cascade,
+	foreign key (seller) references seller(USERNAME) on delete cascade
+);
+DROP TABLE IF EXISTS order_goods;
+CREATE TABLE order_goods(
+	oid INTEGER NOT NULL,
+	gid INTEGER NOT NULL,
+	price numeric(15,2) NOT NULL,
+	number INTEGER NOT NULL,
+	name VARCHAR(256),
+	PRIMARY KEY(oid,gid),
+	foreign key (oid) references orders(id) on delete cascade,
+	foreign key (gid) references goods(id) on delete cascade
+);
+DROP TABLE IF EXISTS order_operation;
+CRAETE TABLE order_operation(
+	oid INTEGER NOT NULL,
+	operation char(20) NOT NULL,
+	time date NOT NULL,
+	operator char(20),
+	primary key(oid,time),
+	foreign key (oid) references orders(id) on delete cascade
 );
 /* if you are using sqlite please use following instead */
 /* 

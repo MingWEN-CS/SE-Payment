@@ -1,0 +1,38 @@
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+   	<link rel="stylesheet" href="../Public/css/group1.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/user.js" type="text/javascript"></script>
+
+</head>
+<script>
+	var ROOT = '__APP__';
+</script>
+<body>
+<!--
+<div class = "header">
+	<h1>Online Payment System/<span style="font-size:24px;">Login</span></h1>
+</div>
+-->
+<include file="../header"/>
+
+<div id = "container" style="margin-top:100px;height:400px;">
+	<image src="../Public/img/meng.jpg" class = "span7"/>
+	<div class="left-center">
+	<div class="span3">
+		<h4>Login the system</h4>
+		<label for="inputEmail">Username:</label>
+		<input type="text" id = "loginName" name="username" placeholder="Username">
+		<label for="inputPassword">Password:</label>
+		<input type="password" id = "loginPassword" name="password" placeholder="Password">
+		<div id="loginInfo" class="alert hide" style="width:230px; margin-left:0px"></div>
+		<button class="btn btn-success" onclick = "postLogin()">Sign In</button>
+	</div>
+	</div>
+</div>
+
+<include file="../footer"/>
+</body>
+</html>

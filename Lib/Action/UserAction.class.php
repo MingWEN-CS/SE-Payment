@@ -3,23 +3,107 @@
 class UserAction extends Action {
     
     public function index(){
-	//$this->show('<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} body{ background: #fff; font-family: "微软雅黑"; color: #333;} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.8em; font-size: 36px }</style><div style="padding: 24px 48px;"> <h1>:)</h1><p>欢迎使用 <b>ThinkPHP</b>！</p></div><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>','utf-8');
-    //$data = M('User');
-    //$this->data = $data->select();
-    //$this->name = '我们';
-    //$User = D('User');
-	//$this->data = $User->selectUser();
-        $this->display();
+        if (isset($_SESSION[username])) $this->display("home");
+        else redirect(U('/User/login'));
     }
 
 
     public function login(){
-    	$this->display("index");
+    	if (IS_POST){
+            $name = $this->_post('name');
+            $pwd = $this->_post('pwd');
+            $User = D("User");
+            $user = $User->findUserByName($name);
+            if (!$user){
+                $this->ajaxReturn('','User do not exsit!',0);
+            }
+            else if (md5($pwd) != $user[PASSWD]){
+                $this->ajaxReturn('','Password incorrect',0);
+            }
+            else {
+                session('uid',$user[UID]);
+                session('username',$user[USERNAME]);
+                $this->ajaxReturn('', 'Login successfully!' ,1);
+            }
+        }   
+        else{
+            $this->display();
+        }
     }
 
 
     public function register(){
-    	$this->display();
+        if (IS_POST){
+            $pwd =  $this->_post('pwd');
+            $name = $this->_post('name');
+            $email = $this->_post('email');
+            $pwd2 = $this->_post('pwd2');
+            $phone = $this->_post('phone');
+            $type = $this->_post('type');
+            //$data = {'name':$name,'pwd':$pwd,'email':$email};
+            $data = array(
+                'name' => $name,
+                'pwd'  => $pwd,
+                'email' => $email,
+                'type' => $type,
+                'phone' => $phone,
+            );
+            
+            $User = D("User");
+            if ($User->create($data)){
+                $uid = $User->add();
+                if ($uid){        
+                    if ($type == 0){
+                        $Buyer = D("Buyer");
+                        $data = array('uid' => $uid,
+                                    'pwd2' => $pwd2);
+                        if ($Buyer->create($data)){
+                            $bid = $Buyer->add();
+                            if ($bid){
+                                session('uid',$uid);
+                                session('username',$name);
+                                $this->ajaxReturn($bid,'Register successfully!',1);
+                            }
+                            else  $this->ajaxReturn(0,'Register failed',0);
+                        }
+                        else {
+                            $this->ajaxReturn(0,'Register Buyer failed!',0);
+                        }
+                    }
+                    else if ($type == 1){
+                        $Seller = D("Seller");
+                        $data = array('uid' => $uid,
+                                    'pwd2' => $pwd2);
+                        if ($Seller->create($data)){
+                            $sid = $Seller->add();
+                            if ($sid){
+                                session('uid',$uid);
+                                session('username',$name);
+                                $this->ajaxReturn($sid,'Register successfully!',1);
+                            }
+                            else  $this->ajaxReturn(0,'Register failed',0);
+                        }
+                        else {
+                            $this->ajaxReturn(0,'Register Seller failed!',0);
+                        }
+                    }
+                }
+                else {
+                    $this->ajaxReturn(0,'Register Failed!',0);
+                }
+            }
+            else {
+                $this->ajaxReturn('',$User->getError(),0);
+            }
+        }
+        else{
+            $this->display();
+        }
+    }
+
+    public function logout(){
+        session('[destroy]');
+        redirect(U('/User/login'));
     }
 
     public function home(){
