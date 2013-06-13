@@ -1,11 +1,19 @@
+/* if you are using sqlite the following are not necessary */
 DROP DATABASE IF EXISTS payment;
 CREATE DATABASE payment;
 /* if failed on following CREATE USER sql due to exits laolao already just delete it and redo >.<*/
 CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao';
 GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
 USE payment;
+/* if you are using sqlite please start here */
 DROP TABLE IF EXISTS user;
 /* group 1 */
+CREATE TABLE user(
+	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
+);
+=======
 
 --
 -- Tabellenstruktur für Tabelle `account`
@@ -103,16 +111,23 @@ ALTER TABLE `account`
 ALTER TABLE `receiveaddress`
   ADD CONSTRAINT `receiveaddress_ibfk_1` FOREIGN KEY (`UID`, `TYPE`) REFERENCES `user` (`EMAIL`, `TYPE`) ON DELETE CASCADE;
 
-
 /* group 2 */
 CREATE TABLE transaction(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
+/* if you are using sqlite please use following instead */
+/* 
+CREATE TABLE transactions(
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
+ */
 
 /* group 3 */
 DROP TABLE IF EXISTS goods;
 CREATE TABLE goods(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	type INTEGER NOT NULL
 );
 
@@ -177,6 +192,8 @@ CREATE TABLE airplane_ticket(
 DROP TABLE IF EXISTS browse_history;
 CREATE TABLE browse_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	good_id INTEGER,
 	user_id INTEGER,
 	date_time BIGINT,
@@ -187,6 +204,8 @@ CREATE TABLE browse_history(
 DROP TABLE IF EXISTS search_history;
 CREATE TABLE search_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	search_key VARCHAR(256),
 	user_id INTEGER,
 	date_time BIGINT,
@@ -196,6 +215,8 @@ CREATE TABLE search_history(
 DROP TABLE IF EXISTS feedback;
 CREATE TABLE feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	user_id INTEGER,
 	transaction_id INTEGER,
 	score INTEGER,
@@ -203,11 +224,15 @@ CREATE TABLE feedback(
 	date_time BIGINT,
 	foreign key (user_id) references user(id) on delete cascade,	
 	foreign key (transaction_id) references transaction(id) on delete cascade
+	/* if you are using sqlite please use following instead */
+	/* foreign key (transaction_id) references transactions(id) on delete cascade */
 );
 
 DROP TABLE IF EXISTS shopping_cart;
 CREATE TABLE shopping_cart(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	/* if you are using sqlite please use following instead */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	user_id INTEGER,
 	good_id INTEGER,
 	good_count INTEGER,
