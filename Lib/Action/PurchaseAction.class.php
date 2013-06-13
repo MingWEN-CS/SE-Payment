@@ -40,7 +40,7 @@ class PurchaseAction extends Action {
 		//airplane carbin
 		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
 		$this->display();
-    }
+	}
 	
 	public function shoppingcart() {
 		$case_template = 'CASE '.

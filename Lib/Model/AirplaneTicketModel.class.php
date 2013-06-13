@@ -33,10 +33,18 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 			$condition['arrival_place'] = $place;
 		}
 		if(($carbin = $purchaseAction->_get('carbin_type')) && $carbin != "anytype") {
-			echo $carbin;
 			$condition['carbin_type'] = $carbin;
+		}
+		if(($departurePlace = $purchaseAction->_get('departure_date_time'))) {
+			$startTime = strtotime($departurePlace);
+			$condition['departure_date_time'] = array('between',array($startTime, $startTime + 60 * 5));
+		}
+		if(($arrivalPlace = $purchaseAction->_get('arrival_date_time'))) {
+			$startTime = strtotime($arrivalPlace);
+			$condition['arrival_date_time'] = array('between',array($startTime, $startTime + 60 * 5));
 		}
 		return $condition;
 	}
+	
 }
 ?>

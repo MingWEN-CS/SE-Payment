@@ -7,7 +7,6 @@ class GeneralGoodsModel extends Model{
 		$condition['id'] = $id;
 		return $this->where($condition)->find();
 	}
-
 	
 	public function getGoodsWithPurchaseAction($purchaseAction) {
 		$condition = $this->generateCondition($purchaseAction);

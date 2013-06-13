@@ -2,9 +2,12 @@
 <head>
    	<title>Online Payment System</title>
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
-   	<link rel="stylesheet" href="../Public/css/index.css"/>
+   	<link rel="stylesheet" href="../Public/css/purchase/index.css"/>
+   	<link rel="stylesheet" href="../Public/css/purchase/datetimepicker.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../Public/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	<script src="../Public/js/purchase_search.js" type="text/javascript"></script>
 </head>
 
@@ -71,7 +74,7 @@
 					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 				<p>
-				<div class="input-prepend">
+				<div>
 					<select class="span2" name="sort_field">
 						<volist name="hotel_room_sort_options" id="each_option">
 							<option value='{$each_option->field}'>{$each_option->display}</option>
@@ -83,6 +86,8 @@
 						<span class="add-on">upto</span>
 						<input class="span1" name="price-upper-bound" type="text">
 					</div>
+				</div>
+				<div>
 					<select class="span2" name="place">
 						<volist name="hotel_room_source_place" id="source_place">
 							<option value='{$source_place->value}'>{$source_place->display}</option>
@@ -93,6 +98,13 @@
 							<option value='{$suit_type->value}'>{$suit_type->display}</option>
 						</volist>
 					</select>
+	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="hotel_date_time">
+	                    <span class="add-on">time</span>
+						<input size="16" type="text" value="" readonly>
+	                    <span class="add-on"><i class="icon-remove"></i></span>
+						<span class="add-on"><i class="icon-th"></i></span>
+	                </div>
+					<input type="hidden" id="hotel_date_time" name="date_time"/><br/>
 				</div>
 			</form>
 			<h4>Hotel Room Search results</h4>
@@ -117,7 +129,7 @@
 					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 				<p>
-				<div class="input-prepend">
+				<div>
 					<select class="span2" name="sort_field">
 						<volist name="airplane_ticket_sort_options" id="each_option">
 							<option value='{$each_option->field}'>{$each_option->display}</option>
@@ -129,22 +141,40 @@
 						<span class="add-on">upto</span>
 						<input class="span1" name="price-upper-bound" type="text">
 					</div>
-					<select class="span2" name="departure_place">
-						<volist name="airplane_ticket_departure_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
-					<select class="span2" name="arrival_place">
-						<volist name="airplane_ticket_arrival_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
 					<select class="span2" name="carbin_type">
 						<volist name="airpalne_ticket_carbin" id="carbin_type">
 							<option value='{$carbin_type->value}'>{$carbin_type->display}</option>
 						</volist>
 					</select>
 				</div>
+				<div>
+					<select class="span2" name="departure_place">
+						<volist name="airplane_ticket_departure_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
+	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="departure_date_time">
+	                    <span class="add-on">departure time</span>
+						<input size="16" type="text" value="" readonly>
+	                    <span class="add-on"><i class="icon-remove"></i></span>
+						<span class="add-on"><i class="icon-th"></i></span>
+	                </div>
+					<input type="hidden" id="departure_date_time" name="departure_date_time"/><br/>
+				</div>
+				<div>
+					<select class="span2" name="arrival_place">
+						<volist name="airplane_ticket_arrival_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
+	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="arrival_date_time">
+	                    <span class="add-on">arrival time</span>
+						<input size="16" type="text" value="" readonly>
+	                    <span class="add-on"><i class="icon-remove"></i></span>
+						<span class="add-on"><i class="icon-th"></i></span>
+	                </div>
+					<input type="hidden" id="arrival_date_time" name="arrival_date_time"/><br/>
+				</div>		
 			</form>
 			<h4>Airplane Ticket Search results</h4>
 

@@ -15,4 +15,16 @@ $(function() {
 	else if(args['goods-type'] == 'airplane-ticket') {
 		$('#goods-type-tab a[href="#airplane-ticket"]').tab('show');
 	}
+	
+
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
 });
