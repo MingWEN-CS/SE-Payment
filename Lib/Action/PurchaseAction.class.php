@@ -1,7 +1,8 @@
 <?php
-// 本类由系统自动生成，仅供测试用途
+import("@.Util.Goods.SourcePlace");
+
 class PurchaseAction extends Action {
-    
+	
     public function index(){
 		$this->display();
     }
@@ -22,18 +23,14 @@ class PurchaseAction extends Action {
 		else if($goods_type == 'hotel-room') {
 			$goods = D('HotelRoom');
 		}
-		$searchResult = $goods->getGoodsWithKeyWords($keywords);
+		$searchResult = $goods->getGoodsWithPurchaseAction($this);
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
+		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArray());
+		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArray());
+		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArray());
+		$this->assign('general_goods_source_place', SourcePlace::getSourcePlaceObjectsArray());
 		$this->display();
-		// $goods = D('Goods');
-		// if($goods->add()) {
-		// 	$this->success("s");
-		// }
-		// else {
-		// 	echo ($goods->getError());
-		// 	echo 3;
-		// }
     }
 	
 	public function shoppingcart() {
@@ -85,3 +82,4 @@ class PurchaseAction extends Action {
 	}
 	
 }
+?>

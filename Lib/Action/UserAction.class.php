@@ -9,7 +9,7 @@ class UserAction extends Action {
     //$this->name = '我们';
     //$User = D('User');
 	//$this->data = $User->selectUser();
-    $this->display();
+        $this->display();
     }
 
 
@@ -35,3 +35,5 @@ class UserAction extends Action {
     }
     
 }
+
+?>
