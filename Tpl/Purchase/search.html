@@ -39,7 +39,7 @@
 						<span class="add-on">upto</span>
 						<input class="span1" name="price-upper-bound" type="text">
 					</div>
-					<select class="span2" name="source_place">
+					<select class="span2" name="place">
 						<volist name="general_goods_source_place" id="source_place">
 							<option value='{$source_place->value}'>{$source_place->display}</option>
 						</volist>
@@ -69,9 +69,25 @@
 				</div>
 				<p>
 				<div class="input-prepend">
-					<select class="span2">
+					<select class="span2" name="sort_field">
 						<volist name="hotel_room_sort_options" id="each_option">
 							<option value='{$each_option->field}'>{$each_option->display}</option>
+						</volist>
+					</select>
+					<div class="input-prepend input-append" >
+						<span class="add-on">price range</span>
+						<input class="span1" name="price-lower-bound" type="text">
+						<span class="add-on">upto</span>
+						<input class="span1" name="price-upper-bound" type="text">
+					</div>
+					<select class="span2" name="place">
+						<volist name="hotel_room_source_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
+					<select class="span2" name="suit_type">
+						<volist name="hotel_room_suit" id="suit_type">
+							<option value='{$suit_type->value}'>{$suit_type->display}</option>
 						</volist>
 					</select>
 				</div>
@@ -99,9 +115,30 @@
 				</div>
 				<p>
 				<div class="input-prepend">
-					<select class="span2">
+					<select class="span2" name="sort_field">
 						<volist name="airplane_ticket_sort_options" id="each_option">
 							<option value='{$each_option->field}'>{$each_option->display}</option>
+						</volist>
+					</select>
+					<div class="input-prepend input-append">
+						<span class="add-on">price range</span>
+						<input class="span1" name="price-lower-bound" type="text">
+						<span class="add-on">upto</span>
+						<input class="span1" name="price-upper-bound" type="text">
+					</div>
+					<select class="span2" name="departure_place">
+						<volist name="airplane_ticket_departure_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
+					<select class="span2" name="arrival_place">
+						<volist name="airplane_ticket_arrival_place" id="source_place">
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</volist>
+					</select>
+					<select class="span2" name="carbin_type">
+						<volist name="airpalne_ticket_carbin" id="carbin_type">
+							<option value='{$carbin_type->value}'>{$carbin_type->display}</option>
 						</volist>
 					</select>
 				</div>
@@ -119,8 +156,7 @@
 				<p/>
 			</volist>
 		</div>
-		
-	</divd>
+	</div>
 </div>
 
 <include file="../footer"/>
