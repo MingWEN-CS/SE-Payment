@@ -12,6 +12,7 @@ USE payment;
 -- Table structure for table `se_user`
 --
 
+DROP TABLE IF EXISTS `se_user`;
 CREATE TABLE IF NOT EXISTS `se_user` (
   `UID` int(10) NOT NULL AUTO_INCREMENT,
   `USERNAME` char(20) CHARACTER SET utf8 NOT NULL,
@@ -42,14 +43,15 @@ CREATE TABLE se_orders(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	buyer char(50) NOT NULL,
-	seller char(50) NOT NULL,
+	buyer char(20) CHARACTER SET utf8 NOT NULL,
+	seller char(20) CHARACTER SET utf8 NOT NULL,
 	totalprice numeric(15,2),
 	isdelete bit(1) NOT NULL,
 	state char(20) NOT NULL,
 	foreign key (buyer) references `se_user`(`USERNAME`) on delete cascade,
 	foreign key (seller) references `se_user`(`USERNAME`) on delete cascade
 );
+
 
 
 /* group 1 */
