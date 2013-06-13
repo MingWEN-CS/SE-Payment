@@ -25,6 +25,19 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+/* if you are using sqlite please use following instead */
+/*
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `UID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+  `USERNAME` char(20) NOT NULL UNIQUE,
+  `PASSWD` char(32) NOT NULL,
+  `EMAIL` char(30) NOT NULL,
+  `TYPE` tinyint(1) NOT NULL,
+  `BALANCE` int(11) DEFAULT '0',
+  `PHONE` char(11) DEFAULT NULL
+);
+*/
 
 DROP TABLE IF EXISTS se_goods;
 CREATE TABLE se_goods(

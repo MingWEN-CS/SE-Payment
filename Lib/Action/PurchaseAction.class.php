@@ -42,53 +42,6 @@ class PurchaseAction extends Action {
 		$this->display();
 	}
 	
-	public function shoppingcart() {
-		$case_template = 'CASE '.
-			'WHEN type = 1 THEN general_goods.${ph} '.
-			'WHEN type = 2 THEN hotel_room.${ph} '.
-			'WHEN type = 3 THEN airplane_ticket.${ph} '.
-		'END ';
-		$model = new Model();
-		$user_id = 1;
-		$array['list'] = $model->query('SELECT '.str_replace('${ph}', 'name', $case_template).'as name, good_id, good_count, '.
-			str_replace('${ph}', 'price', $case_template).
-			'as price '.
-			'FROM shopping_cart, goods, general_goods, hotel_room, airplane_ticket '.
-			'WHERE user_id = '.$user_id.' AND good_id = '.
-			str_replace('${ph}', 'id', $case_template));
-			//'GROUP BY name WITH ROLLUP');
-		$array['static'] = $model->query('SELECT sum(good_count) as count, sum('.
-			str_replace('${ph}', 'price', $case_template).
-			' * good_count) as price '.
-			'FROM shopping_cart, goods, general_goods, hotel_room, airplane_ticket '.
-			'WHERE user_id = '.$user_id.' AND good_id = '.
-			str_replace('${ph}', 'id', $case_template));
-		$this->assign($array);
-		$this->display();
-    }
-	
-	public function shoppingcartdelete() {
-		$cart = D('ShoppingCart');
-		$ret = true;
-		foreach ($_POST['good_ids'] as $good_id) {
-			$ret &= $cart->where('user_id = '.$_POST['user_id'].' AND good_id = '.$good_id)->delete();
-		}
-		if ($ret) {
-			$this->success('删除成功');
-		} else {
-			$this->error('删除失败');
-		}
-	}
-	
-	public function shoppingcartmodify() {
-		$cart = D('ShoppingCart');
-		//$this->success($_POST['add']);
-		if ($cart->modifyCount($_POST['user_id'], $_POST['good_id'], $_POST['add'])) {
-			$this->success('修改成功');
-		} else {
-			$this->error('修改失败');
-		}
-	}
 	public function ordergen() {
 		$commodity_list = $this->_post('good_pairs');
 		echo($commodity_list);
