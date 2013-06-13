@@ -80,6 +80,11 @@ class PurchaseAction extends Action {
 			$this->error('修改失败');
 		}
 	}
+	public function ordergen() {
+		$commodity_list = $this->_post('good_pairs');
+		echo($commodity_list);
+		$this->display();
+	}
 	
 }
 ?>
