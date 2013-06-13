@@ -9,22 +9,37 @@
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
 -- 数据库: `payment`
 --
 
 --
--- 转存表中的数据 `goods`
+-- 转存表中的数据 `se_user`
 --
 
-INSERT IGNORE INTO `goods` (`id`, `type`) VALUES
+INSERT IGNORE INTO `se_user` (`UID`, `USERNAME`, `PASSWD`, `EMAIL`, `TYPE`, `BALANCE`, `PHONE`) VALUES
+(1, '123', '202cb962ac59075b964b07152d234b70', 'a@a.com', 1, 0, NULL),
+(2, '1234', '202cb962ac59075b964b07152d234b70', 'a@b.com', 0, 0, NULL);
+
+--
+-- 转存表中的数据 `se_buyer`
+--
+
+INSERT IGNORE INTO `se_buyer` (`UID`, `PASSWDPAYMENT`, `CREDIT`, `VIP`, `AUTHENTICATED`) VALUES
+(2, '202cb962ac59075b964b07152d234b70', 0, 0, 0);
+
+--
+-- 转存表中的数据 `se_seller`
+--
+
+INSERT IGNORE INTO `se_seller` (`ID`, `USERID`, `CARDID`) VALUES
+(1, NULL, '');
+
+--
+-- 转存表中的数据 `se_goods`
+--
+
+INSERT IGNORE INTO `se_goods` (`id`, `type`) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
@@ -36,32 +51,28 @@ INSERT IGNORE INTO `goods` (`id`, `type`) VALUES
 (9, 3);
 
 --
--- 转存表中的数据 `airplane_ticket`
+-- 转存表中的数据 `se_airplane_ticket`
 --
 
-INSERT IGNORE INTO `airplane_ticket` (`id`, `name`, `seller_id`, `bought_count`, `score`, `score_count`, `image_uri`, `stock`, `description`, `price`, `departure_date_time`, `arrival_date_time`, `departure_place`, `arrival_place`, `non_stop`, `carbin_type`) VALUES
+INSERT IGNORE INTO `se_airplane_ticket` (`id`, `name`, `seller_id`, `bought_count`, `score`, `score_count`, `image_uri`, `stock`, `description`, `price`, `departure_date_time`, `arrival_date_time`, `departure_place`, `arrival_place`, `non_stop`, `carbin_type`) VALUES
 (3, '阿溴的私人飞机[@.@]efghi', 1, 0, 4.5000000000, 1, 'www.baidu.com', 20, '很好', 100.00, 1370208720000, 1370208900000, '浙江', '江苏', 1, 'First'),
 (6, '阿溴的公共飞机[@.@]efpoi', 1, 0, 4.5000000000, 1, 'www.baidu.com', 20, '很好', 90.00, 1370289540000, 1370289540000, '香港', '上海', 1, 'Bussiness'),
 (9, '阿溴Da飞机[@.@]efpoi', 1, 0, 4.5000000000, 1, 'www.baidu.com', 20, '很好', 95.00, 1370289660000, 1370289660000, '江苏', '上海', 1, 'Economy');
 
 --
--- 转存表中的数据 `general_goods`
+-- 转存表中的数据 `se_general_goods`
 --
 
-INSERT IGNORE INTO `general_goods` (`id`, `name`, `price`, `seller_id`, `bought_count`, `score`, `score_count`, `place`, `image_uri`, `stock`, `description`) VALUES
+INSERT IGNORE INTO `se_general_goods` (`id`, `name`, `price`, `seller_id`, `bought_count`, `score`, `score_count`, `place`, `image_uri`, `stock`, `description`) VALUES
 (1, 'abcdefg溴溴溴', 0.50, 1, 0, 5.0000000000, 1, '江苏', 'www.baidu.com', 20, '很好'),
 (4, 'abcdefg溴溴', 4.50, 1, 0, 5.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好'),
 (7, 'abcdefg溴', 2.50, 1, 0, 5.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好');
 
 --
--- 转存表中的数据 `hotel_room`
+-- 转存表中的数据 `se_hotel_room`
 --
 
-INSERT IGNORE INTO `hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_count`, `score`, `score_count`, `place`, `image_uri`, `stock`, `description`, `date_time`, `suit_type`) VALUES
+INSERT IGNORE INTO `se_hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_count`, `score`, `score_count`, `place`, `image_uri`, `stock`, `description`, `date_time`, `suit_type`) VALUES
 (2, '阿溴的房间[>.<]efghi', 0.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'luxury'),
 (5, '阿溴的后宫[>.<]efghi', 5.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'Bussiness'),
 (8, '阿溴的小房间[>.<]efghi', 3.30, 1, 0, 4.0000000000, 1, '上海', 'www.baidu.com', 20, '很好', 1370208720000, 'Single');
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -48,11 +48,11 @@ class UserAction extends Action {
                 'type' => $type,
                 'phone' => $phone,
             );
-            
+            print_r($data);
             $User = D("User");
             if ($User->create($data)){
                 $uid = $User->add();
-                if ($uid){        
+                if ($uid){
                     if ($type == 0){
                         $Buyer = D("Buyer");
                         $data = array('uid' => $uid,

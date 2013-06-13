@@ -8,15 +8,14 @@ USE payment;
 /* if you are using sqlite please start here */
 /* key tables has referenced foreign keys*/
 -- --------------------------------------------------------
-
 --
--- Table structure for table `User`
+-- Table structure for table `se_user`
 --
 
-CREATE TABLE IF NOT EXISTS `User` (
+CREATE TABLE IF NOT EXISTS `se_user` (
   `UID` int(10) NOT NULL AUTO_INCREMENT,
   `USERNAME` char(20) CHARACTER SET utf8 NOT NULL,
-  `PASSWORD` char(32) CHARACTER SET utf8 NOT NULL,
+  `PASSWD` char(32) CHARACTER SET utf8 NOT NULL,
   `EMAIL` char(30) CHARACTER SET utf8 NOT NULL,
   `TYPE` tinyint(1) NOT NULL,
   `BALANCE` int(11) DEFAULT '0',
@@ -24,10 +23,10 @@ CREATE TABLE IF NOT EXISTS `User` (
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
-DROP TABLE IF EXISTS goods;
-CREATE TABLE goods(
+DROP TABLE IF EXISTS se_goods;
+CREATE TABLE se_goods(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
@@ -38,8 +37,8 @@ CREATE TABLE goods(
 	It is better to use get funcions in GeneralGoodsModel and other models*/
 );
 
-DROP TABLE IF EXISTS orders;
-CREATE TABLE orders(
+DROP TABLE IF EXISTS se_orders;
+CREATE TABLE se_orders(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
@@ -48,15 +47,21 @@ CREATE TABLE orders(
 	totalprice numeric(15,2),
 	isdelete bit(1) NOT NULL,
 	state char(20) NOT NULL,
-	foreign key (buyer) references User(USERNAME) on delete cascade,
-	foreign key (seller) references User(USERNAME) on delete cascade
+	foreign key (buyer) references `se_user`(`USERNAME`) on delete cascade,
+	foreign key (seller) references `se_user`(`USERNAME`) on delete cascade
 );
 
 
 /* group 1 */
 --
 --
-CREATE TABLE IF NOT EXISTS `Buyer` (
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `se_buyer`
+--
+
+CREATE TABLE IF NOT EXISTS `se_buyer` (
   `UID` int(11) NOT NULL,
   `PASSWDPAYMENT` char(32) CHARACTER SET utf8 NOT NULL,
   `CREDIT` int(11) NOT NULL DEFAULT '0',
@@ -68,10 +73,10 @@ CREATE TABLE IF NOT EXISTS `Buyer` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Receiveaddress`
+-- Table structure for table `se_receiveaddress`
 --
 
-CREATE TABLE IF NOT EXISTS `Receiveaddress` (
+CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
   `ADDRESSID` char(50) NOT NULL DEFAULT '',
   `UID` int(11) NOT NULL,
   `RECEIVERNAME` char(50) DEFAULT NULL,
@@ -84,36 +89,19 @@ CREATE TABLE IF NOT EXISTS `Receiveaddress` (
   KEY `UID` (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `Seller`
---
-
-CREATE TABLE IF NOT EXISTS `Seller` (
-  `UID` int(11) NOT NULL,
-  `PASSWORDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
---
--- Dumping data for table `User`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Usercard`
+-- Table structure for table `se_seller`
 --
 
-CREATE TABLE IF NOT EXISTS `Usercard` (
+CREATE TABLE IF NOT EXISTS `se_seller` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `USERID` int(11) DEFAULT NULL,
   `CARDID` char(50) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `user_id` (`USERID`)
+  KEY `se_user_id` (`USERID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -121,52 +109,53 @@ CREATE TABLE IF NOT EXISTS `Usercard` (
 --
 
 --
--- Constraints for table `Buyer`
+-- Constraints for table `se_buyer`
 --
-ALTER TABLE `Buyer`
-  ADD CONSTRAINT `buyer_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`);
+ALTER TABLE `se_buyer`
+  ADD CONSTRAINT `se_buyer_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
 --
--- Constraints for table `Receiveaddress`
+-- Constraints for table `se_receiveaddress`
 --
-ALTER TABLE `Receiveaddress`
-  ADD CONSTRAINT `receiveaddress_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `User` (`UID`);
+ALTER TABLE `se_receiveaddress`
+  ADD CONSTRAINT `se_receiveaddress_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
 --
--- Constraints for table `Usercard`
+-- Constraints for table `se_seller`
 --
-ALTER TABLE `Usercard`
-  ADD CONSTRAINT `usercard_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `User` (`UID`);
+ALTER TABLE `se_seller`
+  ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `se_user` (`UID`);
+
 
 /* group 2 */
 
 
-DROP TABLE IF EXISTS order_goods;
-CREATE TABLE order_goods(
+DROP TABLE IF EXISTS se_order_goods;
+CREATE TABLE se_order_goods(
 	oid INTEGER NOT NULL,
 	gid INTEGER NOT NULL,
 	price numeric(15,2) NOT NULL,
 	number INTEGER NOT NULL,
 	name VARCHAR(256),
 	PRIMARY KEY(oid,gid),
-	foreign key (oid) references orders(id) on delete cascade,
-	foreign key (gid) references goods(id) on delete cascade
+	foreign key (oid) references se_orders(id) on delete cascade,
+	foreign key (gid) references se_goods(id) on delete cascade
 );
-DROP TABLE IF EXISTS order_operation;
-CREATE TABLE order_operation(
+DROP TABLE IF EXISTS se_order_operation;
+CREATE TABLE se_order_operation(
 	oid INTEGER NOT NULL,
 	operation char(20) NOT NULL,
 	time date NOT NULL,
 	operator char(20),
 	primary key(oid,time),
-	foreign key (oid) references orders(id) on delete cascade
+	foreign key (oid) references se_orders(id) on delete cascade
 );
 
 /* group 3 */
 
 
-DROP TABLE IF EXISTS general_goods;
-CREATE TABLE general_goods(
+DROP TABLE IF EXISTS se_general_goods;
+CREATE TABLE se_general_goods(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	price numeric(15,2),
@@ -178,12 +167,12 @@ CREATE TABLE general_goods(
 	image_uri VARCHAR(256),
 	stock INTEGER,
 	description VARCHAR(1024),
-	foreign key (id) references goods(id) on delete cascade,
-	foreign key (seller_id) references User(UID) on delete cascade
+	foreign key (id) references se_goods(id) on delete cascade,
+	foreign key (seller_id) references se_user(UID) on delete cascade
 );
 
-DROP TABLE IF EXISTS hotel_room;
-CREATE TABLE hotel_room(
+DROP TABLE IF EXISTS se_hotel_room;
+CREATE TABLE se_hotel_room(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	price numeric(15,2),
@@ -197,12 +186,12 @@ CREATE TABLE hotel_room(
 	description VARCHAR(1024),
 	date_time BIGINT,
 	suit_type VARCHAR(32),
-	foreign key (id) references goods(id) on delete cascade,
-	foreign key (seller_id) references User(UID) on delete cascade
+	foreign key (id) references se_goods(id) on delete cascade,
+	foreign key (seller_id) references se_user(UID) on delete cascade
 );
 
-DROP TABLE IF EXISTS airplane_ticket;
-CREATE TABLE airplane_ticket(
+DROP TABLE IF EXISTS se_airplane_ticket;
+CREATE TABLE se_airplane_ticket(
 	id INTEGER NOT NULL PRIMARY KEY,
 	name VARCHAR(256),
 	seller_id INTEGER,
@@ -219,59 +208,59 @@ CREATE TABLE airplane_ticket(
 	arrival_place VARCHAR(64),
 	non_stop BOOLEAN,
 	carbin_type VARCHAR(32),
-	foreign key (id) references goods(id) on delete cascade,
-	foreign key (seller_id) references User(UID) on delete cascade
+	foreign key (id) references se_goods(id) on delete cascade,
+	foreign key (seller_id) references se_user(UID) on delete cascade
 );
 
-DROP TABLE IF EXISTS browse_history;
-CREATE TABLE browse_history(
+DROP TABLE IF EXISTS se_browse_history;
+CREATE TABLE se_browse_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	good_id INTEGER,
-	user_id INTEGER,
+	se_user_id INTEGER,
 	date_time BIGINT,
-	foreign key (good_id) references User(UID) on delete cascade,
-	foreign key (user_id) references User(UID) on delete cascade
+	foreign key (good_id) references se_user(UID) on delete cascade,
+	foreign key (se_user_id) references se_user(UID) on delete cascade
 );
 
-DROP TABLE IF EXISTS search_history;
-CREATE TABLE search_history(
+DROP TABLE IF EXISTS se_search_history;
+CREATE TABLE se_search_history(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	search_key VARCHAR(256),
-	user_id INTEGER,
+	se_user_id INTEGER,
 	date_time BIGINT,
-	foreign key (user_id) references User(UID) on delete cascade
+	foreign key (se_user_id) references se_user(UID) on delete cascade
 );
 
-DROP TABLE IF EXISTS feedback;
-CREATE TABLE feedback(
+DROP TABLE IF EXISTS se_feedback;
+CREATE TABLE se_feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	user_id INTEGER,
+	se_user_id INTEGER,
 	transaction_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
 	date_time BIGINT,
-	foreign key (user_id) references User(UID) on delete cascade,	
-	foreign key (transaction_id) references orders(id) on delete cascade
+	foreign key (se_user_id) references se_user(UID) on delete cascade,	
+	foreign key (transaction_id) references se_orders(id) on delete cascade
 	/* if you are using sqlite please use following instead */
 	/* foreign key (transaction_id) references transactions(id) on delete cascade */
 );
 
-DROP TABLE IF EXISTS shopping_cart;
-CREATE TABLE shopping_cart(
+DROP TABLE IF EXISTS se_shopping_cart;
+CREATE TABLE se_shopping_cart(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	user_id INTEGER,
+	se_user_id INTEGER,
 	good_id INTEGER,
 	good_count INTEGER,
-	foreign key (good_id) references goods(id) on delete cascade,
-	foreign key (user_id) references User(UID) on delete cascade
+	foreign key (good_id) references se_goods(id) on delete cascade,
+	foreign key (se_user_id) references se_user(UID) on delete cascade
 );
 
 /* group 4 */

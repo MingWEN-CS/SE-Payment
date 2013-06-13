@@ -6,6 +6,7 @@ class UserModel extends Model{
 		'email' => 'EMAIL',
 		'phone' => 'PHONE',
 		'type' => 'TYPE',
+		'balance' => 'BALANCE'
 	);
 
 	protected $_validate = array(
@@ -26,7 +27,7 @@ class UserModel extends Model{
 		$this->EMAIL = $email;
 		return $this->add();
 	}	
-
+	
 	public function selectUser(){
 		return $this->select();
 	}
