@@ -26,10 +26,19 @@ class PurchaseAction extends Action {
 		$searchResult = $goods->getGoodsWithPurchaseAction($this);
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
+		//3 kinds goods' sort option
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArray());
 		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArray());
 		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArray());
-		$this->assign('general_goods_source_place', SourcePlace::getSourcePlaceObjectsArray());
+		//3 kinds goods' source place option
+		$this->assign('general_goods_source_place', GeneralGoodsModel::getSourcePlaceObjectsArray());
+		$this->assign('hotel_room_source_place', HotelRoomModel::getSourcePlaceObjectsArray());
+		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArray());
+		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArray());
+		//hotel suit
+		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
+		//airplane carbin
+		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
 		$this->display();
     }
 	
