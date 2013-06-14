@@ -5,28 +5,28 @@ class ShoppingCartAction extends Action {
 	
 	public function index($info = null) {
 		$user_id = $this->_session('uid');
+		$prefix = C('DB_PREFIX');
 		$buyer = M('Buyer');
 		if (!$user_id || !$buyer->where('uid = '.$user_id)->find())
 			$this->error('To use shopping cart, you must login as a buyer!');
 		$case_template = 'CASE '.
-			'WHEN type = 1 THEN general_goods.${ph} '.
-			'WHEN type = 2 THEN hotel_room.${ph} '.
-			'WHEN type = 3 THEN airplane_ticket.${ph} '.
+			'WHEN type = 1 THEN '.$prefix.'general_goods.${ph} '.
+			'WHEN type = 2 THEN '.$prefix.'hotel_room.${ph} '.
+			'WHEN type = 3 THEN '.$prefix.'airplane_ticket.${ph} '.
 		'END ';
 		$model = new Model();
-		$prefix = C('DB_PREFIX');
 		$this->assign('list', $model->query('SELECT '.str_replace('${ph}', 'name', $case_template).'as name, good_id, good_count, '.
 			str_replace('${ph}', 'price', $case_template).
 			'as price '.
 			'FROM '.$prefix.'shopping_cart, '.$prefix.'goods, '.$prefix.'general_goods, '.$prefix.'hotel_room, '.$prefix.'airplane_ticket '.
-			'WHERE user_id = '.$user_id.' AND good_id = '.
+			'WHERE se_user_id = '.$user_id.' AND good_id = '.
 			str_replace('${ph}', 'id', $case_template)));
 			//'GROUP BY name WITH ROLLUP');
 		$this->assign('static', $model->query('SELECT sum(good_count) as count, sum('.
 			str_replace('${ph}', 'price', $case_template).
 			' * good_count) as price '.
 			'FROM '.$prefix.'shopping_cart, '.$prefix.'goods, '.$prefix.'general_goods, '.$prefix.'hotel_room, '.$prefix.'airplane_ticket '.
-			'WHERE user_id = '.$user_id.' AND good_id = '.
+			'WHERE se_user_id = '.$user_id.' AND good_id = '.
 			str_replace('${ph}', 'id', $case_template)));
 		$this->assign('info', $info);
 		$this->display('index');
