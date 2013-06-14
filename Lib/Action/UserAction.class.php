@@ -23,7 +23,7 @@ class UserAction extends Action {
             else {
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
-				session('type',$user[TYPE]);
+				// session('type',$user[TYPE]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
             }
         }   
@@ -65,7 +65,7 @@ class UserAction extends Action {
                                 session('username',$name);
                                 $this->ajaxReturn($bid,'Register successfully!',1);
                             }
-                            else  $this->ajaxReturn(0,'Register failed',0);
+                            else  $this->ajaxReturn(0,'Register c failed',0);
                         }
                         else {
                             $this->ajaxReturn(0,'Register Buyer failed!',0);
@@ -82,7 +82,7 @@ class UserAction extends Action {
                                 session('username',$name);
                                 $this->ajaxReturn($sid,'Register successfully!',1);
                             }
-                            else  $this->ajaxReturn(0,'Register failed',0);
+                            else  $this->ajaxReturn(0,'Register b failed',0);
                         }
                         else {
                             $this->ajaxReturn(0,'Register Seller failed!',0);
@@ -90,7 +90,7 @@ class UserAction extends Action {
                     }
                 }
                 else {
-                    $this->ajaxReturn(0,'Register Failed!',0);
+                    $this->ajaxReturn(0,'Register a Failed!',0);
                 }
             }
             else {
