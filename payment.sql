@@ -72,8 +72,9 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
    PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+--
 --Table structure for table 'se_seller'
+--
 
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
@@ -134,6 +135,7 @@ ALTER TABLE `se_receiveaddress`
 --
 ALTER TABLE `se_seller`
   ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
+
 --
 -- Constraints for table `se_usercard`
 --
