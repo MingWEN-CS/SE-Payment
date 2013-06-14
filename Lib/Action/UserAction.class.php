@@ -23,6 +23,7 @@ class UserAction extends Action {
             else {
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
+				session('type',$user[TYPE]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
             }
         }   

@@ -18,18 +18,12 @@
 				}
 			});
 			
-			$('.add').click(function() {
-				$.form('__URL__/add', {good_type: $(this).attr('good_type')}, 'GET').submit();
-			});
-			
 			$('.modify').click(function() {
-				$.form('__URL__/add', {good_type: $(this).attr('good_type'), good_id: $(this).attr('good_id')}, 'GET').submit();
+				$.form('__APP__/Purchase/ordergen', {good_pairs: good_pairs}, 'POST').submit();
 			});
 			
 			$('.delete').click(function() {
-				$.form('__URL__/delete', {good_ids: $.map($('input:checkbox:checked[good_id][good_type=' + $(this).attr('good_type') + ']'), function(val) {
-					return $(val).attr('good_id');
-				})}, 'POST').submit();
+				$.form('__APP__/Purchase/ordergen', {good_pairs: good_pairs}, 'POST').submit();
 			});
 		});
 		
@@ -57,7 +51,7 @@
 			<else />
 				<table class="table table-bordered table-hover table-striped">
 					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='general-goods'>select all</input></th>
+						<th><input type='checkbox' class='checkbox all' good_type='general'>select all</input></th>
 						<th>name</th>
 						<th>price</th>
 						<th>bought</th>
@@ -69,26 +63,27 @@
 						<volist name="general_goods" id="vo">
 							<tr>
 								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='general-goods'></input>
+									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='general'></input>
 								</td>
 								<td>
-									<a href='#' good_id='{$vo.id}'>{$vo.name}</a>
+									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
 								</td>
 								<td>{$vo.price}</td>
 								<td>{$vo.bought_count}</td>
 								<td>{$vo.score}</td>
 								<td>{$vo.stock}</td>
 								<td>
-									<div class='modify btn-link' good_id='{$vo.id}' good_type='general-goods'>modify</div>
+									<div class='modify btn-link' good_id='{$vo.good_id}' good_type='general'>modify</div>
 								</td>
 							</tr>
 						</volist>
+						<tr>
+							<td colspan='100'>
+								<div class='delete btn-link' good_type='general'>delete selection</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<h4 class='text-center'>
-					<div class='add btn-link help-inline' good_type='general-goods'>add</div>
-					<div class='delete btn-link help-inline'>delete selection</div>
-				</h4>
 			</if>
 		</div>
 		
@@ -100,7 +95,7 @@
 			<else />
 				<table class="table table-bordered table-hover table-striped">
 					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='hotel-room'>select all</input></th>
+						<th><input type='checkbox' class='checkbox all' good_type='hotel'>select all</input></th>
 						<th>name</th>
 						<th>price</th>
 						<th>bought</th>
@@ -114,10 +109,10 @@
 						<volist name="hotel_room" id="vo">
 							<tr>
 								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='hotel-room'></input>
+									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='hotel'></input>
 								</td>
 								<td>
-									<a href='#' good_id='{$vo.id}'>{$vo.name}</a>
+									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
 								</td>
 								<td>{$vo.price}</td>
 								<td>{$vo.bought_count}</td>
@@ -126,16 +121,17 @@
 								<td>{$vo.stock}</td>
 								<td>{$vo.suit_type}</td>
 								<td>
-									<div class='modify btn-link help-inline' good_id='{$vo.id}' good_type='hotel-room'>modify</div>
+									<div class='modify btn-link help-inline' good_id='{$vo.good_id}' good_type='hotel'>modify</div>
 								</td>
 							</tr>
 						</volist>
+						<tr>
+							<td colspan='100'>
+								<div class='delete btn-link' good_type='hotel'>delete selection</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<h4 class='text-center'>
-					<div class='add btn-link help-inline' good_type='hotel-room'>add</div>
-					<div class='delete btn-link help-inline'>delete selection</div>
-				</h4>
 			</if>
 		</div>
 		
@@ -147,7 +143,7 @@
 			<else />
 				<table class="table table-bordered table-hover table-striped">
 					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='airplane-ticket'>select all</input></th>
+						<th><input type='checkbox' class='checkbox all' good_type='airplane'>select all</input></th>
 						<th>name</th>
 						<th>bought</th>
 						<th>score</th>
@@ -159,26 +155,27 @@
 						<volist name="airplane_ticket" id="vo">
 							<tr>
 								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='airplane-ticket'></input>
+									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='airplane'></input>
 								</td>
 								<td>
-									<a href='#' good_id='{$vo.id}'>{$vo.name}</a>
+									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
 								</td>
 								<td>{$vo.bought_count}</td>
 								<td>{$vo.score}</td>
 								<td>{$vo.stock}</td>
 								<td>{$vo.price}</td>
 								<td>
-									<div class='modify btn-link help-inline' good_id='{$vo.id}' good_type='airplane-ticket'>modify</div>
+									<div class='modify btn-link help-inline' good_id='{$vo.good_id}' good_type='airplane'>modify</div>
 								</td>
 							</tr>
 						</volist>
+						<tr>
+							<td colspan='100'>
+								<div class='delete btn-link' good_type='airplane'>delete selection</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<h4 class='text-center'>
-					<div class='add btn-link help-inline' good_type='airplane-ticket'>add</div>
-					<div class='delete btn-link help-inline'>delete selection</div>
-				</h4>
 			</if>
 		</div>
 	</div>

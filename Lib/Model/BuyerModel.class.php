@@ -11,5 +11,6 @@ class BuyerModel extends Model{
 	protected $_auto = array(
 		array('PASSWDPAYMENT','md5',3,'function'),
 	);
+	
 }
 ?>

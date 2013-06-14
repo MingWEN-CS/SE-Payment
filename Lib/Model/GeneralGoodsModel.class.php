@@ -3,11 +3,24 @@ import("@.Util.Goods.SortField");
 import("@.Util.Goods.SourcePlace");
 
 class GeneralGoodsModel extends Model{
+	protected $_validate = array(
+		//array('USERNAME','require','Username is necessary',1),
+		//array('USERNAME','','the username has been registered',1,'unique',1),
+		//array('EMAIL','require','Email is necessary',1),
+		//array('EMAIL','email','Email Format Error',1),	
+		//array('PASSWD','require','Password is necessary',1),
+	);
+	
+	protected $_auto = array(
+		array('bought_count', '0'),
+		array('score', '0'),
+		array('score_count', '0'),
+	);
+
 	public function findGoodsWithId($id) {
 		$condition['id'] = $id;
 		return $this->where($condition)->find();
 	}
-
 	
 	public function getGoodsWithPurchaseAction($purchaseAction) {
 		$condition = $this->generateCondition($purchaseAction);
@@ -65,5 +78,6 @@ class GeneralGoodsModel extends Model{
 		$arrayContent = array_merge(array(new SourcePlace("source place", "anyplace")), $arrayContent);
 		return $arrayContent;
 	}
+	
 }
 ?>
