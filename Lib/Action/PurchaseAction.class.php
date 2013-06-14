@@ -40,8 +40,8 @@ class PurchaseAction extends Action {
 		//airplane carbin
 		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
 		$this->display();
-    }
-
+	}
+	
 	public function ordergen() {
 		$commodity_list = $this->_post('good_pairs');
 		echo($commodity_list);

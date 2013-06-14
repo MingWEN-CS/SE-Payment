@@ -17,6 +17,10 @@ class HotelRoomModel extends GeneralGoodsModel{
 		if(($suit = $purchaseAction->_get('suit_type')) && $suit != "anytype") {
 			$condition['suit_type'] = $suit;
 		}
+		if(($arrivalPlace = $purchaseAction->_get('date_time'))) {
+			$startTime = strtotime($arrivalPlace);
+			$condition['date_time'] = array('between',array($startTime, $startTime + 60 * 5));
+		}
 		return $condition;
 	}
 	
