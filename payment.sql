@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
---Table structure for table 'se_seller'
+-- Table structure for table 'se_seller'
 --
 
 CREATE TABLE IF NOT EXISTS `se_seller` (
