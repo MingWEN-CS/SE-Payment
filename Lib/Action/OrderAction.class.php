@@ -7,7 +7,7 @@ class OrderAction extends Action{
         switch($state){
         case 'created': return 'pay';
         case 'payed': return 'refund';
-        case 'shipping': return 'confrim receipt';
+        case 'shipping': return 'confirm_receipt';
         default: return null;
         }
     }
@@ -38,7 +38,6 @@ class OrderAction extends Action{
             $state=$this->generatebtntype($orderresult[$i]['state']);
                 $orderresult[$i]['buttontype']=$state;
             $orderresult[$i]['href']='/index.php/Order/'.$state;
-       //     var_dump($orderresult[$i]['href']);
         }
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
@@ -46,6 +45,7 @@ class OrderAction extends Action{
 
     }
 
-    public function pay(){}
-    public function refund(){}
+     public function pay(){}
+     public function refund(){}
+     public function confirm_receipt(){}
 }
