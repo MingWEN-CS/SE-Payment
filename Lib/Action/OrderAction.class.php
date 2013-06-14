@@ -11,7 +11,6 @@ class OrderAction extends Action{
         default: return null;
         }
     }
-
     public function showorders(){
         $username=$_SESSION['username'];
         if($username===null)
@@ -36,7 +35,10 @@ class OrderAction extends Action{
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['id']);
             $orderresult[$i]['goods']=$goodsresult;
             $orderresult[$i]['size']=count($goodsresult);
-            $orderresult[$i]['buttontype']=$this->generatebtntype($orderresult[$i]['state']);
+            $state=$this->generatebtntype($orderresult[$i]['state']);
+                $orderresult[$i]['buttontype']=$state;
+            $orderresult[$i]['href']='/index.php/Order/'.$state;
+       //     var_dump($orderresult[$i]['href']);
         }
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
@@ -44,4 +46,6 @@ class OrderAction extends Action{
 
     }
 
+    public function pay(){}
+    public function refund(){}
 }
