@@ -5,6 +5,10 @@ class OrdersModel extends Model{
         $condition['id']=$id;
         return $this->where($condition)->find();
     }
+    public function searchidbyname($username){
+            $condition['buyer']=$username;
+            return $this->field('id')->where($condition)->select();
+    }
 }
 
 ?>

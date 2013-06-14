@@ -2,27 +2,46 @@
 
 class OrderAction extends Action{
     
+ private function generatebtntype($state)
+    {
+        switch($state){
+        case 'created': return 'pay';
+        case 'payed': return 'refund';
+        case 'shipping': return 'confrim receipt';
+        default: return null;
+        }
+    }
 
     public function showorders(){
-        $keywords=$this->_get('keywords');
-        $ordergoods=D('OrderGoods');
-        $searchResult=$ordergoods->searchbyname($this);//搜索类似商品名称的订单，结果可能大于1
+        $username=$_SESSION['username'];
+        if($username===null)
+        {   
+           $this->display();
+            return;
+        }
+        
         $orders=D('Orders');
+        $ordergoods=D('OrderGoods');
+        $userorders= $orders->searchidbyname($username);
+        $keywords=$this->_get('keywords');
+        $condition['keywords']=$keywords;
+        for($i=0;$i<count($userorders);$i++)
+            $useroid[$i]=$userorders[$i]['id'];
+        $condition['userorders']=$useroid;
+        $searchResult=$ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
+        $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['oid']);
-         // var_dump($orderresult);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['id']);
             $orderresult[$i]['goods']=$goodsresult;
             $orderresult[$i]['size']=count($goodsresult);
+            $orderresult[$i]['buttontype']=$this->generatebtntype($orderresult[$i]['state']);
         }
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
         $this->display();
-    }
-    public function createorder()
-    {
-        
+
     }
 
 }
