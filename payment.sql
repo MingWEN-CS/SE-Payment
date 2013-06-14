@@ -69,9 +69,16 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `CREDIT` int(11) NOT NULL DEFAULT '0',
   `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`UID`)
+   PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+--Table structure for table 'se_seller'
+
+CREATE TABLE IF NOT EXISTS `se_seller` (
+  `UID` int(11) NOT NULL,
+  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
@@ -95,15 +102,15 @@ CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `se_seller`
+-- Table structure for table `se_usercard`
 --
 
-CREATE TABLE IF NOT EXISTS `se_seller` (
+CREATE TABLE IF NOT EXISTS `se_usercard` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `USERID` int(11) DEFAULT NULL,
   `CARDID` char(50) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `se_user_id` (`USERID`)
+   PRIMARY KEY (`ID`),
+   KEY `se_user_id` (`USERID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -126,8 +133,13 @@ ALTER TABLE `se_receiveaddress`
 -- Constraints for table `se_seller`
 --
 ALTER TABLE `se_seller`
-  ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `se_user` (`UID`);
+  ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
+--
+-- Constraints for table `se_usercard`
+--
 
+ALTER TABLE `se_usercard`
+  ADD CONSTRAINT `se_usercard_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `se_user` (`UID`);
 
 /* group 2 */
 
