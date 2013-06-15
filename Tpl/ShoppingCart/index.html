@@ -81,6 +81,7 @@
 						showHint(json.info);
 					}
 				});
+				
 				$.form('__APP__/Purchase/ordergen', {good_pairs: good_pairs}, 'POST').submit();
 			});
 		});
@@ -128,10 +129,10 @@
 						Total:
 					</td>
 					<td>
-						<div id='totalcount'>{$static[0].count}</div>
+						<div id='totalcount'>{$static.count}</div>
 					</td>
 					<td>
-						<div id='totalprice'>{$static[0].price}</div>
+						<div id='totalprice'>{$static.price}</div>
 					</td>
 				</tr>
 			</tbody>

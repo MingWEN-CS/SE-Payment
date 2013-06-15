@@ -17,8 +17,61 @@
 <include file="../header"/>
 
 
-<div id = "container" style="margin-top:40px;width:800px;">
-	<h3>Order Placement</h3>
+<div id="container" style="margin-top:40px;width:800px;">
+	<h3>Order Placement</h3><hr/>
+	<div id="CommodityList">
+		<h4>Commodity List</h4>
+		<table class="table table-striped table-bordered">
+			<thead>
+				<th>Pic</th>
+				<th>Name</th>
+				<th>Count</th>
+				<th>Price</th>
+			</thead>
+			<volist name="goods_info_list" id="goods_info_vo" empty="No goods in the order!">
+			<tbody>
+				<tr class="info">
+					<td><img src="{$goods_info_vo.img_url}" /></td>
+					<td>{$goods_info_vo.name}</td>
+					<td>{$goods_info_vo.count}</td>
+					<td>{$goods_info_vo.price}</td>
+				<tr>
+			</tbody>
+			</volist>
+			<tfoot>
+				<tr>
+					<td colspan="2"></td>
+					<td>Total Price</td>
+					<td>{$total_price}</td>
+				<tr>
+			</tfoot>
+		</table>
+	</div><hr/>
+	<div>
+		<h4>Shipping Address List</h4>
+		<table class="table table-bordered table-striped table-hovered">
+			<thead>
+				<th></th>
+				<th>Recipient</th>
+				<th>City</th>
+				<th>Address</th>
+				<th>Phone</th>
+			</thead>
+			<volist name="addr_list" id="addr_vo">
+			<tbody>
+				<tr class="info">
+					<td><input type="radio" name="addr_sel" value="{$addr_vo.ADDRESSID}"></td>
+					<td>{$addr_vo.RECEIVERNAME}</td>
+					<td>{$addr_vo.CITY}, {$addr_vo.PROVINCE}</td>
+					<td>{$addr_vo.STREET}, {$addr_vo.STRICT} Strict</td>
+					<td>{$addr_vo.RECEIVERPHONE}</td>
+				<tr>
+			</tbody>
+			</volist>
+			<tfoot>
+			</tfoot>
+		</table>
+	</div>
 </div>
 
 <include file="../footer"/>
