@@ -9,7 +9,7 @@
     </head>
     <body>
 	<include file="../header"/>
-	<div id="container"  style="margin-top:100px;">
+	<div id="container"  style="margin-top:100px;height:400px;">
 		<div id="search-wrapper">
 			<form class="form-search" method="get" action="__APP__/Order/showorders">
 				<div class="input-append">
@@ -18,9 +18,8 @@
 					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 			</form>
-        </div>
-        <div id="tablecontent">
-        <table class="table table-bordered">
+		</div>
+        <table class="table">
             <thead>
                 <tr>
                     <th>goods</th>
@@ -33,42 +32,38 @@
                 </tr>
             </thead>
             <tbody>
-                <volist name="myorders" id="each_orders" key="k" >
-                <if condition="$each_orders['goods'] neq null ">
-                    <tr class="success">
-                         <td>order id：{$each_orders['ID']}</td>
-                         <td colspan="6">seller：{$each_orders['SELLER']}</td>
-                    </tr>
-                    <tr>
-                         <td rowspan="1">{$each_orders['goods'][0]['NAME']}</td>
-                         <td rowspan="1">{$each_orders['goods'][0]['PRICE']}</td>
-                         <td rowspan="1">{$each_orders['goods'][0]['AMOUNT']}</td>
-                         <td rowspan="{$each_orders['size']}">{$each_orders['TOTALPRICE']}</td>
-                         <td rowspan="{$each_orders['size']}">{$each_orders['STATE']}</td>
-                         <td rowspan="{$each_orders['size']}">
-                             <if condition="$each_orders['buttontype'] neq null ">
-                             <form method='post' action="{$each_orders['href']}" >
-                                 <input type="hidden" name='oid' value={$each_orders['ID']}>
-                                 <button type="submit" class="bin btn-small btn-success" style="width:100px;text-align:center">{$each_orders['buttontype']}</button>
-                             </form>
-                             <else/>
-                             </if>
+                <volist name="myorders" id="each_orders" empty="暂时没有数据">
+                <tr class="success">
+                    <td>order id：{$each_orders['id']}</td>
+                    <td colspan="6">seller：{$each_orders['seller']}</td>
+                </tr>
+                <tr>
+                    <td>{$each_orders['goods'][0].name}</td>
+                         <td>{$each_orders['goods'][0].price}</td>
+                         <td>{$each_orders['goods'][0].number}</td>
+                         <td rowspan="each_orders['size']">{$each_orders.totalprice}</td>
+                         <td rowspan="each_orders['size']">{$each_orders.state}</td>
+                         <td rowspan="each_orders['size']">
+                             <a class="btn btn-block btn-small btn-primary" href="{$each_orders['href']}">{$each_orders.buttontype}</a>
                          </td>
-                    </tr>      
-                    <volist name="each_orders['goods']" id="each_good" offset="1">
-                        <tr>
-                             <td>{$each_good['NAME']}</td>
-                             <td>{$each_good['PRICE']}</td>
-                             <td>{$each_good['AMOUNT']}</td>
-                       </tr>
-                       </volist>
-                 <else/>
-                 </if>
+						 <td rowspan="each_orders['size']">
+                             <a class="btn btn-block btn-small btn-primary" href="{$each_orders['other_href']}">{$each_orders.other}</a>
+                         </td>
+                </tr>      
+                 <volist name="each_orders['goods']" id="each_good" offset="1">
+                      <tr>
+
+                         <td>{$each_good.name}</td>
+                         <td>{$each_good.price}</td>
+                         <td>{$each_good.number}</td>
+                     </tr>
+                 </volist>
+                
                 </volist>
             </tbody>
         </table>
 
-    </div>
+
 	</div>
 	<include file="../footer"/>
     </body>
