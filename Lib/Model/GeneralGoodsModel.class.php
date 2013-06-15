@@ -25,11 +25,13 @@ class GeneralGoodsModel extends Model{
 	public function getGoodsWithPurchaseAction($purchaseAction) {
 		$condition = $this->generateCondition($purchaseAction);
 		$selectCause = $this->where($condition);
+		//sort field
 		if(($sort = $purchaseAction->_get('sort_field')) && ($sort != 'nothing')) {
 			$availableSortArray = $this->getSortFieldArray();
 			foreach($availableSortArray as $sortField) {
 				if($sortField->field == $sort) {
-					$selectCause = $selectCause->order($sort);
+					print_r($this->getSortFieldSqlArray()[$sort]);
+					$selectCause = $selectCause->order($this->getSortFieldSqlArray()[$sort]);
 				}
 			}
 		}
@@ -66,11 +68,22 @@ class GeneralGoodsModel extends Model{
 		return $condition;
 	}
 	
+	static $sortFieldSqlArray = null;
+	
+	static public function getSortFieldSqlArray() {
+		if(!$sortFieldSqlArray) {
+			$sortFieldSqlArray = array('priceAsc' => 'price asc',
+				'boughtCountDesc' => 'bought_count desc',
+				'scoreDesc' => 'score desc');
+		}
+		return $sortFieldSqlArray;
+	}
+	
    	static public function getSortFieldArray() {
 		return array(new SortField('sort by nothing -', 'nothing'),
-		new SortField('sort by price ↑', 'price asc'),
-		new SortField('sort by sales ↓', 'bought_count desc'),
-		new SortField('sort by score ↓', 'score desc'));
+		new SortField('sort by price ↑', 'priceAsc'),
+		new SortField('sort by sales ↓', 'boughtCountDesc'),
+		new SortField('sort by score ↓', 'scoreDesc'));
 	}
 	
 	static public function getSourcePlaceObjectsArray() {
@@ -79,5 +92,8 @@ class GeneralGoodsModel extends Model{
 		return $arrayContent;
 	}
 	
+	static public function getType() {
+		return "GeneralGoodsModel";
+	}
 }
 ?>

@@ -112,12 +112,9 @@ CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
 --
 
 CREATE TABLE IF NOT EXISTS `se_seller` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `USERID` int(11) DEFAULT NULL,
-  `CARDID` char(50) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `se_user_id` (`USERID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `UID` int(11) NOT NULL,
+  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
@@ -139,7 +136,7 @@ ALTER TABLE `se_receiveaddress`
 -- Constraints for table `se_seller`
 --
 ALTER TABLE `se_seller`
-  ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `se_user` (`UID`);
+  ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
 
 /* group 2 */
@@ -233,10 +230,10 @@ CREATE TABLE se_browse_history(
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	good_id INTEGER,
-	se_user_id INTEGER,
+	user_id INTEGER,
 	date_time BIGINT,
 	foreign key (good_id) references se_user(UID) on delete cascade,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade
 );
 
 DROP TABLE IF EXISTS se_search_history;
@@ -245,9 +242,9 @@ CREATE TABLE se_search_history(
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	search_key VARCHAR(256),
-	se_user_id INTEGER,
+	user_id INTEGER,
 	date_time BIGINT,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade
 );
 
 DROP TABLE IF EXISTS se_feedback;
@@ -255,13 +252,15 @@ CREATE TABLE se_feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	se_user_id INTEGER,
+	user_id INTEGER,
 	transaction_id INTEGER,
+	goods_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
 	date_time BIGINT,
-	foreign key (se_user_id) references se_user(UID) on delete cascade,	
-	foreign key (transaction_id) references se_orders(id) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade,
+	foreign key (transaction_id) references se_orders(id) on delete cascade,
+	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
 	/* foreign key (transaction_id) references transactions(id) on delete cascade */
 );
@@ -271,11 +270,11 @@ CREATE TABLE se_shopping_cart(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	se_user_id INTEGER,
+	user_id INTEGER,
 	good_id INTEGER,
 	good_count INTEGER,
 	foreign key (good_id) references se_goods(id) on delete cascade,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade
 );
 
 /* group 4 */

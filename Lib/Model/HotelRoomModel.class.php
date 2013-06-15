@@ -29,5 +29,9 @@ class HotelRoomModel extends GeneralGoodsModel{
 		$array = array_merge(array(new HotelSuit("suit type", "anytype")),  $contentArray);
 		return $array;
 	}
+	
+	static public function getType() {
+		return "HotelRoomModel";
+	}
 }
 ?>

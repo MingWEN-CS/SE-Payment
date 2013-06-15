@@ -78,5 +78,14 @@ INSERT IGNORE INTO `se_hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_
 (8, '阿溴的小房间[>.<]efghi', 3.30, 1, 0, 4.0000000000, 1, '上海', 'www.baidu.com', 20, '很好', 1370208720000, 'Single');
 
 
-insert into se_shopping_cart values(1,1,1,1);
-insert into se_shopping_cart values(2,1,2,2)
+INSERT IGNORE INTO se_shopping_cart values(1,1,1,1);
+INSERT IGNORE INTO se_shopping_cart values(2,1,2,2);
+
+INSERT IGNORE INTO `se_orders` (`id`, `buyer`, `seller`, `totalprice`, `isdelete`, `state`) VALUES
+('1', '123', '1234', '12', b'0', '1'),
+('2', '123', '1234', '12', b'0', '1'),
+('3', '123', '1234', '12', b'0', '1');
+
+INSERT INTO `se_feedback` (`id`, `user_id`, `goods_id`, `transaction_id`, `score`, `comment`, `date_time`) VALUES
+('1', '2', '1', '1', '5', 'haha..', '1371287349'),
+('2', '2', '1', '2', '5', 'hei..hei', '1371287349');

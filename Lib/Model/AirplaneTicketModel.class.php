@@ -46,5 +46,8 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 		return $condition;
 	}
 	
+	static public function getType() {
+		return "AirplaneTicketModel";
+	}
 }
 ?>
