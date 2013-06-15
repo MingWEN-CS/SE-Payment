@@ -26,18 +26,30 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 	}
 	
 	static public function getSourcePlaceObjectsArray() {
+		return SourcePlace::getSourcePlaceObjectsArray();
+	}
+	
+	static public function getArrivalPlaceObjectsArray() {
+		return SourcePlace::getSourcePlaceObjectsArray();
+	}
+	
+	static public function getAirplaneTicketCarbinArray() {
+		return FlightCarbin::getFlightCarbinArray();
+	}
+	
+	static public function getSourcePlaceObjectsArrayWithHead() {
 		$arrayContent = SourcePlace::getSourcePlaceObjectsArray();
 		$arrayContent = array_merge(array(new SourcePlace("departure place", "anyplace")), $arrayContent);
 		return $arrayContent;
 	}
 	
-	static public function getArrivalPlaceObjectsArray() {
+	static public function getArrivalPlaceObjectsArrayWithHead() {
 		$arrayContent = SourcePlace::getSourcePlaceObjectsArray();
 		$arrayContent = array_merge(array(new SourcePlace("arrival place", "anyplace")), $arrayContent);
 		return $arrayContent;
 	}
 	
-	static public function getAirplaneTicketCarbinArray() {
+	static public function getAirplaneTicketCarbinArrayWithHead() {
 		$contentArray = FlightCarbin::getFlightCarbinArray();
 		$array = array_merge(array(new FlightCarbin("carbin type", "anytype")),  $contentArray);
 		return $array;

@@ -21,6 +21,7 @@ class SellAction extends Action {
 		$this->assign('hotel_room', $hotel->where($filter)->select());
 		$this->assign('airplane_ticket', $airplane->where($filter)->select());
 		$this->assign('info', $info);
+		
 		$this->display('index');
     }
 	
@@ -54,6 +55,14 @@ class SellAction extends Action {
 			if ($goods->create()) {
 				$goods->id = $good_id;
 				$goods->seller_id = $_SESSION['uid'];
+				//change time to timestamp
+				if ($goods->getType() == HotelRoomModel::getType()) {
+					$goods->date_time = strtotime($goods->date_time);
+				}
+				else if ($goods->getType() == AirplaneTicketModel::getType()) {
+					$goods->departure_date_time = strtotime($goods->departure_date_time);
+					$goods->arrival_date_time = strtotime($goods->arrival_date_time);
+				}
 				if (!empty($_FILES)) {
 					$upload = new UploadFile();
 					$upload->maxSize = 1048576;
@@ -80,6 +89,16 @@ class SellAction extends Action {
 			if ($good_id)
 				$this->assign('good', $goods->where('id = '.$good_id)->find());
 			$this->assign('good_type', $good_type);
+			
+			//3 kinds goods' source place options
+			$this->assign('source_place', GeneralGoodsModel::getSourcePlaceObjectsArray());
+			$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArray());
+			$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArray());
+			//hotel suit options
+			$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
+			//airplane carbin options
+			$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
+			
 			$this->display();
 		}
 	}

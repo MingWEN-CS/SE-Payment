@@ -81,6 +81,12 @@ class GeneralGoodsModel extends Model{
 	}
 	
    	static public function getSortFieldArray() {
+		return array(new SortField('sort by price ↑', 'priceAsc'),
+		new SortField('sort by sales ↓', 'boughtCountDesc'),
+		new SortField('sort by score ↓', 'scoreDesc'));
+	}
+	
+   	static public function getSortFieldArrayWithHead() {
 		return array(new SortField('sort by nothing -', 'nothing'),
 		new SortField('sort by price ↑', 'priceAsc'),
 		new SortField('sort by sales ↓', 'boughtCountDesc'),
@@ -88,6 +94,10 @@ class GeneralGoodsModel extends Model{
 	}
 	
 	static public function getSourcePlaceObjectsArray() {
+		return SourcePlace::getSourcePlaceObjectsArray();
+	}
+	
+	static public function getSourcePlaceObjectsArrayWithHead() {
 		$arrayContent = SourcePlace::getSourcePlaceObjectsArray();
 		$arrayContent = array_merge(array(new SourcePlace("source place", "anyplace")), $arrayContent);
 		return $arrayContent;

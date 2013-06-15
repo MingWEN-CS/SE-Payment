@@ -55,14 +55,14 @@ class PurchaseAction extends Action {
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
 		//3 kinds goods' sort option
-		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArray());
-		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArray());
-		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArray());
+		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArrayWithHead());
+		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArrayWithHead());
+		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArrayWithHead());
 		//3 kinds goods' source place option
-		$this->assign('general_goods_source_place', GeneralGoodsModel::getSourcePlaceObjectsArray());
-		$this->assign('hotel_room_source_place', HotelRoomModel::getSourcePlaceObjectsArray());
-		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArray());
-		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArray());
+		$this->assign('general_goods_source_place', GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead());
+		$this->assign('hotel_room_source_place', HotelRoomModel::getSourcePlaceObjectsArrayWithHead());
+		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArrayWithHead());
+		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArrayWithHead());
 		//hotel suit
 		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
 		//airplane carbin
@@ -79,7 +79,7 @@ class PurchaseAction extends Action {
 		$good = GoodsHelper::getBasicGoodsInfoOfId($id);
 		$type = GoodsHelper::getGoodsTypeOfId($id);
 		if(!$good) {
-			$good->display();
+			$this->display();
 			return;
 		}
 		if($userId = $this->_session('uid')) {
@@ -89,11 +89,8 @@ class PurchaseAction extends Action {
                 'user_id' => $userId,
                 'date_time' => time(),
             );
-			print_r($data);
             if ($browseHistory->create($data)){
                 $id = $browseHistory->add();
-				echo "id" . $id;
-				echo $browseHistory->getError();
 			}
 		}
 		$feedback = D('Feedback');
@@ -118,7 +115,7 @@ class PurchaseAction extends Action {
 		else if($type == AirplaneTicketModel::getType()) {
 			$template = 'detail_airplane_ticket';
 		}
-		// $this->display($template);
+		$this->display($template);
 	}
 	
 	public function ordergen() {

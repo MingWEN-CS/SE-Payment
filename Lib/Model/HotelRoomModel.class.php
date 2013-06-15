@@ -41,6 +41,10 @@ class HotelRoomModel extends GeneralGoodsModel{
 	}
 	
 	static public function getHotelRoomSuitArray() {
+		return HotelSuit::getHotelSuitArray();
+	}
+	
+	static public function getHotelRoomSuitArrayWithHead() {
 		$contentArray = HotelSuit::getHotelSuitArray();
 		$array = array_merge(array(new HotelSuit("suit type", "anytype")),  $contentArray);
 		return $array;
