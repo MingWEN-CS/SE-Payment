@@ -8,6 +8,5 @@ class ShoppingCartModel extends Model{
 		else
 			return $temp->setDec('good_count');
 	}
-	
 }
 ?>

@@ -32,8 +32,8 @@ INSERT IGNORE INTO `se_buyer` (`UID`, `PASSWDPAYMENT`, `CREDIT`, `VIP`, `AUTHENT
 -- 转存表中的数据 `se_seller`
 --
 
-INSERT IGNORE INTO `se_seller` (`ID`, `USERID`, `CARDID`) VALUES
-(1, NULL, '');
+INSERT IGNORE INTO `se_seller` (`UID`, `PASSWDCONSIGN`) VALUES
+(1, 'a');
 
 --
 -- 转存表中的数据 `se_goods`
@@ -76,3 +76,7 @@ INSERT IGNORE INTO `se_hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_
 (2, '阿溴的房间[>.<]efghi', 0.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'luxury'),
 (5, '阿溴的后宫[>.<]efghi', 5.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'Bussiness'),
 (8, '阿溴的小房间[>.<]efghi', 3.30, 1, 0, 4.0000000000, 1, '上海', 'www.baidu.com', 20, '很好', 1370208720000, 'Single');
+
+
+insert into se_shopping_cart values(1,1,1,1);
+insert into se_shopping_cart values(2,1,2,2)
