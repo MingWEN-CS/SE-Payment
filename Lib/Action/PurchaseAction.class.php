@@ -2,18 +2,19 @@
 import("@.Util.Goods.SourcePlace");
 import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
+import("@.Util.CommonValue");
 
 class PurchaseAction extends Action {
-	
-    public function index(){
+
+	public function index(){
 		$this->display();
-    }
+	}
 
-    public function login(){
-    	$this->display("index");
-    }
+	public function login(){
+		$this->display("index");
+	}
 
-    public function search(){
+	public function search(){
 		$goods_type = $this->_get('goods-type');
 		$keywords = $this->_get('keywords');
 		if($userId = $this->_session('uid')) {
@@ -47,6 +48,9 @@ class PurchaseAction extends Action {
 				$searchResult[$i][departure_date_time] = TimeFormatter::formatTime($searchResult[$i][departure_date_time]);
 				$searchResult[$i][arrival_date_time] = TimeFormatter::formatTime($searchResult[$i][arrival_date_time]);
 			}
+		}
+		for($i = 0; $i < count($searchResult);$i++) {
+			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
 		}
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
@@ -85,8 +89,11 @@ class PurchaseAction extends Action {
                 'user_id' => $userId,
                 'date_time' => time(),
             );
+			print_r($data);
             if ($browseHistory->create($data)){
                 $id = $browseHistory->add();
+				echo "id" . $id;
+				echo $browseHistory->getError();
 			}
 		}
 		$feedback = D('Feedback');
@@ -100,6 +107,7 @@ class PurchaseAction extends Action {
 		}
 		$this->assign('feedbacks', $feedbacksFull);
 		$good[score] = intval($good[score]);
+		$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
 		$this->assign('goods_info', $good);
 		$template = "";
 		if($type  == GeneralGoodsModel::getType()) {
@@ -110,13 +118,75 @@ class PurchaseAction extends Action {
 		else if($type == AirplaneTicketModel::getType()) {
 			$template = 'detail_airplane_ticket';
 		}
-		$this->display($template);
+		// $this->display($template);
 	}
 	
 	public function ordergen() {
-		$commodity_list = $this->_post('good_pairs');
-		echo($commodity_list);
+		//Session info
+		$uid = $this->_session('uid');
+		$uname = $this->_session('username');
+		
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
+		
+		//Show shopping list
+		$Order = D('Orders');
+		$Order_goods = D('Order_goods');
+		$shopping_cart_list = $this->_post();
+		$commodity_list = $shopping_cart_list['good_pairs'];
+		$list_count = count($commodity_list) / 2;
+		$total_price = 0;
+		for($i = 0; $i < $list_count; $i++) {
+			$goods_id = $commodity_list[2*$i]['good_id'];
+			$goods_info = GoodsHelper::getBasicGoodsInfoOfId($goods_id);
+			$goods_info['count'] = $commodity_list[2*$i+1]['good_count'];
+			$goods_info_list[$i] = $goods_info;
+			$goods_list_int[$i]['goods_id'] = $goods_id;
+			$goods_list_int[$i]['goods_count'] = $goods_count;
+			$total_price = $total_price + $goods_info['price'] * $goods_info['count'];
+		}
+
+		//Generate imcomplete order and get order_id list (int group 2)
+		$order_id_list = array(1,2,3);
+		$order_count = count($order_id_list);
+
+		$this->assign('order_id_list', $order_id_list);
+		$this->assign('order_count', $order_count);
+		$this->assign('goods_info_list', $goods_info_list);
+		$this->assign('total_price', $total_price);
+		
+		//Show and select shipping address
+		$addr = D('Receiveaddress');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//var_dump($addr_list);
+
+		
+		$this->assign('addr_list', $addr_list);
 		$this->display();
+	}
+
+	public function orderprocess() {
+		//Session info
+		$uid = $this->_session('uid');
+		$uname = $this->_session('username');
+		
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
+
+		$order_info = $this->_post();
+		var_dump($order_info);
+		
+		//generate order
+		if (isset($info['generate'])) {
+		}
+		//cancel order
+		else {
+		}
 	}
 }
 ?>

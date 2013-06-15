@@ -10,12 +10,12 @@ class ShoppingCartAction extends Action {
 		$buyer = M('Buyer');
 		if (!$user_id || !$buyer->where('uid = '.$user_id)->find())
 			$this->error('To use shopping cart, you must login as a buyer!');
+		$prefix = C('DB_PREFIX');
 		$case_template = 'CASE '.
 			'WHEN type = 1 THEN '.$prefix.'general_goods.${ph} '.
 			'WHEN type = 2 THEN '.$prefix.'hotel_room.${ph} '.
 			'WHEN type = 3 THEN '.$prefix.'airplane_ticket.${ph} '.
 		'END ';
-		
 		$shoppingCart = M('ShoppingCart');
 		$itemArray = $shoppingCart->where('se_user_id = ' . $user_id)->select();
 		$resultArray = array();

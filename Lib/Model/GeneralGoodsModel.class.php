@@ -4,11 +4,12 @@ import("@.Util.Goods.SourcePlace");
 
 class GeneralGoodsModel extends Model{
 	protected $_validate = array(
-		//array('USERNAME','require','Username is necessary',1),
-		//array('USERNAME','','the username has been registered',1,'unique',1),
-		//array('EMAIL','require','Email is necessary',1),
-		//array('EMAIL','email','Email Format Error',1),	
-		//array('PASSWD','require','Password is necessary',1),
+		array('name', 'require', "Good's name is necessary!"),
+		array('price', 'require', 'Price is necessary!'),
+		array('price', 'currency', 'Price is not valid!'),
+		array('place', 'require', 'Place is necessary!'),
+		array('stock', 'require', 'Stock is necessary!'),
+		array('stock', 'number', 'Stock must be a number!'),
 	);
 	
 	protected $_auto = array(
