@@ -1,10 +1,10 @@
 <?php
 class OrderOperationModel extends Model{
 	public function addOperation($oid, $operation, $operator){
-		$data['oid'] = $oid;
-		$data['operation'] = $operation;
+		$data['OID'] = $oid;
+		$data['OPERATION'] = $operation;
 		//$data['time'] = date('Y-m-d H:i:s', time());
-		$data['operator'] = $operator;
+		$data['OPERATOR'] = $operator;
 		$this->add($data);
 	}
 }

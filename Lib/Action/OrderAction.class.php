@@ -4,10 +4,10 @@ class OrderAction extends Action{
 
     private function getUserID(){
 
-/*
+
 //debug module
 return 'dniw';
-*/
+
 
         $userid=$_SESSION['uid'];
         if($userid===null)
@@ -88,33 +88,33 @@ get isBuyer from group 1
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
-            $orderresult[$i]['goods']=$goodsresult;
-            $orderresult[$i]['size']=count($goodsresult);
+            $orderresult[$i]['GOODS']=$goodsresult;
+            $orderresult[$i]['SIZE']=count($goodsresult);
 
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
-            $orderresult[$i]['buttontype']=$state;
-            $orderresult[$i]['href']='./'.$state.'?oid='.$searchResult[$i];
+            $orderresult[$i]['BUTTONTYPE']=$state;
+            $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i];
             if($state===null)
             {
-                $orderresult[$i]['href']='./back';	
+                $orderresult[$i]['HREF']='./back';	
             }
 
 
             switch($orderresult[$i]['STATE']){
             case 'created':{
-                $orderresult[$i]['other'] = 'cancel';
-                $orderresult[$i]['other_href'] = './cancel'.'?oid='.$searchResult[$i];
+                $orderresult[$i]['OTHER'] = 'cancel';
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i];
                 break;
             }
 case 'payed' :{
-$orderresult[$i]['other'] = null;
-                $orderresult[$i]['other_href'] = './cancel'.'?oid='.$searchResult[$i];
+$orderresult[$i]['OTHER'] = null;
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i];
 break;
 }
 
             default:{
-                $orderresult[$i]['other'] = 'delete';
-                $orderresult[$i]['other_href'] = './delete'.'?oid='.$searchResult[$i];
+                $orderresult[$i]['OTHER'] = 'delete';
+                $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i];
             }
             }
 
