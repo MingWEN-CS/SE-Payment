@@ -4,14 +4,14 @@ class OrderGoodsModel extends Model{
         public function searchbyname($constraint){
             $keywordArray = split(" +", $constraint['keywords']);
 
-		for($i = 0; $i < count($keywordArray); $i++) {
-			$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
-}
+			for($i = 0; $i < count($keywordArray); $i++) {
+				$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
+			}
             $condition['NAME'] = array('like', $keywordArray, 'OR');
             $condition['OID']=array('in',$constraint['userorders']);
-            $selectCause=$this->where($condition)->group('OID');;
-		$result=$selectCause->select();
-		return $result;
+            $selectCause=$this->where($condition)->group('OID');
+			$result=$selectCause->select();
+			return $result;
         }
 
         public function searchbyid($id){
@@ -19,4 +19,12 @@ class OrderGoodsModel extends Model{
             return $this->where($condition)->select();
         }
 
+		public function getOrderListbyName($constraint){
+			$goodsList = $this->searchbyname($constraint);
+			$result = array();
+			for($i = 0; $i < count($goodsList); ++$i){
+				$result[] = $goodsList[$i]['oid'];
+			}
+			return $result;
+		}
 }
