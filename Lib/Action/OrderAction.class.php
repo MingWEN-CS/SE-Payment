@@ -53,7 +53,7 @@ class OrderAction extends Action{
 		$result = array();
 		for($i = 0; $i < count($orderList); ++$i){
 			$order=$orders->findorderbyid($orderList[$i]);
-			if(!$order['isdelete'])
+			if($order['isdelete'] == 'NO')
 				$result[] = $orderList[$i];
 		}
 		
