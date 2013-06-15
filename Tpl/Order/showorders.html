@@ -9,7 +9,7 @@
     </head>
     <body>
 	<include file="../header"/>
-	<div id="container"  style="margin-top:100px;height:400px;">
+	<div id="container"  style="margin-top:100px;">
 		<div id="search-wrapper">
 			<form class="form-search" method="get" action="__APP__/Order/showorders">
 				<div class="input-append">
@@ -18,7 +18,8 @@
 					<button type="submit" class="btn btn-primary">Search</button>
 				</div>
 			</form>
-		</div>
+        </div>
+        <div id="tablecontent">
         <table class="table">
             <thead>
                 <tr>
@@ -44,7 +45,10 @@
                          <td rowspan="each_orders['size']">{$each_orders.totalprice}</td>
                          <td rowspan="each_orders['size']">{$each_orders.state}</td>
                          <td rowspan="each_orders['size']">
-                             <a class="btn btn-block btn-small btn-primary" href="{$each_orders['href']}">{$each_orders.buttontype}</a>
+                             <form method='post' action="{$each_orders['href']}" >
+                                 <input type="hidden" name='oid' value={$each_orders['id']}>
+                                 <button type="submit" class="bin btn-block btn-small btn-primary">{$each_orders.buttontype}</button>
+                             </form>
                          </td>
                 </tr>      
                  <volist name="each_orders['goods']" id="each_good" offset="1">
@@ -60,7 +64,7 @@
             </tbody>
         </table>
 
-
+    </div>
 	</div>
 	<include file="../footer"/>
     </body>
