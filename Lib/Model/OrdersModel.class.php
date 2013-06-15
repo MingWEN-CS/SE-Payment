@@ -27,7 +27,8 @@ class OrdersModel extends Model{
 		return $this->where($condition)->save($data);
 	}
     public function insertneworder($order){
-        
+         $this->create($order);
+         return $this->add();
     }
 }
 

@@ -27,4 +27,8 @@ class OrderGoodsModel extends Model{
 			}
 			return $result;
 		}
+        public function insertnewgood($good){
+            $this->create($good);
+            return $this->add();
+        }
 }

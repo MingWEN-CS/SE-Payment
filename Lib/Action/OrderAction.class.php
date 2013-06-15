@@ -7,10 +7,10 @@ class OrderAction extends Action{
         $userid=$_SESSION['uid'];
         return $userid;
     }
-	
-	private function getUserName(){
-		return $this->getUserID();
-	}
+
+    private function getUserName(){
+        return $this->getUserID();
+    }
 
     private function generatebtntype($isBuyer, $state){
         if($isBuyer){	//buyer state
@@ -27,18 +27,18 @@ class OrderAction extends Action{
             default: return 'wait';
             }
         } else {	//seller state
-			switch($state){
-				case 'payed': return 'shipping';
-				case 'refunding': return 'confirm_refund';
-				
-				case 'shipping': return null;
-				case 'canceled': return null;
-				case 'refunded': return null;
-				case 'finished': return null;
-				case 'failed': return null;
-				default: return 'wait';
-			}
-		}
+            switch($state){
+            case 'payed': return 'shipping';
+            case 'refunding': return 'confirm_refund';
+
+            case 'shipping': return null;
+            case 'canceled': return null;
+            case 'refunded': return null;
+            case 'finished': return null;
+            case 'failed': return null;
+            default: return 'wait';
+            }
+        }
     }
 
 
@@ -63,15 +63,15 @@ class OrderAction extends Action{
     public function showorders(){
 
         $username = $this->getUserID();
-	if($username===null)
-	{
-	$this->display();
-	return;
-	}
+        if($username===null)
+        {
+            $this->display();
+            return;
+        }
         $isBuyer = 1;
 /*
 get isBuyer from group 1
-*/
+ */
 
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
@@ -90,7 +90,7 @@ get isBuyer from group 1
         $condition['userorders']=$useroid;
         $searchResult = $ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
         $searchResult = $this->removeDeletedOrders($searchResult);
-//var_dump($searchRe);
+        //var_dump($searchRe);
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
@@ -109,26 +109,26 @@ get isBuyer from group 1
 
 
             switch($orderresult[$i]['STATE']){
-				case 'created':{
-					$orderresult[$i]['OTHER'] = 'cancel';
-					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-					break;
-				}
-				
-				case 'payed' :{
-					$orderresult[$i]['OTHER'] = null;
-					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-					break;
-				}
-				case 'shipping':{
-					$orderresult[$i]['OTHER'] = null;
-					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-					break;
-				}
-				default:{
-					$orderresult[$i]['OTHER'] = 'delete';
-					$orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
-				}
+            case 'created':{
+                $orderresult[$i]['OTHER'] = 'cancel';
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+                break;
+            }
+
+            case 'payed' :{
+                $orderresult[$i]['OTHER'] = null;
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+                break;
+            }
+            case 'shipping':{
+                $orderresult[$i]['OTHER'] = null;
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+                break;
+            }
+            default:{
+                $orderresult[$i]['OTHER'] = 'delete';
+                $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
+            }
             }
 
         }
@@ -260,17 +260,47 @@ get isBuyer from group 1
         redirect(U('Order/showorders'));
     }
     public function createorder($cartinfo){
-        /*cartinfo:good id and good amount list*/
-        /*1、 先取出id对应的商品的属性
-            2、将属性根据不同的卖家ID分类到不同的表单里
-          3、计算商品的总价，插入订单，和订单商品  
-         */
-
-    
+                /*cartinfo:good id and good amount list*/
+        /* for test:
+        $cartinfo[0]['goods_id']='1';
+        $cartinfo[0]['goods_count']=1;
+        $cartinfo[1]['goods_id']='4';
+        $cartinfo[1]['goods_count']=3;
+          */
         for($i=0;$i<count($cartinfo);$i++){
-            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['id']);
-            $orderinfo[$goodinfo['seller_id']]['BUYER']=$this->getUserID();                        
+            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
+            $seller_id=$goodinfo['seller_id'];
+            $goodlist['GID']=$cartinfo[$i]['goods_id'];
+            $goodlist['PRICE']=$goodinfo['price'];
+            $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
+            $goodlist['NAME']=$goodinfo['name'];
+            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;                        
+            $classifiedinfo[$seller_id]['SELLER']=$seller_id;
         }
-     
+        foreach($classifiedinfo as $orderinfo){
+            $neworder['SELLER']=$orderinfo['SELLER'];
+            $neworder['BUYER']=$this->getUserID();
+            $neworder['TOTALPRICE']=0.00;
+            foreach($orderinfo['goods'] as $eachgood){
+                $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
+            }
+            $orderdb=D('Orders');
+            $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
+
+            $ordergoodsdb=D('OrderGoods');
+            $newoid[$i]['result']='success';
+            foreach($orderinfo['goods'] as $eachgood){
+                $newordergood['OID']=$newoid[$i]['OID'];
+                $newordergood['GID']=$eachgood['GID'];
+                $newordergood['PRICE']=$eachgood['PRICE'];
+                $newordergood['AMOUNT']=$eachgood['AMOUNT'];
+                $newordergood['NAME']=$eachgood['NAME'];
+                $ogid=$ordergoodsdb->insertnewgood($newordergood);
+                if($ogid===false)
+                    $newoid[$i]['result']='fail';
+                var_dump($newoid);
+            }
+        }
+        return $newoid;
     }
 }
