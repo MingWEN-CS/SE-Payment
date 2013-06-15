@@ -246,4 +246,8 @@ break;
     public function back(){
         redirect(U('Order/showorders'));
     }
+    public function createorder($cartinfo){
+        /*cartinfo:good id and good amount list*/
+
+    }
 }

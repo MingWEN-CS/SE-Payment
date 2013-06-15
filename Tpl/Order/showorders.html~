@@ -48,13 +48,13 @@
                          <td rowspan="{$each_orders['size']}">{$each_orders['STATE']}</td>
                          <td rowspan="{$each_orders['size']}">
 				<if condition="$each_orders['buttontype'] neq null">
-                           	  <a class="btn btn-block btn-small btn-primary" href="{$each_orders['href']}">{$each_orders.buttontype}</a>
+                           	  <a class="btn btn-small btn-primary" style="width:100px" href="{$each_orders['href']}">{$each_orders.buttontype}</a>
 				<else/></if>                        
 			 </td>
 			
 			 <td rowspan="{$each_orders['size']}">
 				<if condition="$each_orders['other'] neq null">
-                             <a class="btn btn-block btn-small btn-primary" href="{$each_orders['other_href']}">{$each_orders.other}</a>
+                             <a class="btn btn-small btn-primary" style="width:100px" href="{$each_orders['other_href']}">{$each_orders.other}</a>
 				<else/></if>                          
 			 </td>
                 </tr>
