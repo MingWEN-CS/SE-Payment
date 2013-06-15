@@ -1,22 +1,22 @@
 <?php
-
+import("@.Util.Goods.GoodsHelper");
 class OrderAction extends Action{
 
-    private function getUserName(){
+    private function getUserID(){
 
 /*
 //debug module
 return 'dniw';
 */
 
-        $username=$_SESSION['uid'];
-        if($username===null)
+        $userid=$_SESSION['uid'];
+        if($userid===null)
         {
             $this->display();
             return;
         }
 
-        return $username;
+        return $userid;
     }
 
     private function generatebtntype($isBuyer, $state){
@@ -59,7 +59,7 @@ return 'dniw';
 
     public function showorders(){
 
-        $username = $this->getUserName();
+        $username = $this->getUserID();
         $isBuyer = 1;
 /*
 get isBuyer from group 1
@@ -248,6 +248,16 @@ break;
     }
     public function createorder($cartinfo){
         /*cartinfo:good id and good amount list*/
+        /*1、 先取出id对应的商品的属性
+            2、将属性根据不同的卖家ID分类到不同的表单里
+          3、计算商品的总价，插入订单，和订单商品  
+         */
 
+    
+        for($i=0;$i<count($cartinfo);$i++){
+            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['id']);
+            $orderinfo[$goodinfo['seller_id']]['BUYER']=$this->getUserID();                        
+        }
+     
     }
 }
