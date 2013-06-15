@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `buyer` (
+  `UID` int(11) NOT NULL,
+  `PASSWDPAYMENT` char(32) NOT NULL,
+  `CREDIT` int(11) NOT NULL DEFAULT '0',
+  `VIP` tinyint(1) NOT NULL DEFAULT '0',
+  `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`UID`)
+);
+*/
 
 -- --------------------------------------------------------
 
@@ -118,6 +129,14 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
   PRIMARY KEY (`ID`),
   KEY `se_user_id` (`USERID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `seller` (
+  `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `USERID` int(11) DEFAULT NULL,
+  `CARDID` char(50) NOT NULL
+);
+*/
 
 --
 -- Constraints for dumped tables
@@ -192,7 +211,7 @@ CREATE TABLE se_hotel_room(
 	name VARCHAR(256),
 	price numeric(15,2),
 	seller_id INTEGER,
-	bought_count INTEGER,
+	bought_count INTEGER,	
 	score numeric(11,10),
 	score_count INTEGER,
 	place VARCHAR(64),
@@ -226,6 +245,66 @@ CREATE TABLE se_airplane_ticket(
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
 );
+/* if you are using sqlite please use following instead */
+/*
+DROP TABLE IF EXISTS general_goods;
+CREATE TABLE general_goods(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	price numeric(15,2),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	place VARCHAR(64),
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+
+DROP TABLE IF EXISTS hotel_room;
+CREATE TABLE hotel_room(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	price numeric(15,2),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	place VARCHAR(64),
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	date_time BIGINT,
+	suit_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+
+DROP TABLE IF EXISTS airplane_ticket;
+CREATE TABLE airplane_ticket(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	price numeric(15,2),
+	departure_date_time BIGINT,
+	arrival_date_time BIGINT,
+	departure_place VARCHAR(64),
+	arrival_place VARCHAR(64),
+	non_stop BOOLEAN,
+	carbin_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+*/
 
 DROP TABLE IF EXISTS se_browse_history;
 CREATE TABLE se_browse_history(

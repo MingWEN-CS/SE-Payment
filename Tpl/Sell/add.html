@@ -4,30 +4,27 @@
    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
    	<link rel="stylesheet" href="../Public/css/index.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/jquery.form.js" type="text/javascript"></script>
 	<script src="../Public/js/jquery.extend.js" type="text/javascript"></script>
+	<script src="../Public/js/showhint.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('input:checkbox.all').change(function() {
-				$('input:checkbox[good_type=' + $(this).attr('good_type') + ']').prop('checked', this.checked);
-			});
-			
-			$('input:checkbox[good_id]').change(function() {
-				if (!$(this).prop('checked')) {
-					$('input:checkbox.all[good_type=' + $(this).attr('good_type') + ']').prop('checked', false);
+			$('#good_form').ajaxForm(function(json) {
+				if (json.status) {
+					var good_type = '{$good_type}';
+					$.form('__URL__/index', {info: json.info, good_type: good_type}, 'POST').submit();
+				} else {
+					showHint(json.info);
 				}
 			});
 			
-			$('.modify').click(function() {
-				$.form('__APP__/Purchase/ordergen', {good_pairs: good_pairs}, 'POST').submit();
-			});
-			
-			$('.delete').click(function() {
-				$.form('__APP__/Purchase/ordergen', {good_pairs: good_pairs}, 'POST').submit();
+			$('#back').click(function() {
+				var good_type = '{$good_type}';
+				$.form('__URL__/index', {good_type: good_type}, 'POST').submit();
+				return false;
 			});
 		});
-		
-		
 	</script>
 </head>
 
@@ -35,150 +32,108 @@
 	
 <include file="../header"/>
 
-<div id="container" style="margin-top:100px;height:400px;">
-	<ul class="nav nav-tabs" id="goods-type-tab">
-	  <li class="active"><a href="#general-goods" data-toggle="tab">Gernal Goods</a></li>
-	  <li><a href="#hotel-room" data-toggle="tab">Hotel Rooms</a></li>
-	  <li><a href="#airplane-ticket" data-toggle="tab">Airplane Tickets</a></li>
-	</ul>
-
-	<div id="goods-type-tab_content" class="tab-content">
-		<div class="tab-pane active" id="general-goods">
-			<h4>General Goods Search Results</h4>
+<div id="container" style="margin-top:100px;">
+	<form id='good_form' method='post' enctype="multipart/form-data">
+		<input class='hide' name='good_type' value='{$good_type}'></input>
+		<neq name='good' value=''><input class='hide' name='good_id' value='{$good.id}'></input></neq>
+		<switch name="good_type">
+		<case value="general-goods">
+			<h4>General Goods</h4>
+		</case>
+		<case value="hotel-room">
+			<h4>Hotel Room</h4>
+		</case>
+		<case value="airplane-ticket">
+			<h4>Airplane Ticket</h4>
+		</case>
+		</switch>
 			
-			<if condition="$general_goods eq null">
-				You do not sell this kind of goods! <a href='__APP__/Sell/add'>Add some!</a>
-			<else />
-				<table class="table table-bordered table-hover table-striped">
-					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='general'>select all</input></th>
-						<th>name</th>
-						<th>price</th>
-						<th>bought</th>
-						<th>score</th>
-						<th>stock</th>
-						<th>operation</th>
-					</thead>
-					<tbody>
-						<volist name="general_goods" id="vo">
-							<tr>
-								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='general'></input>
-								</td>
-								<td>
-									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
-								</td>
-								<td>{$vo.price}</td>
-								<td>{$vo.bought_count}</td>
-								<td>{$vo.score}</td>
-								<td>{$vo.stock}</td>
-								<td>
-									<div class='modify btn-link' good_id='{$vo.good_id}' good_type='general'>modify</div>
-								</td>
-							</tr>
-						</volist>
-						<tr>
-							<td colspan='100'>
-								<div class='delete btn-link' good_type='general'>delete selection</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</if>
-		</div>
+		<p>
+			<label for='name'>Name<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<input id='name' type='text' name='name' value='{$good.name}'></input>
+		</p>
+		<p>
+			<label for='price'>Price<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<input id='price' type='text' name="price" value='{$good.price}'></input>
+		</p>
+		<neq name='good_type' value='airplane-ticket'>
+			<p>
+				<label for='place'>Place<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='place' type='text' name="place" value='{$good.place}'></input>
+			</p>
+		</neq>
+		<p>
+			<label for='image_uri'>Image:</label>
+			<div>
+				<if condition='$good.image_uri neq null'>
+					<img src='../../Upload/{$good.image_uri}'></img>
+				<else />
+					No image uploaded!
+				</if>
+			</div>
+			<input id='image_uri' type='file' name="image_url"'></input>
+		</p>
+		<p>
+			<label for='stock'>Stock<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<input id='stock' type='text' name="stock" value='{$good.stock}'></input>
+		</p>
+		<p>
+			<label for='description'>Description:</label>
+			<textarea id='description' name="description">{$good.description}</textarea>
+		</p>
 		
-		<div class="tab-pane" id="hotel-room">
-			<h4>Hotel Room Search Results</h4>
-			
-			<if condition="$hotel_room eq null">
-				You do not sell this kind of goods! <a href='__APP__/Sell/add'>Add some!</a>
-			<else />
-				<table class="table table-bordered table-hover table-striped">
-					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='hotel'>select all</input></th>
-						<th>name</th>
-						<th>price</th>
-						<th>bought</th>
-						<th>score</th>
-						<th>place</th>
-						<th>stock</th>
-						<th>type</th>
-						<th>operation</th>
-					</thead>
-					<tbody>
-						<volist name="hotel_room" id="vo">
-							<tr>
-								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='hotel'></input>
-								</td>
-								<td>
-									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
-								</td>
-								<td>{$vo.price}</td>
-								<td>{$vo.bought_count}</td>
-								<td>{$vo.score}</td>
-								<td>{$vo.place}</td>
-								<td>{$vo.stock}</td>
-								<td>{$vo.suit_type}</td>
-								<td>
-									<div class='modify btn-link help-inline' good_id='{$vo.good_id}' good_type='hotel'>modify</div>
-								</td>
-							</tr>
-						</volist>
-						<tr>
-							<td colspan='100'>
-								<div class='delete btn-link' good_type='hotel'>delete selection</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</if>
-		</div>
-		
-		<div class="tab-pane" id="airplane-ticket">
-			<h4>Airplane Ticket Search Results</h4>
-
-			<if condition="$airplane_ticket eq null">
-				You do not sell this kind of goods! <a href='__APP__/Sell/add'>Add some!</a>
-			<else />
-				<table class="table table-bordered table-hover table-striped">
-					<thead>
-						<th><input type='checkbox' class='checkbox all' good_type='airplane'>select all</input></th>
-						<th>name</th>
-						<th>bought</th>
-						<th>score</th>
-						<th>stock</th>
-						<th>price</th>
-						<th>operation</th>
-					</thead>
-					<tbody>
-						<volist name="airplane_ticket" id="vo">
-							<tr>
-								<td>
-									<input type='checkbox' class='checkbox' good_id='{$vo.good_id}' good_type='airplane'></input>
-								</td>
-								<td>
-									<a href='#' good_id='{$vo.good_id}'>{$vo.name}</a>
-								</td>
-								<td>{$vo.bought_count}</td>
-								<td>{$vo.score}</td>
-								<td>{$vo.stock}</td>
-								<td>{$vo.price}</td>
-								<td>
-									<div class='modify btn-link help-inline' good_id='{$vo.good_id}' good_type='airplane'>modify</div>
-								</td>
-							</tr>
-						</volist>
-						<tr>
-							<td colspan='100'>
-								<div class='delete btn-link' good_type='airplane'>delete selection</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</if>
-		</div>
-	</div>
+		<switch name="good_type">
+		<case value="general-goods">
+		</case>
+		<case value="hotel-room">
+			<p>
+				<label for='date_time'>Date<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='date_time' type='text' name="date_time" value='{$good.date_time}'></input>
+			</p>
+			<p>
+				<label for='suit_type'>Suit Type:</label>
+				<input id='suit_type' type='text' name="suit_type" value='{$good.suit_type}'></input>
+			</p>
+		</case>
+		<case value="airplane-ticket">
+			<p>
+				<label for='departure_date_time'>Departure Time<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='departure_date_time' type='text' name="departure_date_time" value='{$good.departure_date_time}'></input>
+			</p>
+			<p>
+				<label for='arrival_date_time'>Arrival Time<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='arrival_date_time' type='text' name="arrival_date_time" value='{$good.arrival_date_time}'></input>
+			</p>
+			<p>
+				<label for='departure_place'>Departure Place<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='departure_place' type='text' name="departure_place" value='{$good.departure_place}'></input>
+			</p>
+			<p>
+				<label for='arrival_place'>Arrival Place<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input id='arrival_place' type='text' name="arrival_place" value='{$good.arrival_place}'></input>
+			</p>
+			<p>
+				<label for='non_stop'>Transfer<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<select id ="non_stop" name="non_stop">
+					<if condition='$good.non_stop eq 0'>
+						<option value='0' selected='selected'>No</option>
+						<option value='1'>Yes</option>
+					<else />
+						<option value='0'>No</option>
+						<option value='1' selected='selected'>Yes</option>
+					</if>
+				</select>
+			</p>
+			<p>
+				<label for='carbin_type'>Carbin Type:</label>
+				<input id='carbin_type' type='text' name="carbin_type" value='{$good.carbin_type}'></input>
+			</p>
+		</case>
+		</switch>
+		<div class="alert hide" style="width:230px; margin-left:0px"></div>
+		<input class="btn btn-success" type="submit" value="Submit"></input>
+		<button id='back' class="btn btn-success">Back</button>
+	</form>
 </div>
 
 <include file="../footer"/>
