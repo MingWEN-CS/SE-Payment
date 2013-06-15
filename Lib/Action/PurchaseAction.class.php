@@ -65,8 +65,17 @@ class PurchaseAction extends Action {
 			$goods_info = GoodsHelper::getBasicGoodsInfoOfId($goods_id);
 			$goods_info['count'] = $commodity_list[2*$i+1]['good_count'];
 			$goods_info_list[$i] = $goods_info;
+			$goods_list_int[$i]['goods_id'] = $goods_id;
+			$goods_list_int[$i]['goods_count'] = $goods_count;
 			$total_price = $total_price + $goods_info['price'] * $goods_info['count'];
 		}
+
+		//Generate imcomplete order and get order_id list (int group 2)
+		$order_id_list = array(1,2,3);
+		$order_count = count($order_id_list);
+
+		$this->assign('order_id_list', $order_id_list);
+		$this->assign('order_count', $order_count);
 		$this->assign('goods_info_list', $goods_info_list);
 		$this->assign('total_price', $total_price);
 		
@@ -92,7 +101,7 @@ class PurchaseAction extends Action {
 		}
 
 		$order_info = $this->_post();
-		//var_dump($info);
+		var_dump($order_info);
 		
 		//generate order
 		if (isset($info['generate'])) {
