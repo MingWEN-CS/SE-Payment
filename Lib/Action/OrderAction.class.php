@@ -44,8 +44,10 @@ class OrderAction extends Action{
         $this->display();
 
     }
-
-     public function pay(){}
+     public function createorder($cartinfo){
+            
+     }
+     public function pay() {}
      public function refund(){}
      public function confirm_receipt(){}
 }

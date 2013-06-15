@@ -9,6 +9,9 @@ class OrdersModel extends Model{
             $condition['buyer']=$username;
             return $this->field('id')->where($condition)->select();
     }
+    public function createorder($orderinfo){
+            return $this->create($orderinfo)->add();
+    }
 }
 
 ?>
