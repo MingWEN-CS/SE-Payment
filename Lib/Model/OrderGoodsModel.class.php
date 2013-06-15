@@ -7,15 +7,15 @@ class OrderGoodsModel extends Model{
 			for($i = 0; $i < count($keywordArray); $i++) {
 				$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
 			}
-            $condition['name'] = array('like', $keywordArray, 'OR');
-            $condition['oid']=array('in',$constraint['userorders']);
-            $selectCause=$this->where($condition)->group('oid');
+            $condition['NAME'] = array('like', $keywordArray, 'OR');
+            $condition['OID']=array('in',$constraint['userorders']);
+            $selectCause=$this->where($condition)->group('OID');
 			$result=$selectCause->select();
 			return $result;
         }
 
         public function searchbyid($id){
-            $condition['oid']=$id;
+            $condition['OID']=$id;
             return $this->where($condition)->select();
         }
 
