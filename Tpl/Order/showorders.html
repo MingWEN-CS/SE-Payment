@@ -1,0 +1,67 @@
+<html>
+    <head>
+	<title>Online Payment System</title>
+ 	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../Public/css/index.css"/>
+   	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+	
+    </head>
+    <body>
+	<include file="../header"/>
+	<div id="container"  style="margin-top:100px;height:400px;">
+		<div id="search-wrapper">
+			<form class="form-search" method="get" action="__APP__/Order/showorders">
+				<div class="input-append">
+					<h4>Search your history orders</h4>
+                    <input name="keywords" type="text" class="input-xxlarge search-query" value ='{$keywords}' placeholder="input the keywords to search">
+					<button type="submit" class="btn btn-primary">Search</button>
+				</div>
+			</form>
+		</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>goods</th>
+                    <th>price</th>
+                    <th>amount</th>
+                    <th>payed</th>
+                    <th>state</th>
+                    <th>operation</th>
+                    <th>others</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="myorders" id="each_orders" empty="暂时没有数据">
+                <tr class="success">
+                    <td>order id：{$each_orders['id']}</td>
+                    <td colspan="6">seller：{$each_orders['seller']}</td>
+                </tr>
+                <tr>
+                    <td>{$each_orders['goods'][0].name}</td>
+                         <td>{$each_orders['goods'][0].price}</td>
+                         <td>{$each_orders['goods'][0].number}</td>
+                         <td rowspan="each_orders['size']">{$each_orders.totalprice}</td>
+                         <td rowspan="each_orders['size']">{$each_orders.state}</td>
+                         <td rowspan="each_orders['size']">
+                             <a class="btn btn-block btn-small btn-primary" href="{$each_orders['href']}">{$each_orders.buttontype}</a>
+                         </td>
+                </tr>      
+                 <volist name="each_orders['goods']" id="each_good" offset="1">
+                      <tr>
+
+                         <td>{$each_good.name}</td>
+                         <td>{$each_good.price}</td>
+                         <td>{$each_good.number}</td>
+                     </tr>
+                 </volist>
+                
+                </volist>
+            </tbody>
+        </table>
+
+
+	</div>
+	<include file="../footer"/>
+    </body>
+</html>
