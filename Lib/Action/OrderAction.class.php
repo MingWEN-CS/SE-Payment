@@ -7,7 +7,7 @@ class OrderAction extends Action{
 /*
 //debug module
 return 'dniw';
- */
+*/
 
         $username=$_SESSION['uid'];
         if($username===null)
@@ -63,7 +63,7 @@ return 'dniw';
         $isBuyer = 1;
 /*
 get isBuyer from group 1
- */
+*/
 
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
@@ -82,7 +82,7 @@ get isBuyer from group 1
         $condition['userorders']=$useroid;
         $searchResult = $ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
         $searchResult = $this->removeDeletedOrders($searchResult);
-	//var_dump($searchRe);
+//var_dump($searchRe);
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
@@ -106,11 +106,11 @@ get isBuyer from group 1
                 $orderresult[$i]['other_href'] = './cancel'.'?oid='.$searchResult[$i];
                 break;
             }
-	    case 'payed' :{
-		$orderresult[$i]['other'] = null;
+case 'payed' :{
+$orderresult[$i]['other'] = null;
                 $orderresult[$i]['other_href'] = './cancel'.'?oid='.$searchResult[$i];
-		break;
-		}
+break;
+}
 
             default:{
                 $orderresult[$i]['other'] = 'delete';
