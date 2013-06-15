@@ -23,7 +23,7 @@ class OrdersModel extends Model{
 	
 	public function delete($oid) {
 		$condition['id'] = $oid;
-		$data['isdelete'] = 1;
+		$data['isdelete'] = 'YES';
 		return $this->where($condition)->save($data);
 	}
 }
