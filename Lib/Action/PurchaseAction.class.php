@@ -44,8 +44,10 @@ class PurchaseAction extends Action {
 	}
 
 	public function ordergen() {
+		//Session info
 		$uid = $this->_session('uid');
-		$uname = $this->session('username');
+		$uname = $this->_session('username');
+		
 		//Show shopping list
 		$shopping_cart_list = $this->_post();
 		$commodity_list = $shopping_cart_list['good_pairs'];
@@ -63,8 +65,13 @@ class PurchaseAction extends Action {
 		//var_dump($goods_info_list);
 		
 		//Show and select shipping address
-		
+		$addr = D('Receiveaddress');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//var_dump($addr_list);
 
+		
+		$this->assign('addr_list', $addr_list);
 		$this->display();
 	}
 
