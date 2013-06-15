@@ -8,13 +8,13 @@ class ShoppingCartAction extends Action {
 		$buyer = M('Buyer');
 		if (!$user_id || !$buyer->where('uid = '.$user_id)->find())
 			$this->error('To use shopping cart, you must login as a buyer!');
+		$prefix = C('DB_PREFIX');
 		$case_template = 'CASE '.
-			'WHEN type = 1 THEN general_goods.${ph} '.
-			'WHEN type = 2 THEN hotel_room.${ph} '.
-			'WHEN type = 3 THEN airplane_ticket.${ph} '.
+			'WHEN type = 1 THEN '.$prefix.'general_goods.${ph} '.
+			'WHEN type = 2 THEN '.$prefix.'hotel_room.${ph} '.
+			'WHEN type = 3 THEN '.$prefix.'airplane_ticket.${ph} '.
 		'END ';
 		$model = new Model();
-		$prefix = C('DB_PREFIX');
 		$this->assign('list', $model->query('SELECT '.str_replace('${ph}', 'name', $case_template).'as name, good_id, good_count, '.
 			str_replace('${ph}', 'price', $case_template).
 			'as price '.
