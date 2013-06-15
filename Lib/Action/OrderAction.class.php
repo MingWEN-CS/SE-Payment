@@ -4,10 +4,10 @@ class OrderAction extends Action{
 
     private function getUserID(){
 
-
+/*
 //debug module
 return 'dniw';
-
+*/
 
         $userid=$_SESSION['uid'];
         if($userid===null)
@@ -20,7 +20,7 @@ return 'dniw';
     }
 
     private function generatebtntype($isBuyer, $state){
-        if($isBuyer){
+        if($isBuyer){	//buyer state
             switch($state){
             case 'created': return 'pay';
             case 'payed': return 'refund';
@@ -33,20 +33,29 @@ return 'dniw';
             case 'refunding':return null;
             default: return 'wait';
             }
-        } else {
-            return null;
-        }
+        } else {	//seller state
+			switch($state){
+				case 'payed': return 'shipping';
+				case 'refunding': return 'confirm_refund';
+				
+				case 'canceled': return null;
+				case 'refunded': return null;
+				case 'succeed': return null;
+				case 'failed': return null;
+				default: return 'wait';
+			}
+		}
     }
 
 
-    private function removeDeletedOrders($orderList) {
+    private function removeDeletedOrders($goodsList) {
         $orders=D('Orders');
 
         $result = array();
-        for($i = 0,$j=0; $i < count($orderList); ++$i){
-            $order=$orders->findorderbyid($orderList[$i]['OID']);
+        for($i = 0,$j=0; $i < count($goodsList); ++$i){
+            $order=$orders->findorderbyid($goodsList[$i]['OID']);
             if($order['ISDELETE'] == 'NO')
-                $result[$j++] = $orderList[$i];
+                $result[$j++] = $goodsList[$i];
         }
 
         return $result;
@@ -93,7 +102,7 @@ get isBuyer from group 1
 
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
             $orderresult[$i]['BUTTONTYPE']=$state;
-            $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i];
+            $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i]['OID'];
             if($state===null)
             {
                 $orderresult[$i]['HREF']='./back';	
@@ -101,21 +110,23 @@ get isBuyer from group 1
 
 
             switch($orderresult[$i]['STATE']){
-            case 'created':{
-                $orderresult[$i]['OTHER'] = 'cancel';
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i];
-                break;
-            }
-case 'payed' :{
-$orderresult[$i]['OTHER'] = null;
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i];
-break;
-}
+				case 'created':{
+					$orderresult[$i]['OTHER'] = 'cancel';
+					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+					break;
+				}
+				/*
+				case 'payed' :{
+					$orderresult[$i]['OTHER'] = null;
+					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+					break;
+				}
+				*/
 
-            default:{
-                $orderresult[$i]['OTHER'] = 'delete';
-                $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i];
-            }
+				default:{
+					$orderresult[$i]['OTHER'] = 'delete';
+					$orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
+				}
             }
 
         }
