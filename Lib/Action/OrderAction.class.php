@@ -4,18 +4,7 @@ class OrderAction extends Action{
 
     private function getUserID(){
 
-/*
-		//debug module
-		return 1;
-*/
-
         $userid=$_SESSION['uid'];
-        if($userid===null)
-        {
-            $this->display();
-            return;
-        }
-
         return $userid;
     }
 	
@@ -74,6 +63,11 @@ class OrderAction extends Action{
     public function showorders(){
 
         $username = $this->getUserID();
+	if($username===null)
+	{
+	$this->display();
+	return;
+	}
         $isBuyer = 1;
 /*
 get isBuyer from group 1
@@ -120,14 +114,17 @@ get isBuyer from group 1
 					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
 					break;
 				}
-				/*
+				
 				case 'payed' :{
 					$orderresult[$i]['OTHER'] = null;
 					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
 					break;
 				}
-				*/
-
+				case 'shipping':{
+					$orderresult[$i]['OTHER'] = null;
+					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+					break;
+				}
 				default:{
 					$orderresult[$i]['OTHER'] = 'delete';
 					$orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];

@@ -26,6 +26,9 @@ class OrdersModel extends Model{
 		$data['ISDELETE'] = 'YES';
 		return $this->where($condition)->save($data);
 	}
+    public function insertneworder($order){
+        
+    }
 }
 
 ?>
