@@ -64,7 +64,13 @@
 		</neq>
 		<p>
 			<label for='image_uri'>Image:</label>
-			<div><img src='../../Upload/{$good.image_uri}'></img></div>
+			<div>
+				<if condition='$good.image_uri neq null'>
+					<img src='../../Upload/{$good.image_uri}'></img>
+				<else />
+					No image uploaded!
+				</if>
+			</div>
 			<input id='image_uri' type='file' name="image_url"'></input>
 		</p>
 		<p>
