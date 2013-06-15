@@ -44,9 +44,18 @@ class OrderAction extends Action{
         $this->display();
 
     }
-     public function createorder($cartinfo){
-            
-     }
+
+    /*shopping cart gives us goodsid and amounts*/
+    public function createorder($cartinfo){
+           
+        $orders=D('Orders');
+        $ordergoods=D('OrderGoods');
+        $flag1=$orders->create($orderinfo);
+        //$flag2=$ordergoods->($goodsinfo);
+        if($flag1&&$flag2)
+             ;
+             $this->display();
+    }
      public function pay() {}
      public function refund(){}
      public function confirm_receipt(){}
