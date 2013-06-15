@@ -1,5 +1,5 @@
 <?php
-import("@.Util.Goods.SourcePlace");
+import("@.Org.Net.UploadFile");
 
 class SellAction extends Action {
 	
@@ -54,7 +54,19 @@ class SellAction extends Action {
 			if ($goods->create()) {
 				$goods->id = $good_id;
 				$goods->seller_id = $_SESSION['uid'];
-				$goods->image_url = null;
+				if (!empty($_FILES)) {
+					$upload = new UploadFile();
+					$upload->maxSize = 1048576;
+					$upload->allowExts = array('bmp', 'jpg', 'gif', 'png', 'jpeg');
+					$upload->savePath = './Upload/';
+					$upload->uploadReplace = true;
+					if (!$upload->upload()) {
+						$this->error($upload->getErrorMsg());
+					} else {
+						$info = $upload->getUploadFileInfo();
+						$goods->image_uri = $info[0]['savename'];
+					}
+				}
 				if ($isCreate) {
 					$goods->add();
 				} else {
@@ -70,6 +82,10 @@ class SellAction extends Action {
 			$this->assign('good_type', $good_type);
 			$this->display();
 		}
+	}
+	
+	public function upload() {
+		$this->error('ge');
 	}
 	
 	public function delete(){
