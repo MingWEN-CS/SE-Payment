@@ -16,10 +16,10 @@
 -->
 <include file="../header"/>
 
-
+<form action="__APP__/Purchase/orderprocess" method="post">
 <div id="container" style="margin-top:40px;width:800px;">
 	<h3>Order Placement</h3><hr/>
-	<div id="CommodityList">
+	<div id="commodity_list">
 		<h4>Commodity List</h4>
 		<table class="table table-striped table-bordered">
 			<thead>
@@ -30,7 +30,7 @@
 			</thead>
 			<volist name="goods_info_list" id="goods_info_vo" empty="No goods in the order!">
 			<tbody>
-				<tr class="info">
+				<tr>
 					<td><img src="{$goods_info_vo.img_url}" /></td>
 					<td>{$goods_info_vo.name}</td>
 					<td>{$goods_info_vo.count}</td>
@@ -47,9 +47,9 @@
 			</tfoot>
 		</table>
 	</div><hr/>
-	<div>
+	<div id="address_list">
 		<h4>Shipping Address List</h4>
-		<table class="table table-bordered table-striped table-hovered">
+		<table class="table table-bordered table-striped">
 			<thead>
 				<th></th>
 				<th>Recipient</th>
@@ -59,7 +59,7 @@
 			</thead>
 			<volist name="addr_list" id="addr_vo">
 			<tbody>
-				<tr class="info">
+				<tr>
 					<td><input type="radio" name="addr_sel" value="{$addr_vo.ADDRESSID}"></td>
 					<td>{$addr_vo.RECEIVERNAME}</td>
 					<td>{$addr_vo.CITY}, {$addr_vo.PROVINCE}</td>
@@ -71,8 +71,19 @@
 			<tfoot>
 			</tfoot>
 		</table>
+	</div><hr/>
+	<div>
+		<div class="btn-group">
+			<button class="btn btn-large btn-success" type="submit" name="generate">
+			<i class="icon-ok icon-white"></i> Generate</button>
+		</div>
+		<div class="btn-group">
+			<button class="btn btn-large" type="submit" name="cancel">
+			<i class="icon-remove"></i> Cancel</button>
+		</div>
 	</div>
 </div>
+</form>
 
 <include file="../footer"/>
 </body>

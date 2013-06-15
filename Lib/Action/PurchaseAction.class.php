@@ -48,7 +48,14 @@ class PurchaseAction extends Action {
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
 		
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
+		
 		//Show shopping list
+		$Order = D('Orders');
+		$Order_goods = D('Order_goods');
 		$shopping_cart_list = $this->_post();
 		$commodity_list = $shopping_cart_list['good_pairs'];
 		$list_count = count($commodity_list) / 2;
@@ -62,7 +69,6 @@ class PurchaseAction extends Action {
 		}
 		$this->assign('goods_info_list', $goods_info_list);
 		$this->assign('total_price', $total_price);
-		//var_dump($goods_info_list);
 		
 		//Show and select shipping address
 		$addr = D('Receiveaddress');
@@ -73,6 +79,27 @@ class PurchaseAction extends Action {
 		
 		$this->assign('addr_list', $addr_list);
 		$this->display();
+	}
+
+	public function orderprocess() {
+		//Session info
+		$uid = $this->_session('uid');
+		$uname = $this->_session('username');
+		
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
+
+		$order_info = $this->_post();
+		//var_dump($info);
+		
+		//generate order
+		if (isset($info['generate'])) {
+		}
+		//cancel order
+		else {
+		}
 	}
 
 }
