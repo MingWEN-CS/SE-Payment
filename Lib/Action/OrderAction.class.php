@@ -5,8 +5,8 @@ class OrderAction extends Action{
     private function getUserID(){
 
 /*
-//debug module
-return 'dniw';
+		//debug module
+		return 1;
 */
 
         $userid=$_SESSION['uid'];
@@ -18,6 +18,10 @@ return 'dniw';
 
         return $userid;
     }
+	
+	private function getUserName(){
+		return $this->getUserID();
+	}
 
     private function generatebtntype($isBuyer, $state){
         if($isBuyer){	//buyer state
@@ -38,9 +42,10 @@ return 'dniw';
 				case 'payed': return 'shipping';
 				case 'refunding': return 'confirm_refund';
 				
+				case 'shipping': return null;
 				case 'canceled': return null;
 				case 'refunded': return null;
-				case 'succeed': return null;
+				case 'finished': return null;
 				case 'failed': return null;
 				default: return 'wait';
 			}
@@ -204,7 +209,7 @@ get isBuyer from group 1
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "confirm_receipt", $username);
             $orders=D('Orders');
-            $orders->changeState($oid, 'succeed');
+            $orders->changeState($oid, 'finished');
             $this->success('确认成功', U('Order/showorders'));
         } else{
             $this->error('确认失败，密码错误', U('Order/showorders'));
