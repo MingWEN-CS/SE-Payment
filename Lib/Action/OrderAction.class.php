@@ -12,7 +12,7 @@ class OrderAction extends Action{
         }
     }
     public function showorders(){
-        $username=$_SESSION['username'];
+        $username=$_SESSION['uid'];
         if($username===null)
         {   
            $this->display();
@@ -25,17 +25,17 @@ class OrderAction extends Action{
         $keywords=$this->_get('keywords');
         $condition['keywords']=$keywords;
         for($i=0;$i<count($userorders);$i++)
-            $useroid[$i]=$userorders[$i]['id'];
+            $useroid[$i]=$userorders[$i]['ID'];
         $condition['userorders']=$useroid;
         $searchResult=$ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
-            $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['oid']);
-            $goodsresult=$ordergoods->searchbyid($orderresult[$i]['id']);
+            $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
+            $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
             $orderresult[$i]['goods']=$goodsresult;
             $orderresult[$i]['size']=count($goodsresult);
-            $state=$this->generatebtntype($orderresult[$i]['state']);
+            $state=$this->generatebtntype($orderresult[$i]['STATE']);
                 $orderresult[$i]['buttontype']=$state;
             $orderresult[$i]['href']='/index.php/Order/'.$state;
         }
