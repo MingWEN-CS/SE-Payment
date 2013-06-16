@@ -13,4 +13,29 @@ class OrderOperationModel extends Model{
         $result=$this->where($condition)->find();
         return $result['TIME'];
     }
+    public function getpaytime($oid){
+        $condition['OID']=$oid;
+        $condition['OPERATION']="pay";
+        $result=$this->where($condition)->find();
+        return $result['TIME'];
+    }
+    public function getshiptime($oid){
+        $condition['OID']=$oid;
+        $condition['OPERATION']="shipping";
+        $result=$this->where($condition)->find();
+        return $result['TIME'];
+    }
+    public function getconfirmtime($oid){
+        $condition['OID']=$oid;
+        $condition['OPERATION']="confirm_receipt";
+        $result=$this->where($condition)->find();
+        return $result['TIME'];
+    }
+    public function getoptime($oid){
+        $time['create']=$this->getcreatetime($oid);
+        $time['pay']=$this->getpaytime($oid);
+        $time['ship']=$this->getshiptime($oid);
+        $time['confirm']=$this->getconfirmtime($oid);
+        return $time;
+    }
 }

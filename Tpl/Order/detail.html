@@ -10,39 +10,60 @@
     <body>
         <include file="../header"/>
         <div id="container" style="margin-top:100px;">
-            <table class="table table-bordered">
-                <thead style="background-color:#DFF0D8">
-                    <tr>
-                        <th>good</th>
-                        <th>price</th>
-                        <th>amount</th>
-                        <th>state</th>
-                        <th>totalprice</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                        <img src="{$goods[0]['IMGURL']}"></img>
-                            {$goods[0]['NAME']}</td>
-                        <td>{$goods[0]['PRICE']}</td>
-                        <td>{$goods[0]['AMOUNT']}</td>
-                        <td rowspan="{$goodsize}">{$order['STATE']}</td>
-                        <td rowspan="{$goodsize}">{$order['TOTALPRICE']}</td>
-                    </tr>
-                    <volist name="goods" id="each_good" offset="1">
-                         <tr>
-                             <td>
-                                 <img src="{$each_good['IMGURL']}">
-                                 </img>
-                                 {$each_good['NAME']}</td>
+            <div>
+                <div class="row">
+                    <div class="span3 text-center">purchase</div>
+                    <div class="span3 text-center">pay</div>
+                    <div class="span3 text-center">ship</div>
+                    <div class="span3 text-center">confirm</div>
+                </div>
+                <div class="row">
+                    <div class="progress">
+                        <div class="bar bar-success"style="{$prostyle}"></div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="span3 text-center">{$optime['create']}</div>
+                    <div class="span3 text-center">{$optime['pay']}</div>
+                    <div class="span3 text-center">{$optime['ship']}</div>
+                    <div class="span3 text-center">{$optime['confirm']}</div>
+                </div>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead style="background-color:#DFF0D8">
+                        <tr>
+                            <th>good</th>
+                            <th>price</th>
+                            <th>amount</th>
+                            <th>state</th>
+                            <th>totalprice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src="{$goods[0]['IMGURL']}"></img>
+                                {$goods[0]['NAME']}</td>
+                            <td>{$goods[0]['PRICE']}</td>
+                            <td>{$goods[0]['AMOUNT']}</td>
+                            <td rowspan="{$goodsize}">{$order['STATE']}</td>
+                            <td rowspan="{$goodsize}">{$order['TOTALPRICE']}</td>
+                        </tr>
+                        <volist name="goods" id="each_good" offset="1">
+                        <tr>
+                            <td>
+                                <img src="{$each_good['IMGURL']}">
+                                </img>
+                                {$each_good['NAME']}</td>
                             <td>{$each_good['PRICE']}</td>
                             <td>{$each_good['AMOUNT']}</td>
-                         </tr>
-                    </volist>
-                </body>
-            </table>
-
+                        </tr>
+                        </volist>
+                    </body>
+                </table>
+            </div>
         </div>
         <include file="../footer"/>
     </body>

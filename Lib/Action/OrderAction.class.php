@@ -361,6 +361,7 @@ public function detail(){
 
     $oid=$this->_get('oid');
     $Orders=D('Orders');
+    $operation=D('OrderOperation');
     $orderresult=$Orders->findorderbyid($oid);
     if($orderresult['BUYER']!=$userid)
     {
@@ -370,6 +371,17 @@ public function detail(){
     $goods=D('OrderGoods');
     $goodsresult=$goods->searchbyid($oid);
     $linecount=count($goodsresult);
+    $time=$operation->getoptime($oid);
+    if($time['pay']!=null)
+        $style="width:50%";
+    if($time['ship']!=null)
+        $style="width:75%";
+    if($time['confirm']!=null)
+        $style="width:100%";
+    
+    
+    $this->assign('prostyle',$style);
+    $this->assign('optime',$time);
     $this->assign('goods',$goodsresult);
     $this->assign('goodsize',$linecount);
     $this->assign('order',$orderresult);
