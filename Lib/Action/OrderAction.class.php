@@ -20,10 +20,17 @@ class OrderAction extends Action{
             case 'shipping': return 'confirm_receipt';
 
             case 'canceled':
+<<<<<<< HEAD
 case 'refunding':
             case 'refunded':
 case 'auditing':
 case 'audited':
+=======
+			case 'refunding':
+            case 'refunded':
+			case 'auditing':
+			case 'audited':
+>>>>>>> 67cee04ddb55a8e053eeb41c6ae840d3b667899d
             case 'failed':
             case 'finished': return null;
             default: return 'wait';
@@ -33,6 +40,7 @@ case 'audited':
             case 'payed': return 'shipping';
             case 'refunding': return 'confirm_refund';
 
+<<<<<<< HEAD
 case 'created':
             case 'canceled':
             case 'refunded':
@@ -41,6 +49,16 @@ case 'audited':
             case 'shipping':
             case 'failed':
 case 'finished': return null;
+=======
+			case 'created':
+            case 'canceled':
+            case 'refunded':
+			case 'auditing':
+			case 'audited':
+            case 'shipping':
+            case 'failed':
+			case 'finished': return null;
+>>>>>>> 67cee04ddb55a8e053eeb41c6ae840d3b667899d
             default: return 'wait';
             }
         }
@@ -237,6 +255,21 @@ get isBuyer from group 1
 
         $this->success('确认退款', U('Order/showorders'));
     }
+	
+		
+	public function refuse_refund() {
+		$oid = $this->_get('oid');
+        $username = $this->getUserName();
+
+        $operations = D('OrderOperation');
+        $operations->addOperation($oid, "refuse_refund", $username);
+
+        $orders=D('Orders');
+        $orders->changeState($oid, 'auditing');
+
+        $this->success('等待审计', U('Order/showorders'));
+	}
+
 
 
 public function refuse_refund() {
@@ -282,9 +315,15 @@ $oid = $this->_get('oid');
     public function back(){
         redirect(U('Order/showorders'));
     }
+<<<<<<< HEAD
 
 public function audited($oid, $auditorName) {
 // with Audit group
+=======
+	
+	public function audited($oid, $auditorName) {
+		// with Audit group
+>>>>>>> 67cee04ddb55a8e053eeb41c6ae840d3b667899d
         $username = $auditorName;
 
         $operations = D('OrderOperation');
@@ -292,9 +331,15 @@ public function audited($oid, $auditorName) {
 
         $orders=D('Orders');
         $orders->changeState($oid, 'audited');
+<<<<<<< HEAD
 $orders->audited($oid);
 }
 
+=======
+		$orders->audited($oid);
+	}
+	
+>>>>>>> 67cee04ddb55a8e053eeb41c6ae840d3b667899d
     public function createorder($cartinfo){
                 /*cartinfo:good id and good amount list*/
         /* for test:

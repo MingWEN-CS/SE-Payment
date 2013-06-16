@@ -9,23 +9,31 @@ class OrdersModel extends Model{
             $condition['BUYER']=$username;
             return $this->field('ID')->where($condition)->select();
     }
-	
-	public function searchIDbySellerName($username) {
+
+public function searchIDbySellerName($username) {
             $condition['SELLER']=$username;
             return $this->field('ID')->where($condition)->select();
     }
-	
-	public function changeState($oid, $newState) {
-		$condition['ID'] = $oid;
-		$data['STATE'] = $newState;
-		return $this->where($condition)->save($data);
-	}
-	
-	public function delete($oid) {
-		$condition['ID'] = $oid;
-		$data['ISDELETE'] = 'YES';
-		return $this->where($condition)->save($data);
-	}
+
+public function changeState($oid, $newState) {
+$condition['ID'] = $oid;
+$data['STATE'] = $newState;
+return $this->where($condition)->save($data);
+}
+
+
+public function delete($oid) {
+$condition['ID'] = $oid;
+$data['ISDELETE'] = 'YES';
+return $this->where($condition)->save($data);
+}
+
+public function audited($oid) {
+$condition['ID'] = $oid;
+$data['ISAUDIT'] = 'YES';
+return $this->where($condition)->save($data);
+}
+
     public function insertneworder($order){
          $this->create($order);
          return $this->add();
