@@ -156,6 +156,7 @@ CREATE TABLE se_order_goods(
 	PRICE numeric(15,2) NOT NULL,
 	AMOUNT INTEGER NOT NULL,
 	NAME VARCHAR(256) CHARACTER SET utf8 NOT NULL,
+    IMGURL VARCHAR(256) CHARACTER SET utf8 NOT NULL,
 	PRIMARY KEY(oid,gid),
 	foreign key (OID) references se_orders(ID) on delete cascade,
 	foreign key (GID) references se_goods(ID) on delete cascade
@@ -165,7 +166,7 @@ CREATE TABLE se_order_operation(
     	`OID` INTEGER NOT NULL,
 	`OPERATION` char(20) CHARACTER SET utf8 NOT NULL,
 	`TIME` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`OPERATOR` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'system',
+	`OPERATOR` INTEGER NOT NULL DEFAULT 0,
 	primary key(`OID`,`TIME`),
 	foreign key (`OID`) references `se_orders`(`ID`) on delete cascade
 );

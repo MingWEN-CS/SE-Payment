@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="{$each_orders['detail']}"><img src="http://127.0.0.1/Tpl/Public/img/avatar.gif"></img></a>
+                        <a href="{$each_orders['detail']}"><img src="{$each_orders['GOODS'][0]['IMGURL']}"></img></a>
                         {$each_orders['GOODS'][0]['NAME']}
                     </td>
                          <td>{$each_orders['GOODS'][0]['PRICE']}</td>
@@ -69,7 +69,7 @@
                       <tr>
 
                           <td>
-                        <a href="{$each_orders['detail']}"><img src="http://127.0.0.1/Tpl/Public/img/avatar.gif"></img></a>
+                              <a href="{$each_orders['detail']}"><img src="{$each_good['IMGURL']}"></img></a>
                               {$each_good['NAME']}</td>
                          <td>{$each_good['PRICE']}</td>
                          <td>{$each_good['AMOUNT']}</td>
