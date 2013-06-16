@@ -4,6 +4,7 @@ class OrderAction extends Action{
 
     private function getUserID(){
 
+		return 1;
         $userid=$_SESSION['uid'];
         return $userid;
     }
@@ -68,8 +69,8 @@ case 'finished': return null;
 
     public function showorders(){
 
-        $username = $this->getUserID();
-        if($username===null)
+        $userID = $this->getUserID();
+        if($userID===null)
         {
             $this->display();
             return;
@@ -83,9 +84,9 @@ get isBuyer from group 1
         $ordergoods=D('OrderGoods');
 
         if($isBuyer){
-            $userorders= $orders->searchIDbyBuyerName($username);
+            $userorders= $orders->searchIDbyBuyerName($userID);
         } else{
-            $userorders= $orders->searchIDbySellerName($username);
+            $userorders= $orders->searchIDbySellerName($userID);
         }
 
         $keywords=$this->_get('keywords');
@@ -115,7 +116,6 @@ get isBuyer from group 1
                 $orderresult[$i]['HREF']='./back';	
             }
 
-
             switch($orderresult[$i]['STATE']){
             case 'created':{
                 $orderresult[$i]['OTHER'] = 'cancel';
@@ -123,16 +123,26 @@ get isBuyer from group 1
                 break;
             }
 
-            case 'payed' :{
+            case 'payed' :
+            case 'shipping':
+			case 'auditing':
+			case 'wait': {
                 $orderresult[$i]['OTHER'] = null;
                 $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
                 break;
             }
-            case 'shipping':{
-                $orderresult[$i]['OTHER'] = null;
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-                break;
-            }
+			
+			case 'refunding':{
+				if($isBuyer){
+					$orderresult[$i]['OTHER'] = null;
+					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+				} else{
+					$orderresult[$i]['OTHER'] = 'refuse_refund';
+					$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
+				}
+				break;
+			}
+
             default:{
                 $orderresult[$i]['OTHER'] = 'delete';
                 $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
@@ -150,10 +160,10 @@ get isBuyer from group 1
 
     public function cancel(){
         $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "cancel", $username);
+        $operations->addOperation($oid, "cancel", $userID);
 
         $orders=D('Orders');
         $orders->changeState($oid, 'canceled');
@@ -170,12 +180,12 @@ get isBuyer from group 1
     public function pay_authentication() {
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         /*get authentication from group 1*/
         if(1){
             $operations = D('OrderOperation');
-            $operations->addOperation($oid, "pay", $username);
+            $operations->addOperation($oid, "pay", $userID);
 
             $orders=D('Orders');
             $orders->changeState($oid, 'payed');
@@ -187,10 +197,10 @@ get isBuyer from group 1
 
     public function refund(){
         $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "refund", $username);
+        $operations->addOperation($oid, "refund", $userID);
 
         $orders=D('Orders');
         $orders->changeState($oid, 'refunding');
@@ -207,12 +217,12 @@ get isBuyer from group 1
     public function confirm_authentication() {
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         /*get authentication from group 1*/
         if(1){
             $operations = D('OrderOperation');
-            $operations->addOperation($oid, "confirm_receipt", $username);
+            $operations->addOperation($oid, "confirm_receipt", $userID);
             $orders=D('Orders');
             $orders->changeState($oid, 'finished');
             $this->success('确认成功', U('Order/showorders'));
@@ -225,10 +235,10 @@ get isBuyer from group 1
     // seller operation
     public function confirm_refund(){
         $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "confirm_refund", $username);
+        $operations->addOperation($oid, "confirm_refund", $userID);
 
         //refund operation with other group
         $orders=D('Orders');
@@ -241,10 +251,10 @@ get isBuyer from group 1
 
 public function refuse_refund() {
 $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "refuse_refund", $username);
+        $operations->addOperation($oid, "refuse_refund", $userID);
 
         $orders=D('Orders');
         $orders->changeState($oid, 'auditing');
@@ -255,10 +265,10 @@ $oid = $this->_get('oid');
 
     public function shipping(){
         $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "shipping", $username);
+        $operations->addOperation($oid, "shipping", $userID);
 
         $orders=D('Orders');
         $orders->changeState($oid, 'shipping');
@@ -271,9 +281,9 @@ $oid = $this->_get('oid');
     //user operation
     public function delete() {
         $oid = $this->_get('oid');
-        $username = $this->getUserName();
+        $userID = $this->getUserID();
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "delete", $username);
+        $operations->addOperation($oid, "delete", $userID);
         $orders=D('Orders');
         $orders->delete($oid);
         $this->success('成功删除', U('Order/showorders'));
@@ -283,12 +293,12 @@ $oid = $this->_get('oid');
         redirect(U('Order/showorders'));
     }
 
-public function audited($oid, $auditorName) {
+public function audited($oid, $auditorID) {
 // with Audit group
-        $username = $auditorName;
+        $userID = $auditorID;
 
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "audit", $username);
+        $operations->addOperation($oid, "audit", $userID);
 
         $orders=D('Orders');
         $orders->changeState($oid, 'audited');
