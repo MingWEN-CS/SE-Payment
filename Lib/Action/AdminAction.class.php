@@ -6,8 +6,13 @@ class AdminAction extends Action {
         $this->display("login");
     }    
 
-    public function header () {
-    	$this->display();
+    public function login () {
+    	$admin = D('Admin');
+    	$isCorrect = $admin->verifyPassword($this->_post('name'), $this->_post('password'));
+    	if($isCorrect == 1) {
+    		$this->display('header');
+    	}
+
     }
 }
 ?>
