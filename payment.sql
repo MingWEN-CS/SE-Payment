@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS payment;
 CREATE DATABASE payment;
 /* if failed on following CREATE USER sql due to exits laolao already just delete it and redo >.<*/
 -- CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao';
-GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
+-- GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
 USE payment;
 /* if you are using sqlite please start here */
 /* key tables has referenced foreign keys*/
@@ -290,7 +290,7 @@ DROP TABLE IF EXISTS se_admin;
 CREATE TABLE se_admin (
   	id int(8) NOT NULL AUTO_INCREMENT,
   	name char(32) CHARACTER SET utf8 NOT NULL,
-  	pass char(32) CHARACTER SET utf8 NOT NULL,
+  	password char(32) CHARACTER SET utf8 NOT NULL,
   	info char(128) CHARACTER SET utf8,
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
