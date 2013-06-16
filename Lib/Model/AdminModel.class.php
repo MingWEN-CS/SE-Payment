@@ -21,20 +21,6 @@ class AdminModel extends Model{
 	public function deleteAdmin($name){
 		return $this->where('name = "'.$name.'"')->delete();
 	}
-
-	public function verifyPassword($name, $password) {
-		$admin = $this->where('name = "'.$name.'"')->find();
-		if (!$admin){
-			return -1;
-		}
-		else {
-			if ($password != $user['password']){
-				return 0;
-			}
-			else return 1;
-		}
-	}
-
 }
 ?>
 
