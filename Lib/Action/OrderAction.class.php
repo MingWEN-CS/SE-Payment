@@ -372,6 +372,7 @@ public function detail(){
     $goodsresult=$goods->searchbyid($oid);
     $linecount=count($goodsresult);
     $time=$operation->getoptime($oid);
+        $style="width:25%";
     if($time['pay']!=null)
         $style="width:50%";
     if($time['ship']!=null)
