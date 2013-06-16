@@ -4,7 +4,6 @@ class OrderAction extends Action{
 
     private function getUserID(){
 
-		return 1;
         $userid=$_SESSION['uid'];
         return $userid;
     }
