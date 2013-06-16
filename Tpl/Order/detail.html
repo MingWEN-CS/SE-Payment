@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>Online Payment System</title>
+        <link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+        <link rel="stylesheet" href="../Public/css/index.css"/>
+        <script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+
+    </head>
+    <body>
+        <include file="../header"/>
+        <div id="container" style="margin-top:100px;">
+            <table class="table table-bordered">
+                <thead style="background-color:#DFF0D8">
+                    <tr>
+                        <th>good</th>
+                        <th>price</th>
+                        <th>amount</th>
+                        <th>state</th>
+                        <th>totalprice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                        <img src="{$goods[0]['IMGURL']}"></img>
+                            {$goods[0]['NAME']}</td>
+                        <td>{$goods[0]['PRICE']}</td>
+                        <td>{$goods[0]['AMOUNT']}</td>
+                        <td rowspan="{$goodsize}">{$order['STATE']}</td>
+                        <td rowspan="{$goodsize}">{$order['TOTALPRICE']}</td>
+                    </tr>
+                    <volist name="goods" id="each_good" offset="1">
+                         <tr>
+                             <td>
+                                 <img src="{$each_good['IMGURL']}">
+                                 </img>
+                                 {$each_good['NAME']}</td>
+                            <td>{$each_good['PRICE']}</td>
+                            <td>{$each_good['AMOUNT']}</td>
+                         </tr>
+                    </volist>
+                </body>
+            </table>
+
+        </div>
+        <include file="../footer"/>
+    </body>
+</html>

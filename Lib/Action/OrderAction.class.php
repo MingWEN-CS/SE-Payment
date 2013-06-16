@@ -20,10 +20,10 @@ class OrderAction extends Action{
             case 'shipping': return 'confirm_receipt';
 
             case 'canceled':
-case 'refunding':
+            case 'refunding':
             case 'refunded':
-case 'auditing':
-case 'audited':
+            case 'auditing':
+            case 'audited':
             case 'failed':
             case 'finished': return null;
             default: return 'wait';
@@ -33,14 +33,14 @@ case 'audited':
             case 'payed': return 'shipping';
             case 'refunding': return 'confirm_refund';
 
-case 'created':
+            case 'created':
             case 'canceled':
             case 'refunded':
-case 'auditing':
-case 'audited':
+            case 'auditing':
+            case 'audited':
             case 'shipping':
             case 'failed':
-case 'finished': return null;
+            case 'finished': return null;
             default: return 'wait';
             }
         }
@@ -77,7 +77,7 @@ case 'finished': return null;
         $isBuyer = 1;
 /*
 get isBuyer from group 1
-*/
+ */
 
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
@@ -125,23 +125,23 @@ get isBuyer from group 1
 
             case 'payed' :
             case 'shipping':
-			case 'auditing':
-			case 'wait': {
+            case 'auditing':
+            case 'wait': {
                 $orderresult[$i]['OTHER'] = null;
                 $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
                 break;
             }
-			
-			case 'refunding':{
-				if($isBuyer){
-					$orderresult[$i]['OTHER'] = null;
-					$orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-				} else{
-					$orderresult[$i]['OTHER'] = 'refuse_refund';
-					$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
-				}
-				break;
-			}
+
+            case 'refunding':{
+                if($isBuyer){
+                    $orderresult[$i]['OTHER'] = null;
+                    $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+                } else{
+                    $orderresult[$i]['OTHER'] = 'refuse_refund';
+                    $orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
+                }
+                break;
+            }
 
             default:{
                 $orderresult[$i]['OTHER'] = 'delete';
@@ -249,8 +249,8 @@ get isBuyer from group 1
     }
 
 
-public function refuse_refund() {
-$oid = $this->_get('oid');
+    public function refuse_refund() {
+        $oid = $this->_get('oid');
         $userID = $this->getUserID();
 
         $operations = D('OrderOperation');
@@ -260,7 +260,7 @@ $oid = $this->_get('oid');
         $orders->changeState($oid, 'auditing');
 
         $this->success('等待审计', U('Order/showorders'));
-}
+    }
 
 
     public function shipping(){
@@ -305,50 +305,74 @@ public function audited($oid, $auditorID) {
 $orders->audited($oid);
 }
 
-    public function createorder(){
-                /*cartinfo:good id and good amount list*/
-        /*data for test*/
-$cartinfo[0]['goods_id']='1';
-$cartinfo[0]['goods_count']=1;
-$cartinfo[1]['goods_id']='4';
-$cartinfo[1]['goods_count']=3;
-$cartinfo[2]['goods_id']='2';
-$cartinfo[2]['goods_count']=2;
-        for($i=0;$i<count($cartinfo);$i++){
-            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
-            $seller_id=$goodinfo['seller_id'];
-            $goodlist['GID']=$cartinfo[$i]['goods_id'];
-            $goodlist['PRICE']=$goodinfo['price'];
-            $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
-            $goodlist['NAME']=$goodinfo['name'];
-            $goodlist['IMGURL']=$goodinfo['image_uri'];
-            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
-            $classifiedinfo[$seller_id]['SELLER']=$seller_id;
-        }
-        foreach($classifiedinfo as $orderinfo){
-            $neworder['SELLER']=$orderinfo['SELLER'];
-            $neworder['BUYER']=$this->getUserID();
-            $neworder['TOTALPRICE']=0.00;
-            foreach($orderinfo['goods'] as $eachgood){
-                $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
-            }
-            $orderdb=D('Orders');
-            $operation=D('OrderOperation');
-
-            $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
-            $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
-
-            $ordergoodsdb=D('OrderGoods');
-            $newoid[$i]['result']='success';
-            foreach($orderinfo['goods'] as $eachgood){
-                $newordergood=$eachgood;
-                $newordergood['OID']=$newoid[$i]['OID'];
-                $ogid=$ordergoodsdb->insertnewgood($newordergood);
-                if($ogid===false)
-                    $newoid[$i]['result']='fail';
-                var_dump($newoid);
-            }
-        }
-        return $newoid;
+public function createorder(){
+    /*cartinfo:good id and good amount list*/
+    /*data for test*/
+    $cartinfo[0]['goods_id']='1';
+    $cartinfo[0]['goods_count']=1;
+    $cartinfo[1]['goods_id']='4';
+    $cartinfo[1]['goods_count']=3;
+    $cartinfo[2]['goods_id']='2';
+    $cartinfo[2]['goods_count']=2;
+    for($i=0;$i<count($cartinfo);$i++){
+        $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
+        $seller_id=$goodinfo['seller_id'];
+        $goodlist['GID']=$cartinfo[$i]['goods_id'];
+        $goodlist['PRICE']=$goodinfo['price'];
+        $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
+        $goodlist['NAME']=$goodinfo['name'];
+        $goodlist['IMGURL']=$goodinfo['image_uri'];
+        $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
+        $classifiedinfo[$seller_id]['SELLER']=$seller_id;
     }
+    $orderdb=D('Orders');
+    $operation=D('OrderOperation');
+    $ordergoodsdb=D('OrderGoods');
+    foreach($classifiedinfo as $orderinfo){
+        $neworder['SELLER']=$orderinfo['SELLER'];
+        $neworder['BUYER']=$this->getUserID();
+        $neworder['TOTALPRICE']=0.00;
+        foreach($orderinfo['goods'] as $eachgood){
+            $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
+        }
+
+        $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
+        $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
+        $newoid[$i]['result']='success';
+        foreach($orderinfo['goods'] as $eachgood){
+            $newordergood=$eachgood;
+            $newordergood['OID']=$newoid[$i]['OID'];
+            $ogid=$ordergoodsdb->insertnewgood($newordergood);
+            if($ogid===false)
+                $newoid[$i]['result']='fail';
+            var_dump($newoid);
+        }
+}
+return $newoid;
+}
+public function detail(){
+    /*check if the asking order is the user's order*/
+    $userid=$this->getUserID();
+    if($userid===null)
+    {
+        $this->display("showorders");   
+        return;
+    }
+
+    $oid=$this->_get('oid');
+    $Orders=D('Orders');
+    $orderresult=$Orders->findorderbyid($oid);
+    if($orderresult['BUYER']!=$userid)
+    {
+        $this->display("showorders");
+        return;
+    }
+    $goods=D('OrderGoods');
+    $goodsresult=$goods->searchbyid($oid);
+    $linecount=count($goodsresult);
+    $this->assign('goods',$goodsresult);
+    $this->assign('goodsize',$linecount);
+    $this->assign('order',$orderresult);
+    $this->display();
+}
 }
