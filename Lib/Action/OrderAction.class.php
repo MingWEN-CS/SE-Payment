@@ -297,6 +297,7 @@ get isBuyer from group 1
 
         $orders=D('Orders');
         $orders->changeState($oid, 'audited');
+		$orders->audited($oid);
 	}
 	
     public function createorder($cartinfo){

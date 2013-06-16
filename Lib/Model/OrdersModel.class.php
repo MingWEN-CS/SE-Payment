@@ -21,11 +21,19 @@ class OrdersModel extends Model{
 		return $this->where($condition)->save($data);
 	}
 	
+	
 	public function delete($oid) {
 		$condition['ID'] = $oid;
 		$data['ISDELETE'] = 'YES';
 		return $this->where($condition)->save($data);
 	}
+	
+	public function audited($oid) {
+		$condition['ID'] = $oid;
+		$data['ISAUDIT'] = 'YES';
+		return $this->where($condition)->save($data);
+	}
+	
     public function insertneworder($order){
          $this->create($order);
          return $this->add();
