@@ -286,3 +286,13 @@ CREATE TABLE se_shopping_cart(
 /* group 4 */
 
 /* group 5 */
+DROP TABLE IF EXISTS se_admin;
+CREATE TABLE se_admin (
+  	id int(8) NOT NULL AUTO_INCREMENT,
+  	name char(32) CHARACTER SET utf8 NOT NULL,
+  	pass char(32) CHARACTER SET utf8 NOT NULL,
+  	info char(128) CHARACTER SET utf8,
+  	PRIMARY KEY (id),
+  	UNIQUE KEY (name)
+);
+INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
