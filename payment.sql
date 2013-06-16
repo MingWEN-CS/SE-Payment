@@ -296,3 +296,4 @@ CREATE TABLE se_admin (
   	UNIQUE KEY (name)
 );
 INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
+
