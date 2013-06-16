@@ -295,14 +295,14 @@ public function audited($oid, $auditorName) {
 $orders->audited($oid);
 }
 
-    public function createorder($cartinfo){
+    public function createorder(){
                 /*cartinfo:good id and good amount list*/
-        /* for test:
+        
 $cartinfo[0]['goods_id']='1';
 $cartinfo[0]['goods_count']=1;
 $cartinfo[1]['goods_id']='4';
 $cartinfo[1]['goods_count']=3;
-*/
+
         for($i=0;$i<count($cartinfo);$i++){
             $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
             $seller_id=$goodinfo['seller_id'];
@@ -310,6 +310,7 @@ $cartinfo[1]['goods_count']=3;
             $goodlist['PRICE']=$goodinfo['price'];
             $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
             $goodlist['NAME']=$goodinfo['name'];
+            $goodlist['IMGURL']=$goodinfo['image_uri'];
             $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
             $classifiedinfo[$seller_id]['SELLER']=$seller_id;
         }
@@ -321,16 +322,16 @@ $cartinfo[1]['goods_count']=3;
                 $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
             }
             $orderdb=D('Orders');
+            $operation=D('OrderOperation');
+
             $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
+            $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
 
             $ordergoodsdb=D('OrderGoods');
             $newoid[$i]['result']='success';
             foreach($orderinfo['goods'] as $eachgood){
+                $newordergood=$eachgood;
                 $newordergood['OID']=$newoid[$i]['OID'];
-                $newordergood['GID']=$eachgood['GID'];
-                $newordergood['PRICE']=$eachgood['PRICE'];
-                $newordergood['AMOUNT']=$eachgood['AMOUNT'];
-                $newordergood['NAME']=$eachgood['NAME'];
                 $ogid=$ordergoodsdb->insertnewgood($newordergood);
                 if($ogid===false)
                     $newoid[$i]['result']='fail';
