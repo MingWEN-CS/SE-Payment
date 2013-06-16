@@ -73,49 +73,87 @@ class PurchaseAction extends Action {
 	public function detail() {
 		$id = $this->_get('id');
 		if(!$id) {
-			$this->display();
+			$this->error();
 			return;
 		}
 		$good = GoodsHelper::getBasicGoodsInfoOfId($id);
 		$type = GoodsHelper::getGoodsTypeOfId($id);
 		if(!$good) {
-			$this->display();
+			$this->error();
 			return;
 		}
-		if($userId = $this->_session('uid')) {
-			$browseHistory = D('BrowseHistory');
-            $data = array(
-                'good_id' => $id,
-                'user_id' => $userId,
-                'date_time' => time(),
-            );
-            if ($browseHistory->create($data)){
-                $id = $browseHistory->add();
+		$userId = $this->_session('uid');
+		if (IS_POST) {
+			$buyer = M('Buyer');
+			if (!$user_id || !$buyer->where('uid = '.$user_id)->find()) {
+		    	$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
+				return;
 			}
+			else {
+				$shoppingCart = D('ShoppingCart');
+				$shoppingCartRecord = $shoppingCart->where('user_id = '.$userId.' AND good_id = '.$id)->find();
+				//exists already
+				if($shoppingCartRecord) {
+					$shoppingCart->modifyCount($userId, $id, 'true');
+		            $this->ajaxReturn(0, "Add succeeded", 1);
+					return;
+				}
+				//no this goods in shopping cart
+				else {
+					$data = array(
+						'good_id' => $id,
+						'user_id' => $userId,
+						'good_count' => 1,
+					);
+					if ($shoppingCart->create($data)){
+						$id = $shoppingCart->add();
+						if($id) {
+				            $this->ajaxReturn(0, "Add succeeded", 1);
+							return;
+						}
+					}
+				}
+				$this->ajaxReturn(0, "Add failed.", 0);
+	        }
 		}
-		$feedback = D('Feedback');
-		$user = D('User');
-		$feedbacks = $feedback->where('goods_id=' . $id)->select();
-		$feedbacksFull = array();
-		foreach($feedbacks as $eachFeedback) {
-			$userInfo = $user->where('UID=' . $eachFeedback[user_id])->find();
-			$newFeedback = array_merge($eachFeedback, array(username => $userInfo[USERNAME]));
-			$feedbacksFull = array_merge($feedbacksFull, array($newFeedback));
+		else {
+			if($userId) {
+				$browseHistory = D('BrowseHistory');
+	            $data = array(
+	                'good_id' => $id,
+	                'user_id' => $userId,
+	                'date_time' => time(),
+	            );
+	            if ($browseHistory->create($data)){
+	                $id = $browseHistory->add();
+				}
+			}
+			$feedback = D('Feedback');
+			$user = D('User');
+			$feedbacks = $feedback->where('goods_id=' . $id)->select();
+			$feedbacksFull = array();
+			foreach($feedbacks as $eachFeedback) {
+				$userInfo = $user->where('UID=' . $eachFeedback[user_id])->find();
+				$newFeedback = array_merge($eachFeedback, array(username => $userInfo[USERNAME]));
+				$feedbacksFull = array_merge($feedbacksFull, array($newFeedback));
+			}
+			if($type == HotelRoomModel::getType()) {
+				$good[date_time] = TimeFormatter::formatTime($good[date_time]);
+			}
+			else if($type == AirplaneTicketModel::getType()) {
+				$good[departure_date_time] = TimeFormatter::formatTime($good[departure_date_time]);
+				$good[arrival_date_time] = TimeFormatter::formatTime($good[arrival_date_time]);
+			}
+			$this->assign('feedbacks', $feedbacksFull);
+			$good[score] = intval($good[score]);
+			$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
+			$this->assign('goods_info', $good);
+			$this->assign('goods_type', $type);
+			$this->assign('general_goods_type', GeneralGoodsModel::getType());
+			$this->assign('hotel_room_type', HotelRoomModel::getType());
+			$this->assign('airplane_ticket_type', AirplaneTicketModel::getType());
+			$this->display();
 		}
-		$this->assign('feedbacks', $feedbacksFull);
-		$good[score] = intval($good[score]);
-		$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
-		$this->assign('goods_info', $good);
-		$template = "";
-		if($type  == GeneralGoodsModel::getType()) {
-		}
-		else if($type == HotelRoomModel::getType()) {
-			$template = 'detail_hotel_room';
-		}
-		else if($type == AirplaneTicketModel::getType()) {
-			$template = 'detail_airplane_ticket';
-		}
-		$this->display($template);
 	}
 	
 	public function ordergen() {

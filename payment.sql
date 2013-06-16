@@ -347,7 +347,6 @@ CREATE TABLE se_shopping_cart(
 	foreign key (good_id) references se_goods(id) on delete cascade,
 	foreign key (user_id) references se_user(UID) on delete cascade
 );
-
 /* group 4 */
 
 /* group 5 */

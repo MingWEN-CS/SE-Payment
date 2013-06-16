@@ -17,14 +17,14 @@ class ShoppingCartAction extends Action {
 			'WHEN type = 3 THEN '.$prefix.'airplane_ticket.${ph} '.
 		'END ';
 		$shoppingCart = M('ShoppingCart');
-		$itemArray = $shoppingCart->where('se_user_id = ' . $user_id)->select();
+		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->select();
 		$resultArray = array();
 		$static = array('price' => 0, 'count' => 0);
 		foreach($itemArray as $item) {
 			$newGoods = GoodsHelper::getBasicGoodsInfoOfId($item[good_id]);
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
-			$static['price'] += $newGoods[price];
-			$static['count'] ++;
+			$static['price'] += $newGoods[price] * $item[good_count];
+			$static['count'] += $item[good_count];
 		}
 		
 		
