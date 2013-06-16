@@ -126,6 +126,13 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `seller` (
+  `UID` int(11) NOT NULL,
+  `PASSWDCONSIGN` char(32) NOT NULL
+);
+*/
 
 --
 -- Constraints for dumped tables

@@ -27,6 +27,7 @@
 				$.form('__URL__/index', {good_type: good_type}, 'POST').submit();
 				return false;
 			});
+			
 		    $('.form_datetime').datetimepicker({
 		        //language:  'fr',
 		        weekStart: 1,
@@ -72,9 +73,14 @@
 		<neq name='good_type' value='airplane-ticket'>
 			<p>
 				<label for='place'>Place<span style="color:#ff0000; font-family:song">*</span>:</label>
-				<select class="span2" name="place">
+				<select id='place' class="span2" name="place">
 					<volist name="source_place" id="source_place">
-						<option value='{$source_place->value}'>{$source_place->display}</option>
+						<eq name='good.place' value='$source_place:value'>
+							<option value='{$source_place->value}' selected='selected'>{$source_place->display}</option>
+						</eq>
+						<neq name='good.place' value='$source_place:value'>
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</neq>
 					</volist>
 				</select>
 			</p>
@@ -98,61 +104,75 @@
 			<label for='description'>Description:</label>
 			<textarea id='description' name="description">{$good.description}</textarea>
 		</p>
-		
 		<switch name="good_type">
 		<case value="general-goods">
 		</case>
 		<case value="hotel-room">
 			<p>
-				<label for='date_time'>Date<span style="color:#ff0000; font-family:song">*</span>:</label>
-                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="hotel_date_time">
-					<input size="16" type="text" value="" readonly>
+				<label for='date_time_selector'>Date<span style="color:#ff0000; font-family:song">*</span>:</label>
+                <div class="controls input-prepend input-append date form_datetime" data-date-format="dd MM yyyy - HH:ii p" data-link-field="date_time">
+					<input id='date_time_selector' size="16" type="text" value='{$good.date_time_selector}' readonly></input>
                     <span class="add-on"><i class="icon-remove"></i></span>
 					<span class="add-on"><i class="icon-th"></i></span>
                 </div>
-				<input type="hidden" id="hotel_date_time" name="date_time"/><br/>
+				<input id='date_time' type="hidden" name="date_time" value='{$good.date_time}'></input>
 			</p>
 			<p>
 				<label for='suit_type'>Suit Type:</label>
 				<select class="span2" name="suit_type">
 					<volist name="hotel_room_suit" id="suit_type">
-						<option value='{$suit_type->value}'>{$suit_type->display}</option>
+						<eq name='good.suit_type' value='$suit_type:value'>
+							<option value='{$suit_type->value}' selected='selected'>{$suit_type->display}</option>
+						</eq>
+						<neq name='good.suit_type' value='$suit_type:value'>
+							<option value='{$suit_type->value}'>{$suit_type->display}</option>
+						</neq>
 					</volist>
 				</select>
 			</p>
 		</case>
 		<case value="airplane-ticket">
 			<p>
-				<label for='departure_date_time'>Departure Time<span style="color:#ff0000; font-family:song">*</span>:</label>
-                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="departure_date_time">
-					<input size="16" type="text" value="" readonly>
+				<label for='departure_date_time_selector'>Departure Time<span style="color:#ff0000; font-family:song">*</span>:</label>
+                <div class="controls input-prepend input-append date form_datetime" data-date-format="dd MM yyyy - HH:ii p" data-link-field="departure_date_time">
+					<input id="departure_date_time_selector" size="16" type="text" value='{$good.departure_date_time_selector}' readonly></input>
                     <span class="add-on"><i class="icon-remove"></i></span>
 					<span class="add-on"><i class="icon-th"></i></span>
                 </div>
-				<input type="hidden" id="departure_date_time" name="departure_date_time"/><br/>
+				<input id='departure_date_time' type="hidden" name="departure_date_time" value='{$good.departure_date_time}'></input>
 			</p>
 			<p>
-				<label for='arrival_date_time'>Arrival Time<span style="color:#ff0000; font-family:song">*</span>:</label>
-                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="arrival_date_time">
-					<input size="16" type="text" value="" readonly>
+				<label for='arrival_date_time_selector'>Arrival Time<span style="color:#ff0000; font-family:song">*</span>:</label>
+                <div class="controls input-prepend input-append date form_datetime" data-date-format="dd MM yyyy - HH:ii p" data-link-field="arrival_date_time">
+					<input id="arrival_date_time_selector" size="16" type="text" value='{$good.arrival_date_time_selector}' readonly></input>
                     <span class="add-on"><i class="icon-remove"></i></span>
 					<span class="add-on"><i class="icon-th"></i></span>
                 </div>
-				<input type="hidden" id="arrival_date_time" name="arrival_date_time"/><br/>
+				<input id='arrival_date_time' type="hidden" name="arrival_date_time" value='{$good.arrival_date_time}'></input>
 			</p>
 			<p>
 				<label for='departure_place'>Departure Place<span style="color:#ff0000; font-family:song">*</span>:</label>
-				<select class="span2" name="departure_place">
+				<select id='departure_place' class="span2" name="departure_place">
 					<volist name="airplane_ticket_departure_place" id="source_place">
-						<option value='{$source_place->value}'>{$source_place->display}</option>
+						<eq name='good.departure_place' value='$source_place:value'>
+							<option value='{$source_place->value}' selected='selected'>{$source_place->display}</option>
+						</eq>
+						<neq name='good.departure_place' value='$source_place:value'>
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</neq>
 					</volist>
 				</select>
 			</p>
 			<p>
 				<label for='arrival_place'>Arrival Place<span style="color:#ff0000; font-family:song">*</span>:</label>
-				<select class="span2" name="arrival_place">
+				<select id='arrival_place' class="span2" name="arrival_place">
 					<volist name="airplane_ticket_arrival_place" id="source_place">
-						<option value='{$source_place->value}'>{$source_place->display}</option>
+						<eq name='good.arrival_place' value='$source_place:value'>
+							<option value='{$source_place->value}' selected='selected'>{$source_place->display}</option>
+						</eq>
+						<neq name='good.arrival_place' value='$source_place:value'>
+							<option value='{$source_place->value}'>{$source_place->display}</option>
+						</neq>
 					</volist>
 				</select>
 			</p>
@@ -170,9 +190,14 @@
 			</p>
 			<p>
 				<label for='carbin_type'>Carbin Type:</label>
-				<select class="span2" name="carbin_type">
+				<select id='carbin_type' class="span2" name="carbin_type">
 					<volist name="airpalne_ticket_carbin" id="carbin_type">
-						<option value='{$carbin_type->value}'>{$carbin_type->display}</option>
+						<eq name='good.carbin_type' value='$carbin_type:value'>
+							<option value='{$carbin_type:value}' selected='selected'>{$carbin_type->display}</option>
+						</eq>
+						<neq name='good.carbin_type' value='$carbin_type:value'>
+							<option value='{$carbin_type:value}'>{$carbin_type->display}</option>
+						</neq>
 					</volist>
 				</select>
 			</p>
