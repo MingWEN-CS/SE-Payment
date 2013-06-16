@@ -7,4 +7,10 @@ class OrderOperationModel extends Model{
 		$data['OPERATOR'] = $operator;
 		$this->add($data);
 	}
+    public function getcreatetime($oid){
+        $condition['OID']=$oid;
+        $condition['OPERATION']="created";
+        $result=$this->where($condition)->find();
+        return $result['TIME'];
+    }
 }

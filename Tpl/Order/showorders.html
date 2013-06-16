@@ -37,8 +37,9 @@
                 <volist name="myorders" id="each_orders" empty="暂时没有数据">
 <if condition="$each_orders['GOODS'] neq null">
                 <tr class="success">
-                    <td>order id：{$each_orders['ID']}</td>
-                    <td colspan="6">seller：{$each_orders['SELLER']}</td>
+                    <td colspan="7">order id：{$each_orders['ID']}
+                      &nbsp;  seller：{$each_orders['SELLER']}
+                   &nbsp;  closing time: {$each_orders['createtime']}</td> 
                 </tr>
                 <tr>
                     <td>
