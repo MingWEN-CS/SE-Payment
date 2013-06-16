@@ -56,13 +56,13 @@
                          <td rowspan="{$each_orders['SIZE']}">
 <if condition="$each_orders['BUTTONTYPE'] neq null">
                             <a class="btn btn-small btn-success" style="width:100px" href="{$each_orders['HREF']}">{$each_orders['BUTTONTYPE']}</a>
-<else/></if>
+<else/> &nbsp;   </if>
 </td>
 
 <td rowspan="{$each_orders['SIZE']}">
 <if condition="$each_orders['OTHER'] neq null">
                              <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
-<else/></if>
+<else/>   &nbsp; </if>
 </td>
                 </tr>
                  <volist name="each_orders['GOODS']" id="each_good" offset="1">
