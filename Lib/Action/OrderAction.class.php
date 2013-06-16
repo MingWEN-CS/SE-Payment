@@ -65,6 +65,7 @@ class OrderAction extends Action{
         $this->display('showorders');
     }
 
+
     public function showorders(){
 
         $username = $this->getUserID();
@@ -107,10 +108,13 @@ get isBuyer from group 1
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
             $orderresult[$i]['BUTTONTYPE']=$state;
             $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['detail']='./detail'.'?oid='.$searchResult[$i]['OID'];
+            
             if($state===null)
             {
                 $orderresult[$i]['HREF']='./back';	
             }
+
 
             switch($orderresult[$i]['STATE']){
             case 'created':{
@@ -119,25 +123,16 @@ get isBuyer from group 1
                 break;
             }
 
-            case 'payed' :
-            case 'shipping':
-			case 'auditing':
-			{
+            case 'payed' :{
                 $orderresult[$i]['OTHER'] = null;
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
                 break;
             }
-			
-			
-			case 'refunding':{
-				if($isBuyer){
-					$orderresult[$i]['OTHER'] = null;
-				} else{
-					$orderresult[$i]['OTHER'] = 'refuse_refund';
-					$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
-				}
-				break;
-			}
-			
+            case 'shipping':{
+                $orderresult[$i]['OTHER'] = null;
+                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+                break;
+            }
             default:{
                 $orderresult[$i]['OTHER'] = 'delete';
                 $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
