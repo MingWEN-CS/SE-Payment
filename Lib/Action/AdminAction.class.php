@@ -15,7 +15,9 @@ class AdminAction extends Action {
     	if($password == $admin['password']) {
     		$this->display('header');
     	}
-        $this->display();
+        else {
+            $this->display();
+        }
     }
 }
 ?>
