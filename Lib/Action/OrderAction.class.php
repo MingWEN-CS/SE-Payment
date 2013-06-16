@@ -19,11 +19,13 @@ class OrderAction extends Action{
             case 'payed': return 'refund';
             case 'shipping': return 'confirm_receipt';
 
-            case 'canceled': return null;
-            case 'refunded': return null;
-            case 'failed': return null;
+            case 'canceled':
+case 'refunding':
+            case 'refunded':
+case 'auditing':
+case 'audited':
+            case 'failed':
             case 'finished': return null;
-            case 'refunding':return null;
             default: return 'wait';
             }
         } else {	//seller state
@@ -31,11 +33,14 @@ class OrderAction extends Action{
             case 'payed': return 'shipping';
             case 'refunding': return 'confirm_refund';
 
-            case 'shipping': return null;
-            case 'canceled': return null;
-            case 'refunded': return null;
-            case 'finished': return null;
-            case 'failed': return null;
+case 'created':
+            case 'canceled':
+            case 'refunded':
+case 'auditing':
+case 'audited':
+            case 'shipping':
+            case 'failed':
+case 'finished': return null;
             default: return 'wait';
             }
         }
@@ -60,6 +65,7 @@ class OrderAction extends Action{
         $this->display('showorders');
     }
 
+
     public function showorders(){
 
         $username = $this->getUserID();
@@ -71,7 +77,7 @@ class OrderAction extends Action{
         $isBuyer = 1;
 /*
 get isBuyer from group 1
- */
+*/
 
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
@@ -102,6 +108,8 @@ get isBuyer from group 1
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
             $orderresult[$i]['BUTTONTYPE']=$state;
             $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['detail']='./detail'.'?oid='.$searchResult[$i]['OID'];
+            
             if($state===null)
             {
                 $orderresult[$i]['HREF']='./back';	
@@ -230,6 +238,21 @@ get isBuyer from group 1
         $this->success('确认退款', U('Order/showorders'));
     }
 
+
+public function refuse_refund() {
+$oid = $this->_get('oid');
+        $username = $this->getUserName();
+
+        $operations = D('OrderOperation');
+        $operations->addOperation($oid, "refuse_refund", $username);
+
+        $orders=D('Orders');
+        $orders->changeState($oid, 'auditing');
+
+        $this->success('等待审计', U('Order/showorders'));
+}
+
+
     public function shipping(){
         $oid = $this->_get('oid');
         $username = $this->getUserName();
@@ -259,14 +282,27 @@ get isBuyer from group 1
     public function back(){
         redirect(U('Order/showorders'));
     }
+
+public function audited($oid, $auditorName) {
+// with Audit group
+        $username = $auditorName;
+
+        $operations = D('OrderOperation');
+        $operations->addOperation($oid, "audit", $username);
+
+        $orders=D('Orders');
+        $orders->changeState($oid, 'audited');
+$orders->audited($oid);
+}
+
     public function createorder($cartinfo){
                 /*cartinfo:good id and good amount list*/
         /* for test:
-        $cartinfo[0]['goods_id']='1';
-        $cartinfo[0]['goods_count']=1;
-        $cartinfo[1]['goods_id']='4';
-        $cartinfo[1]['goods_count']=3;
-          */
+$cartinfo[0]['goods_id']='1';
+$cartinfo[0]['goods_count']=1;
+$cartinfo[1]['goods_id']='4';
+$cartinfo[1]['goods_count']=3;
+*/
         for($i=0;$i<count($cartinfo);$i++){
             $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
             $seller_id=$goodinfo['seller_id'];
@@ -274,7 +310,7 @@ get isBuyer from group 1
             $goodlist['PRICE']=$goodinfo['price'];
             $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
             $goodlist['NAME']=$goodinfo['name'];
-            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;                        
+            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
             $classifiedinfo[$seller_id]['SELLER']=$seller_id;
         }
         foreach($classifiedinfo as $orderinfo){
