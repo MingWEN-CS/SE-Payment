@@ -74,15 +74,18 @@ class OrderAction extends Action{
             $this->display();
             return;
         }
-        $isBuyer = 1;
 /*
 get isBuyer from group 1
  */
-
+        $user=D('User');
+        $usercondition['UID']=$userID;
+        $userinfo=$user->where($usercondition)->field('TYPE')->find();
+        $isSeller=$userinfo['TYPE'];
+        $isBuyer=!$isSeller;
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
         $operation=D('OrderOperation');
-        if($isBuyer){
+        if(!$isSeller){
             $userorders= $orders->searchIDbyBuyerName($userID);
         } else{
             $userorders= $orders->searchIDbySellerName($userID);
@@ -96,7 +99,6 @@ get isBuyer from group 1
         $condition['userorders']=$useroid;
         $searchResult = $ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
         $searchResult = $this->removeDeletedOrders($searchResult);
-        //var_dump($searchRe);
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
