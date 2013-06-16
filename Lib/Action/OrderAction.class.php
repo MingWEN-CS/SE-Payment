@@ -19,11 +19,13 @@ class OrderAction extends Action{
             case 'payed': return 'refund';
             case 'shipping': return 'confirm_receipt';
 
-            case 'canceled': return null;
-            case 'refunded': return null;
-            case 'failed': return null;
+            case 'canceled':
+			case 'refunding':
+            case 'refunded':
+			case 'auditing':
+			case 'audited':
+            case 'failed':
             case 'finished': return null;
-            case 'refunding':return null;
             default: return 'wait';
             }
         } else {	//seller state
@@ -31,11 +33,14 @@ class OrderAction extends Action{
             case 'payed': return 'shipping';
             case 'refunding': return 'confirm_refund';
 
-            case 'shipping': return null;
-            case 'canceled': return null;
-            case 'refunded': return null;
-            case 'finished': return null;
-            case 'failed': return null;
+			case 'created':
+            case 'canceled':
+            case 'refunded':
+			case 'auditing':
+			case 'audited':
+            case 'shipping':
+            case 'failed':
+			case 'finished': return null;
             default: return 'wait';
             }
         }
@@ -107,7 +112,6 @@ get isBuyer from group 1
                 $orderresult[$i]['HREF']='./back';	
             }
 
-
             switch($orderresult[$i]['STATE']){
             case 'created':{
                 $orderresult[$i]['OTHER'] = 'cancel';
@@ -115,16 +119,25 @@ get isBuyer from group 1
                 break;
             }
 
-            case 'payed' :{
+            case 'payed' :
+            case 'shipping':
+			case 'auditing':
+			{
                 $orderresult[$i]['OTHER'] = null;
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
                 break;
             }
-            case 'shipping':{
-                $orderresult[$i]['OTHER'] = null;
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-                break;
-            }
+			
+			
+			case 'refunding':{
+				if($isBuyer){
+					$orderresult[$i]['OTHER'] = null;
+				} else{
+					$orderresult[$i]['OTHER'] = 'refuse_refund';
+					$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
+				}
+				break;
+			}
+			
             default:{
                 $orderresult[$i]['OTHER'] = 'delete';
                 $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
@@ -229,6 +242,21 @@ get isBuyer from group 1
 
         $this->success('确认退款', U('Order/showorders'));
     }
+	
+		
+	public function refuse_refund() {
+		$oid = $this->_get('oid');
+        $username = $this->getUserName();
+
+        $operations = D('OrderOperation');
+        $operations->addOperation($oid, "refuse_refund", $username);
+
+        $orders=D('Orders');
+        $orders->changeState($oid, 'auditing');
+
+        $this->success('等待审计', U('Order/showorders'));
+	}
+
 
     public function shipping(){
         $oid = $this->_get('oid');
@@ -259,6 +287,18 @@ get isBuyer from group 1
     public function back(){
         redirect(U('Order/showorders'));
     }
+	
+	public function audited($oid, $auditorName) {
+		// with Audit group
+        $username = $auditorName;
+
+        $operations = D('OrderOperation');
+        $operations->addOperation($oid, "audit", $username);
+
+        $orders=D('Orders');
+        $orders->changeState($oid, 'audited');
+	}
+	
     public function createorder($cartinfo){
                 /*cartinfo:good id and good amount list*/
         /* for test:
