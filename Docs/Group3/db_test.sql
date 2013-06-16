@@ -18,8 +18,8 @@ SET time_zone = "+00:00";
 --
 
 INSERT IGNORE INTO `se_user` (`UID`, `USERNAME`, `PASSWD`, `EMAIL`, `TYPE`, `BALANCE`, `PHONE`) VALUES
-(1, '123', '202cb962ac59075b964b07152d234b70', 'a@a.com', 1, 0, NULL),
-(2, '1234', '202cb962ac59075b964b07152d234b70', 'a@b.com', 0, 0, NULL);
+(1, 'Seller1', '202cb962ac59075b964b07152d234b70', 'a@a.com', 1, 0, NULL),
+(2, 'Buyer1', '202cb962ac59075b964b07152d234b70', 'a@b.com', 0, 0, NULL);
 
 --
 -- 转存表中的数据 `se_buyer`
@@ -81,10 +81,10 @@ INSERT IGNORE INTO `se_hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_
 INSERT IGNORE INTO se_shopping_cart values(1,1,1,1);
 INSERT IGNORE INTO se_shopping_cart values(2,1,2,2);
 
-INSERT IGNORE INTO `se_orders` (`id`, `buyer`, `seller`, `totalprice`, `isdelete`, `state`) VALUES
-('1', '123', '1234', '12', b'0', '1'),
-('2', '123', '1234', '12', b'0', '1'),
-('3', '123', '1234', '12', b'0', '1');
+-- INSERT IGNORE INTO `se_orders` (`id`, `buyer`, `seller`, `totalprice`, `isdelete`, `state`) VALUES
+-- ('1', '123', '1234', '12', b'0', '1'),
+-- ('2', '123', '1234', '12', b'0', '1'),
+-- ('3', '123', '1234', '12', b'0', '1');
 
 INSERT INTO `se_feedback` (`id`, `user_id`, `goods_id`, `transaction_id`, `score`, `comment`, `date_time`) VALUES
 ('1', '2', '1', '1', '5', 'haha..', '1371287349'),

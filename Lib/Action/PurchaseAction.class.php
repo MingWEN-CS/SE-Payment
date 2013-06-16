@@ -179,15 +179,16 @@ class PurchaseAction extends Action {
 			$goods_info['count'] = $commodity_list[2*$i+1]['good_count'];
 			$goods_info_list[$i] = $goods_info;
 			$goods_list_int[$i]['goods_id'] = $goods_id;
-			$goods_list_int[$i]['goods_count'] = $goods_count;
+			$goods_list_int[$i]['goods_count'] = $goods_info['count'];
 			$total_price = $total_price + $goods_info['price'] * $goods_info['count'];
 		}
 
 		//Generate imcomplete order and get order_id list (int group 2)
-		$order_id_list = array(1,2,3);
-		$order_count = count($order_id_list);
-
-		$this->assign('order_id_list', $order_id_list);
+		$order_list = R('Order/createorder',array($goods_list_int));
+		$order_count = count($order_list);
+		//var_dump($order_list);
+			
+		$this->assign('order_list', $order_list);
 		$this->assign('order_count', $order_count);
 		$this->assign('goods_info_list', $goods_info_list);
 		$this->assign('total_price', $total_price);
@@ -214,13 +215,23 @@ class PurchaseAction extends Action {
 		}
 
 		$order_info = $this->_post();
-		var_dump($order_info);
+		$Order = D('Orders');
+
+		$order_count = $order_info['order_count'];
 		
 		//generate order
-		if (isset($info['generate'])) {
+		if (isset($order_info['generate'])) {
+			for($i = 1; $i <= $order_count; $i++) {
+				$order_id = $order_info['order_id_'.$i];
+				$data['ADDRESSID'] = $order_info['addr_sel'];
+				$result = $Order->where('ID='.$order_id)->save($data);
+			}
+		
+			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders');
 		}
 		//cancel order
 		else {
+			$this->success('Your Order is canceled', '__APP__');
 		}
 	}
 }

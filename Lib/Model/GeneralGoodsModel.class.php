@@ -31,8 +31,9 @@ class GeneralGoodsModel extends Model{
 			$availableSortArray = $this->getSortFieldArray();
 			foreach($availableSortArray as $sortField) {
 				if($sortField->field == $sort) {
-					print_r($this->getSortFieldSqlArray()[$sort]);
-					$selectCause = $selectCause->order($this->getSortFieldSqlArray()[$sort]);
+					//print_r($this->getSortFieldSqlArray()[$sort]);
+					$temp = $this->getSortFieldSqlArray();
+					$selectCause = $selectCause->order($temp[$sort]);
 				}
 			}
 		}

@@ -50,19 +50,41 @@ CREATE TABLE se_goods(
 		3: airplane ticket
 	It is better to use get funcions in GeneralGoodsModel and other models*/
 );
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `se_receiveaddress`
+--
+
+CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
+  `ADDRESSID` INT NOT NULL AUTO_INCREMENT,
+  `UID` int(11) NOT NULL,
+  `RECEIVERNAME` char(50) DEFAULT NULL,
+  `RECEIVERPHONE` char(20) DEFAULT NULL,
+  `PROVINCE` char(50) DEFAULT NULL,
+  `CITY` char(50) DEFAULT NULL,
+  `STRICT` char(50) DEFAULT NULL,
+  `STREET` char(100) DEFAULT NULL,
+  PRIMARY KEY (`ADDRESSID`),
+  KEY `UID` (`UID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS se_orders;
 CREATE TABLE se_orders(
-	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	buyer char(20) CHARACTER SET utf8 NOT NULL,
-	seller char(20) CHARACTER SET utf8 NOT NULL,
-	totalprice numeric(15,2),
-	isdelete bit(1) NOT NULL,
-	state char(20) NOT NULL,
-	foreign key (buyer) references `se_user`(`USERNAME`) on delete cascade,
-	foreign key (seller) references `se_user`(`USERNAME`) on delete cascade
+	BUYER INT(10) NOT NULL,
+	SELLER INT(10) NOT NULL,
+	TOTALPRICE numeric(15,2) NOT NULL,
+    	ADDRESSID INT DEFAULT NULL,
+	ISDELETE varchar(5) CHARACTER SET utf8 NOT NULL DEFAULT 'NO',
+	STATE char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'created',
+   	 ISAUDIT varchar(5) CHARACTER SET utf8 NOT NULL DEFAULT 'NO',
+	foreign key (BUYER) references `se_user`(`UID`) on delete cascade,
+	foreign key (SELLER) references `se_user`(`UID`) on delete cascade,
+   	 foreign key (ADDRESSID) references `se_receiveaddress`(`ADDRESSID`) on delete cascade
 );
 
 
@@ -82,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `CREDIT` int(11) NOT NULL DEFAULT '0',
   `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`UID`)
+   PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /* if you are using sqlite please use following instead */
 /*
@@ -96,32 +118,22 @@ CREATE TABLE IF NOT EXISTS `buyer` (
 );
 */
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `se_receiveaddress`
+-- Table structure for table 'se_seller'
 --
 
-CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
-  `ADDRESSID` char(50) NOT NULL DEFAULT '',
+CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
-  `RECEIVERNAME` char(50) DEFAULT NULL,
-  `RECEIVERPHONE` char(20) DEFAULT NULL,
-  `PROVINCE` char(50) DEFAULT NULL,
-  `CITY` char(50) DEFAULT NULL,
-  `STRICT` char(50) DEFAULT NULL,
-  `STREET` char(100) DEFAULT NULL,
-  PRIMARY KEY (`ADDRESSID`),
-  KEY `UID` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `se_seller`
+-- Table structure for table `se_usercard`
 --
 
+-- <<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -133,6 +145,15 @@ CREATE TABLE IF NOT EXISTS `seller` (
   `PASSWDCONSIGN` char(32) NOT NULL
 );
 */
+-- =======
+CREATE TABLE IF NOT EXISTS `se_usercard` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USERID` int(11) DEFAULT NULL,
+  `CARDID` char(50) NOT NULL,
+   PRIMARY KEY (`ID`),
+   KEY `se_user_id` (`USERID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+-- >>>>>>> master
 
 --
 -- Constraints for dumped tables
@@ -156,29 +177,36 @@ ALTER TABLE `se_receiveaddress`
 ALTER TABLE `se_seller`
   ADD CONSTRAINT `se_seller_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
+--
+-- Constraints for table `se_usercard`
+--
+
+ALTER TABLE `se_usercard`
+  ADD CONSTRAINT `se_usercard_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `se_user` (`UID`);
 
 /* group 2 */
 
 
 DROP TABLE IF EXISTS se_order_goods;
 CREATE TABLE se_order_goods(
-	oid INTEGER NOT NULL,
-	gid INTEGER NOT NULL,
-	price numeric(15,2) NOT NULL,
-	number INTEGER NOT NULL,
-	name VARCHAR(256),
+	OID INTEGER NOT NULL,
+	GID INTEGER NOT NULL,
+	PRICE numeric(15,2) NOT NULL,
+	AMOUNT INTEGER NOT NULL,
+	NAME VARCHAR(256) CHARACTER SET utf8 NOT NULL,
+    IMGURL VARCHAR(256) CHARACTER SET utf8 NOT NULL,
 	PRIMARY KEY(oid,gid),
-	foreign key (oid) references se_orders(id) on delete cascade,
-	foreign key (gid) references se_goods(id) on delete cascade
+	foreign key (OID) references se_orders(ID) on delete cascade,
+	foreign key (GID) references se_goods(ID) on delete cascade
 );
 DROP TABLE IF EXISTS se_order_operation;
 CREATE TABLE se_order_operation(
-	oid INTEGER NOT NULL,
-	operation char(20) NOT NULL,
-	time date NOT NULL,
-	operator char(20),
-	primary key(oid,time),
-	foreign key (oid) references se_orders(id) on delete cascade
+    	`OID` INTEGER NOT NULL,
+	`OPERATION` char(20) CHARACTER SET utf8 NOT NULL,
+	`TIME` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`OPERATOR` INTEGER NOT NULL DEFAULT 0,
+	primary key(`OID`,`TIME`),
+	foreign key (`OID`) references `se_orders`(`ID`) on delete cascade
 );
 
 /* group 3 */
@@ -357,3 +385,13 @@ CREATE TABLE se_shopping_cart(
 /* group 4 */
 
 /* group 5 */
+DROP TABLE IF EXISTS se_admin;
+CREATE TABLE se_admin (
+  	id int(8) NOT NULL AUTO_INCREMENT,
+  	name char(32) CHARACTER SET utf8 NOT NULL,
+  	pass char(32) CHARACTER SET utf8 NOT NULL,
+  	info char(128) CHARACTER SET utf8,
+  	PRIMARY KEY (id),
+  	UNIQUE KEY (name)
+);
+INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');

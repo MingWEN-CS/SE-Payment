@@ -45,8 +45,8 @@
 					<td>{$total_price}</td>
 				<tr>
 			</tfoot>
-		    <volist name="order_id_list" id="order_id_vo">
-			<input type="hidden" name="order_id_{$i}" value="{$order_id_vo}"/>
+		    <volist name="order_list" id="order_vo">
+			<input type="hidden" name="order_id_{$i}" value="{$order_vo.OID}"/>
 			</volist>
 			<input type="hidden" name="order_count" value="{$order_count}"/>
 		</table>
