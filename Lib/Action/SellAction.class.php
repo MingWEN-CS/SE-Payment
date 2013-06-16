@@ -55,13 +55,17 @@ class SellAction extends Action {
 			if ($goods->create()) {
 				$goods->id = $good_id;
 				$goods->seller_id = $_SESSION['uid'];
-				//change time to timestamp
-				if ($goods->getType() == HotelRoomModel::getType()) {
+				// change time to timestamp
+				switch ($good_type) {
+				case 'general-goods':
+					break;
+				case 'hotel-room':
 					$goods->date_time = strtotime($goods->date_time);
-				}
-				else if ($goods->getType() == AirplaneTicketModel::getType()) {
+					break;
+				case 'airplane-ticket':
 					$goods->departure_date_time = strtotime($goods->departure_date_time);
 					$goods->arrival_date_time = strtotime($goods->arrival_date_time);
+					break;
 				}
 				if (!empty($_FILES)) {
 					$upload = new UploadFile();
@@ -86,17 +90,33 @@ class SellAction extends Action {
 				$this->error($goods->getError());
 			}
 		} else {
-			if ($good_id)
-				$this->assign('good', $goods->where('id = '.$good_id)->find());
+			if ($good_id) {
+				$good = $goods->where('id = '.$good_id)->find();
+				switch ($good_type) {
+				case 'general-goods':
+					break;
+				case 'hotel-room':
+					$good['date_time_selector'] = date('d F Y - h:i a', $good['date_time']);
+					$good['date_time'] = date('Y-m-d H:i:s', $good['date_time']);
+					break;
+				case 'airplane-ticket':
+					$good['departure_date_time_selector'] = date('d F Y - h:i a', $good['departure_date_time']);
+					$good['departure_date_time'] = date('Y-m-d H:i:s', $good['departure_date_time']);
+					$good['arrival_date_time_selector'] = date('d F Y - h:i a', $good['arrival_date_time']);
+					$good['arrival_date_time'] = date('Y-m-d H:i:s', $good['arrival_date_time']);
+					break;
+				}
+				$this->assign('good', $good);
+			}
 			$this->assign('good_type', $good_type);
 			
-			//3 kinds goods' source place options
+			// 3 kinds goods' source place options
 			$this->assign('source_place', GeneralGoodsModel::getSourcePlaceObjectsArray());
 			$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArray());
 			$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArray());
-			//hotel suit options
+			// hotel suit options
 			$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
-			//airplane carbin options
+			// airplane carbin options
 			$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
 			
 			$this->display();
