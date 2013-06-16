@@ -305,15 +305,8 @@ public function audited($oid, $auditorID) {
 $orders->audited($oid);
 }
 
-public function createorder(){
+public function createorder($cartinfo){
     /*cartinfo:good id and good amount list*/
-    /*data for test*/
-    $cartinfo[0]['goods_id']='1';
-    $cartinfo[0]['goods_count']=1;
-    $cartinfo[1]['goods_id']='4';
-    $cartinfo[1]['goods_count']=3;
-    $cartinfo[2]['goods_id']='2';
-    $cartinfo[2]['goods_count']=2;
     for($i=0;$i<count($cartinfo);$i++){
         $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
         $seller_id=$goodinfo['seller_id'];
