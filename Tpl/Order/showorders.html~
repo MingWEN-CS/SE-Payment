@@ -35,7 +35,7 @@
             </thead>
             <tbody>
                 <volist name="myorders" id="each_orders" empty="暂时没有数据">
-		<if condition="$each_orders['GOODS'] neq null">
+<if condition="$each_orders['GOODS'] neq null">
                 <tr class="success">
                     <td>order id：{$each_orders['ID']}</td>
                     <td colspan="6">seller：{$each_orders['SELLER']}</td>
@@ -48,6 +48,24 @@
                          <td>{$each_orders['GOODS'][0]['PRICE']}</td>
                          <td>{$each_orders['GOODS'][0]['AMOUNT']}</td>
                          <td rowspan="{$each_orders['SIZE']}">{$each_orders['TOTALPRICE']}</td>
+<<<<<<< HEAD
+                         <td rowspan="{$each_orders['SIZE']}">
+                             <p> {$each_orders['STATE']}</p>
+                            <p class="text-info"><a href="{$each_orders['detail']}">order detail</a></p>
+                         
+                         </td>
+                         <td rowspan="{$each_orders['SIZE']}">
+<if condition="$each_orders['BUTTONTYPE'] neq null">
+                            <a class="btn btn-small btn-success" style="width:100px" href="{$each_orders['HREF']}">{$each_orders['BUTTONTYPE']}</a>
+<else/></if>
+</td>
+
+<td rowspan="{$each_orders['SIZE']}">
+<if condition="$each_orders['OTHER'] neq null">
+                             <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
+<else/></if>
+</td>
+=======
                          <td rowspan="{$each_orders['SIZE']}">
                              <p>    {$each_orders['STATE']}</p>
                             <p class="text-info"><a href="{$each_orders['detail']}">order detail</a></p>
@@ -64,6 +82,7 @@
                              <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
 				<else/></if>                          
 			 </td>
+>>>>>>> 67cee04ddb55a8e053eeb41c6ae840d3b667899d
                 </tr>
                  <volist name="each_orders['GOODS']" id="each_good" offset="1">
                       <tr>
@@ -76,7 +95,7 @@
                      </tr>
                  </volist>
                 <else/>
-		</if>
+</if>
                 </volist>
             </tbody>
         </table>
