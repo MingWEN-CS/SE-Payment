@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   `TYPE` tinyint(1) NOT NULL,
   `BALANCE` int(11) DEFAULT '0',
   `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `VIP` tinyint(1) DEFAULT '0',
+  `BLACKLIST` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
