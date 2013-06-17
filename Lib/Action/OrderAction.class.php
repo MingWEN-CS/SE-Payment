@@ -125,20 +125,31 @@ get isBuyer from group 1
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
         $operation=D('OrderOperation');
+        /*search orders whose buyer or seller is uid*/
         if(!$isSeller){
             $userorders= $orders->searchIDbyBuyerName($userID);
         } else{
             $userorders= $orders->searchIDbySellerName($userID);
         }
-
+        $orderstate=$this->_get('state');
         $keywords=$this->_get('keywords');
+
         $condition['keywords']=$keywords;
+        /*save the orders id*/
         for($i=0;$i<count($userorders);$i++)
-            $useroid[$i]=$userorders[$i]['ID'];
+        {
+            if($orderstate===null||$orderstate!=null&&$orderstate==$userorders[$i]['STATE'])
+                $useroid[$i]=$userorders[$i]['ID'];
+        }
 
         $condition['userorders']=$useroid;
+
+        /*search the order goods whose oid is in the $useroid and name like the keywords*/
         $searchResult = $ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
+
+        /*delete the order whick is deleted by the user*/
         $searchResult = $this->removeDeletedOrders($searchResult);
+
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {

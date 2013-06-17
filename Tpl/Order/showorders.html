@@ -21,6 +21,7 @@
                     </form>
                 </div>
 
+                <div>                        
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -28,7 +29,21 @@
                             <th>price</th>
                             <th>amount</th>
                             <th>payed</th>
-                            <th>state</th>
+                            <th>
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                       state  <span class="caret"></span>  
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="?state=created">created</li>
+                                        <li><a href="?state=payed">payed</li>
+                                        <li><a href="?state=shipping">shipping</li>
+                                        <li><a href="?state=finished">finished</li>
+                                        <li><a href="?state=canceled">canceled</li>
+                                        <li><a href="?state=refunding">refunding</li>
+                                    </ul>
+                                </div>
+                            </th>
                             <th>operation</th>
                             <th>others</th>
                         </tr>
@@ -82,7 +97,7 @@
                     </tbody>
                 </table>
 
-
+            </div>
             </div>
         </div>
         <include file="../footer"/>
