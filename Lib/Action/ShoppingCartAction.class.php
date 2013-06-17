@@ -1,6 +1,8 @@
 <?php
 import("@.Util.Goods.SourcePlace");
 import("@.Util.Goods.GoodsHelper");
+import("@.Util.User.BuyerHelper");
+import("@.Util.CommonValue");
 
 class ShoppingCartAction extends Action {
 	
@@ -20,8 +22,12 @@ class ShoppingCartAction extends Action {
 		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->select();
 		$resultArray = array();
 		$static = array('price' => 0, 'count' => 0);
+		$isVip = BuyerHelper::getIsVip($user_id);
 		foreach($itemArray as $item) {
 			$newGoods = GoodsHelper::getBasicGoodsInfoOfId($item[good_id]);
+			if($isVip) {
+				$newGoods[price] = CommonValue::getVipDiscount() * $newGoods[price];
+			}
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
 			$static['price'] += $newGoods[price] * $item[good_count];
 			$static['count'] += $item[good_count];

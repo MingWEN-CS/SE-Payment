@@ -58,12 +58,17 @@
 						    <div class="span1">
 								<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
 							</div>
-							<div class="span8">
+							<div class="span6">
 								<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
 							</div>
-							<div class="span1">
+							<div class="span3">
 							    <div class="row">
-									{$each_goods.price}￥
+									<if condition='$is_vip eq 1'>
+										<s>{$each_goods.price}￥</s>
+										<span>VIP price:{$each_goods.vip_price}￥</span>
+									<else />
+										{$each_goods.price}￥
+									</if>
 								</div>
 							    <div class="row">
 									score:{$each_goods.score}
@@ -129,7 +134,7 @@
 									<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
 								</div>
 							</div>
-							<div class="span8">
+							<div class="span6">
 								<div class="row">
 									<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
 								</div>
@@ -137,9 +142,14 @@
 									<small>{$each_goods.place} - {$each_goods.date_time}</small>
 								</div>
 							</div>
-							<div class="span1">
+							<div class="span3">
 							    <div class="row">
-									{$each_goods.price}￥
+									<if condition='$is_vip eq 1'>
+										<s>{$each_goods.price}￥</s>
+										<span>VIP price:{$each_goods.vip_price}￥</span>
+									<else />
+										{$each_goods.price}￥
+									</if>
 								</div>
 							    <div class="row">
 									score:{$each_goods.score}
@@ -217,7 +227,7 @@
 						    <div class="span1">
 								<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
 							</div>
-							<div class="span8">
+							<div class="span6">
 								<div class="row">
 									<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
 								</div>
@@ -225,9 +235,14 @@
 									<small>{$each_goods.departure_place} - {$each_goods.departure_date_time} ==> {$each_goods.arrival_place} - {$each_goods.arrival_date_time}</small>
 								</div>
 							</div>
-							<div class="span1">
+							<div class="span3">
 							    <div class="row">
-									{$each_goods.price}￥
+									<if condition='$is_vip eq 1'>
+										<s>{$each_goods.price}￥</s>
+										<span>VIP price:{$each_goods.vip_price}￥</span>
+									<else />
+										{$each_goods.price}￥
+									</if>
 								</div>
 							    <div class="row">
 									score:{$each_goods.score}

@@ -2,6 +2,7 @@
 import("@.Util.Goods.SourcePlace");
 import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
+import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
 
 class PurchaseAction extends Action {
@@ -51,9 +52,11 @@ class PurchaseAction extends Action {
 		}
 		for($i = 0; $i < count($searchResult);$i++) {
 			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
+			$searchResult[$i][vip_price] = $searchResult[$i][price] * CommonValue::getVipDiscount();
 		}
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
+		$this->assign('is_vip', BuyerHelper::getIsVip($userId));
 		//3 kinds goods' sort option
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArrayWithHead());
 		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArrayWithHead());
@@ -85,8 +88,8 @@ class PurchaseAction extends Action {
 		$userId = $this->_session('uid');
 		if (IS_POST) {
 			$buyer = M('Buyer');
-			if (!$user_id || !$buyer->where('uid = '.$user_id)->find()) {
-		    	$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
+			if (!$userId || !$buyer->where('uid = '.$userId)->find()) {
+		    	$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!'.$userId, 0);
 				return;
 			}
 			else {
@@ -147,6 +150,8 @@ class PurchaseAction extends Action {
 			$this->assign('feedbacks', $feedbacksFull);
 			$good[score] = intval($good[score]);
 			$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
+			$good[vip_price] = $good[price] * CommonValue::getVipDiscount();
+			$this->assign('is_vip', BuyerHelper::getIsVip($userId));
 			$this->assign('goods_info', $good);
 			$this->assign('goods_type', $type);
 			$this->assign('general_goods_type', GeneralGoodsModel::getType());
@@ -160,6 +165,7 @@ class PurchaseAction extends Action {
 		//Session info
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
+		$is_vip = BuyerHelper::getIsVip($uid);
 		
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
@@ -176,6 +182,10 @@ class PurchaseAction extends Action {
 		for($i = 0; $i < $list_count; $i++) {
 			$goods_id = $commodity_list[2*$i]['good_id'];
 			$goods_info = GoodsHelper::getBasicGoodsInfoOfId($goods_id);
+			//vip discount
+			if($is_vip) {
+				$goods_info['price'] = $goods_info['price'] * CommonValue::getVipDiscount();
+			}
 			$goods_info['count'] = $commodity_list[2*$i+1]['good_count'];
 			$goods_info_list[$i] = $goods_info;
 			$goods_list_int[$i]['goods_id'] = $goods_id;
