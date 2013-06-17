@@ -87,14 +87,18 @@ $('#add').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
-		if (!data.status){
-			alert("Fail to Add!");
-		}
-		else {
-			alert("Success!");
-		}
+   if (database == "Vip"){
+   	alert("postVIP");
+   	vip = 1;
+   	alert(vip);
+ 	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 	
+   } else {
+	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+		alert(result.info);
 	},'json');
+    }
 })
 
 $('#select').live('click', function(){
@@ -107,17 +111,15 @@ $('#select').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
-		if (!data.status){
-			alert("Fail to Select!");
-			return false;
-		}
-		else {
-			alert(data.info);
-			return true;
+   if (database == "Vip"){
+        vip = "1";
+    }
+	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		for (var i in result.data){
+			alert(result.data[i]["USERNAME"]);
 		}
 	},'json');
-})
+ })
 $('#delete').live('click', function(){
    var name = $('#Name').val();
    var password = $('#Password').val();
@@ -128,16 +130,18 @@ $('#delete').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
-		if (!data.status){
-			alert("Fail to Delete!");
-			return false;
-		}
-		else {
-			alert("Success!");
-			return true;
-		}
+   if (database == "Vip"){
+     alert("postVIP");
+   	vip = 0;
+   	alert(vip);
+ 	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 	
+   } else {
+	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+		alert(result.info);
 	},'json');
+    }
 })
 
 

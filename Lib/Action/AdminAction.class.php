@@ -121,10 +121,26 @@ class AdminAction extends Action {
             if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
             if ($this->_post('blacklist')) $condition['BLACKLIST'] = $this->_post('blacklist');
         }
-        $data['VIP'] = $vip;
+        $data['VIP'] = $this->_post('vip');
         $status = $DB->where($condition)->save($data);
         if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
         else $this->ajaxReturn('', 'Set VIP Failed', 0);
+    }
+
+    Public function postVRN() {
+        $DB = D('Realname');
+        $condition['id'] = $this->_post('id');
+        $data = $DB->where($condition)->find();
+        if ($data['name'] == $this->_post('name')) return $this->ajaxReturn("", "TRUE", 1);
+        else return $this->ajaxReturn("", "FALSE", 0);
+    }
+
+    Public function postVC() {
+        $DB = D('Card');
+        $condition['id'] = $this->_post('id');
+        $data = $DB->where($condition)->find();
+        if ($data['name'] == $this->_post('name')) return $this->ajaxReturn("", "TRUE", 1);
+        else return $this->ajaxReturn("", "FALSE", 0);
     }
 }
 ?>
