@@ -244,11 +244,14 @@ get isBuyer from group 1
         }
 	  
         if($authen==1){
+            $userdb=D('User');
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "pay", $userID);
 
             $orders=D('Orders');
             $orders->changeState($oid, 'payed');
+            $orderinfo=$orders->findorderbyid($oid);
+            $userdb->moneyTransfer($orderinfo['BUYER'],$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);
             $this->success('付款成功', U('Order/showorders'));
         } else{
             $this->error('付款失败，密码错误', U('Order/showorders'));
