@@ -28,63 +28,63 @@
                             <th>price</th>
                             <th>amount</th>
                             <th>payed</th>
-                    <th>state</th>
-                    <th>operation</th>
-                    <th>others</th>
-                </tr>
-            </thead>
-            <tbody>
-                <volist name="myorders" id="each_orders" empty="暂时没有数据">
-<if condition="$each_orders['GOODS'] neq null">
-                <tr class="success">
-                    <td colspan="7">order id：{$each_orders['ID']}
-                      &nbsp;  seller：{$each_orders['SELLER']}
-                   &nbsp;  closing time: {$each_orders['createtime']}</td> 
-                </tr>
-                <tr>
-                    <td>
-                        <a href="{$each_orders['detail']}"><img src="{$each_orders['GOODS'][0]['IMGURL']}"></img></a>
-                        {$each_orders['GOODS'][0]['NAME']}
-                    </td>
-                         <td>{$each_orders['GOODS'][0]['PRICE']}</td>
-                         <td>{$each_orders['GOODS'][0]['AMOUNT']}</td>
-                         <td rowspan="{$each_orders['SIZE']}">{$each_orders['TOTALPRICE']}</td>
-                         <td rowspan="{$each_orders['SIZE']}">
-                             <p> {$each_orders['STATE']}</p>
-                            <p class="text-info"><a href="{$each_orders['detail']}">order detail</a></p>
-                         
-                         </td>
-                         <td rowspan="{$each_orders['SIZE']}">
-<if condition="$each_orders['BUTTONTYPE'] neq null">
-                            <a class="btn btn-small btn-success" style="width:100px" href="{$each_orders['HREF']}">{$each_orders['BUTTONTYPE']}</a>
-<else/> &nbsp;   </if>
-</td>
+                            <th>state</th>
+                            <th>operation</th>
+                            <th>others</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <volist name="myorders" id="each_orders" empty="暂时没有数据">
+                        <if condition="$each_orders['GOODS'] neq null">
+                        <tr class="success">
+                            <td colspan="7">order id：{$each_orders['ID']}
+                                &nbsp;  seller：{$each_orders['SELLER']}
+                                &nbsp;  closing time: {$each_orders['createtime']}</td> 
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{$each_orders['detail']}"><img src="{$each_orders['GOODS'][0]['IMGURL']}"></img></a>
+                                {$each_orders['GOODS'][0]['NAME']}
+                            </td>
+                            <td>{$each_orders['GOODS'][0]['PRICE']}</td>
+                            <td>{$each_orders['GOODS'][0]['AMOUNT']}</td>
+                            <td rowspan="{$each_orders['SIZE']}">{$each_orders['TOTALPRICE']}</td>
+                            <td rowspan="{$each_orders['SIZE']}">
+                                <p> {$each_orders['STATE']}</p>
+                                <p class="text-info"><a href="{$each_orders['detail']}">order detail</a></p>
 
-<td rowspan="{$each_orders['SIZE']}">
-<if condition="$each_orders['OTHER'] neq null">
-                             <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
-<else/>   &nbsp; </if>
-</td>
-                </tr>
-                 <volist name="each_orders['GOODS']" id="each_good" offset="1">
-                      <tr>
+                            </td>
+                            <td rowspan="{$each_orders['SIZE']}">
+                                <if condition="$each_orders['BUTTONTYPE'] neq null">
+                                <a class="btn btn-small btn-success" style="width:100px" href="{$each_orders['HREF']}">{$each_orders['BUTTONTYPE']}</a>
+                                <else/> &nbsp;   </if>
+                            </td>
 
-                          <td>
-                              <a href="{$each_orders['detail']}"><img src="{$each_good['IMGURL']}"></img></a>
-                              {$each_good['NAME']}</td>
-                         <td>{$each_good['PRICE']}</td>
-                         <td>{$each_good['AMOUNT']}</td>
-                     </tr>
-                 </volist>
-                <else/>
-</if>
-                </volist>
-            </tbody>
-        </table>
+                            <td rowspan="{$each_orders['SIZE']}">
+                                <if condition="$each_orders['OTHER'] neq null">
+                                <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
+                                <else/>   &nbsp; </if>
+                            </td>
+                        </tr>
+                        <volist name="each_orders['GOODS']" id="each_good" offset="1">
+                        <tr>
+
+                            <td>
+                                <a href="{$each_orders['detail']}"><img src="{$each_good['IMGURL']}"></img></a>
+                                {$each_good['NAME']}</td>
+                            <td>{$each_good['PRICE']}</td>
+                            <td>{$each_good['AMOUNT']}</td>
+                        </tr>
+                        </volist>
+                        <else/>
+                        </if>
+                        </volist>
+                    </tbody>
+                </table>
 
 
-</div>
-</div>
-<include file="../footer"/>
+            </div>
+        </div>
+        <include file="../footer"/>
     </body>
 </html>

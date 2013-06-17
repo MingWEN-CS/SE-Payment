@@ -159,7 +159,7 @@ get isBuyer from group 1
             }
             if($state==="comment")
             {
-                $orderresult[$i]['HREF']='__APP__/Purchase/comment';
+                $orderresult[$i]['HREF']='__APP__/Purchase/comment?oid='.$searchResult[$i]['OID'];
             }
 
             switch($orderresult[$i]['STATE']){
@@ -198,7 +198,7 @@ get isBuyer from group 1
         }
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
-         $this->display();
+        $this->display();
     }
 
 
@@ -313,9 +313,9 @@ get isBuyer from group 1
             $orders=D('Orders');
             $orders->changeState($oid, 'finished');
 
-           // $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-           // $userdb=D('User');
-           // $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
+            // $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+            // $userdb=D('User');
+            // $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
 
             $this->success('确认成功', U('Order/showorders'));
         } else{
@@ -336,9 +336,9 @@ get isBuyer from group 1
         $orders=D('Orders');
         $orders->changeState($oid, 'refunded');
 
-            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-            $userdb=D('User');
-            $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
+        $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+        $userdb=D('User');
+        $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
 
         $this->success('确认退款', U('Order/showorders'));
     }
