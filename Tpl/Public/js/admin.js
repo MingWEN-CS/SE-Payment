@@ -2,8 +2,12 @@ $(function () {
 	$( '#login-btn' ).click( function(){
 		var adminname = $( 'input[name=adminname]' ).val();
 		var password = $( 'input[name=password]' ).val();
-		if ( adminname == '' || password == '') {
-			$('#loginInfo').text('Information is not complete!').addClass('alert-error').slideDown();
+		if ( adminname == '' ) {
+			$('#loginInfo').text('Please Input Admin Name').addClass('alert-error').slideDown();
+			return false;
+		}
+		if ( password == '') {
+			$('#loginInfo').text('Please Input Password').addClass('alert-error').slideDown();
 			return false;
 		}
 		else {
