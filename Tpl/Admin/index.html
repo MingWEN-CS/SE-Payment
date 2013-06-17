@@ -1,4 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
-<h1>HI</h1>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Management System</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Library -->
+    	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+		<script src="../Public/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+	    <script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+		<!-- Application -->
+		<link href="../Public/css/group5.css" rel="stylesheet" />
+		<script src="../Public/js/group5.js"></script>
+	</head>
+	<body>
+		<header class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a id="title" class="brand" href="#"><img src="../Public/img/group5/logo.png"> Management System</a>
+					<ul class="nav pull-right">
+						<li>
+							<a id="logout_btn" href="#"> <i class="icon-cog icon-white"></i>Logout </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<div id="container" class="container-fluid">
+			<div id="row" class="row-fluid">
+				<!-- operation list panel -->
+				<div id="operation_list" class="well span3">
+					<p style="font-size:20px">Administrator Operations</p>
+					<ul id="operation_list_body" class="nav nav-tabs nav-stacked">
+						<li><a id="admin" class="operation_item">Admin Maintain</a></li>
+						<li><a id="user" class="operation_item">User Maintain</a></li>
+						<li><a id="vip" class="operation_item">VIP Maintain</a></li>
+						<li><a id="verify" class="operation_item">Realname Verification</a></li>
+						<li><a id="blacklist" class="operation_item">Blacklist Maintain</a></li>
+					</ul>
+				</div>
+				<!-- param list panel -->
+				<div id="param_list" class="well span4">
+					<div id="param_list_container" class="white_well">
+						<form class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">Attributions</label>
+							</div>
+						</form>
+						<form id="param_list_body" class="form-horizontal"></form>
+					</div>
+					<div  class="btn btn-inverse param_list_btn">
+						Add
+					</div>
+					<div  class="btn btn-inverse param_list_btn">
+						Select
+					</div>
+					<div id="delete_option" class="white_well">
+						<div class="row span12">
+							<div class="control-group span6">
+								<label class="control-label">ID</label>
+								<div class="controls">
+									<input id="texture_name" class="span12"/>
+								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Name</label>
+							<div class="controls">
+								    <input id="texture_info" rows="2" class="span6">
+							</div>
+						</div>
+					</div>
+
+					<div class="btn btn-inverse param_list_btn">
+						Delete
+					</div>
+				</div>
+				<!-- preview image panel -->
+				<div id="result_list" class="well span4">
+					<input id="search_input" type="text" class="search-query" placeholder="Search">
+					<hr>
+					<ul id="search_list_body" class="nav nav-tabs nav-stacked">
+					</ul>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<hr>
+			<p>
+				&copy; xhz 2013
+			</p>
+		</footer>
+	</body>
 </html>
+
+<!-- operation alert -->
+<div id="alert" class="alert alert-info hide"></div>
