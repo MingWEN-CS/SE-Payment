@@ -28,22 +28,22 @@ class AdminAction extends Action {
         $this->display();
     }
 
-    Public function test() {
-        $this->display();
-        $DB = D('Admin');
-        //insert
-        $data['name'] = "ddl";
-        $data['password'] = '123';
-        $data['info'] = "test";
-        $DB->add($data);
-        //select
-        $condition['name'] = "root";
-        $result = $DB->where($condition)->select();
-        var_dump($result);
-        //delete
-        $condition['name'] = "ddl";
-        $DB->where($condition)->delete();
-    }
+    // Public function test() {
+    //     $this->display();
+    //     $DB = D('Admin');
+    //     //insert
+    //     $data['name'] = "ddl";
+    //     $data['password'] = '123';
+    //     $data['info'] = "test";
+    //     $DB->add($data);
+    //     //select
+    //     $condition['name'] = "root";
+    //     $result = $DB->where($condition)->select();
+    //     var_dump($result);
+    //     //delete
+    //     $condition['name'] = "ddl";
+    //     $DB->where($condition)->delete();
+    // }
 
     Public function postAdd() {
         $database = $this->_post('database');
@@ -74,6 +74,7 @@ class AdminAction extends Action {
         if ($database == "Admin") {
             if ($name) $condition['name'] = $name;
             if ($info) $condition['info'] = $info;
+            var_dump(1);
         }
         if ($database == "User") {
             if ($name) $condition['USERNAME'] = $name;
@@ -84,9 +85,10 @@ class AdminAction extends Action {
             if ($vip) $condition['VIP'] = $vip;
             if ($blacklist) $condition['BLACKLIST'] = $blacklist;
         }
+        var_dump(2);
         $result = $DB->where($condition)->select();
-        if ($result) $this->ajaxReturn('', $result, 1);
-        else $this->ajaxReturn('', 'No Data', 0);
+        if ($result != "") $this->ajaxReturn($result, "Select Successfully", 1);
+        else $this->ajaxReturn($result, 'Select Failed', 0);
     }
 
     Public function postDelete() {
@@ -105,9 +107,26 @@ class AdminAction extends Action {
             if ($vip) $condition['VIP'] = $vip;
             if ($blacklist) $condition['BLACKLIST'] = $blacklist;
         }
-        $DB->where($condition)->delete();
+        $state = $DB->where($condition)->delete();
         if ($state) $this->ajaxReturn('', 'Delete Successfully', 1);
         else $this->ajaxReturn('', 'Delete Failed', 0);
+    }
+
+    Public function postSetVIP() {
+        $database = $this->_post('database');
+        $DB = D($database);
+        if ($database == "User") {
+            if ($name) $condition['USERNAME'] = $name;
+            if ($type) $condition['TYPE'] = $type;
+            if ($email) $condition['EMAIL'] = $email;
+            if ($balance) $condition['BALANCE'] = $balance;
+            if ($phone) $condition['PHONE'] = $phone;
+            if ($blacklist) $condition['BLACKLIST'] = $blacklist;
+        }
+        $data['VIP'] = $vip;
+        $state = $DB->where($condition)->save($data);
+        if ($state) $this->ajaxReturn('', 'Set VIP Successfully', 1);
+        else $this->ajaxReturn('', 'Set VIP Failed', 0);
     }
 }
 ?>
