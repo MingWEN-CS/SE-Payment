@@ -7,19 +7,28 @@ class AdminModel extends Model{
 	);
 
 	public function addAdmin($name, $password, $info){
-		$this->id = id;
-		$this->name = name;
-		$this->password = password;
-		$this->info = info;
-		return $this->add();
+		$data['name'] = $name;
+		$data['password'] = $password;
+		$data['info'] = $info;
+		return $this->add($data);
 	}	
 
-	public function selectAdmin(){
-		return $this->select();
+	public function selectAdmin($id, $name, $info){
+		if ($id) {
+			$condition['id'] = $id;
+		}
+		if ($name) {
+			$condition['name'] = $name;
+		}
+		if ($info) {
+			$condition['info'] = $info;
+		}
+		return $this->where($condition)->select();
 	}
 
-	public function deleteAdmin($name){
-		return $this->where('name = "'.$name.'"')->delete();
+	public function deleteAdmin($id){
+		$condition['id'] = $id;
+		return $this->where($condition)->delete();
 	}
 }
 ?>
