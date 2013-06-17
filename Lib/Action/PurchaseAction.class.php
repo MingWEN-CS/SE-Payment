@@ -225,7 +225,7 @@ class PurchaseAction extends Action {
 				$result = $Order->where('ID='.$order_id)->save($data);
 			}
 		
-			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders');
+			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders/');
 		}
 		//cancel order
 		else {
