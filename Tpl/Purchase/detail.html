@@ -53,11 +53,19 @@
 					<dt>stock</dt>
 					<dd>{$goods_info[stock]}</dd>
 					<dt>price</dt>
-					<dd>{$goods_info[price]}￥</dd>
+					<dd>
+					<if condition='$is_vip eq 1'>
+						<s>{$goods_info[price]}￥</s>
+						<span>   </span>
+						VIP price:{$goods_info[vip_price]}￥
+					<else />
+						{$goods_info[price]}￥
+					</if>
+					</dd>
 					<if condition='$goods_type neq $airplane_ticket_type'>
 						<dt>place</dt>
 						<dd>{$goods_info[place]}</dd>
-						<if condition='$goods_type neq $hotel_room_ticket'>
+						<if condition='$goods_type eq $hotel_room_ticket'>
 							<dt>date and time</dt>
 							<dd>{$goods_info[date_time]}</dd>
 						</if>

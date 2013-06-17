@@ -293,9 +293,8 @@ class PurchaseAction extends Action {
 				$OrderGoods->where($condition)->delete();
 				$Order->delete($order_id);
 			}
-			//$this->success('Your Order is canceled', '__APP__');
+			$this->success('Your Order is canceled', '__APP__');
 		}
-		$this->display();
 	}
 	public function comment() {
 		$order_id_list = $this->_post();
