@@ -87,14 +87,12 @@ $('#add').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, databse:database}, function( data ){
+	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
 		if (!data.status){
 			alert("Fail to Add!");
-			return false;
 		}
 		else {
 			alert("Success!");
-			return true;
 		}
 	},'json');
 })
@@ -109,13 +107,13 @@ $('#select').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, databse:database}, function( data ){
+	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
 		if (!data.status){
 			alert("Fail to Select!");
 			return false;
 		}
 		else {
-			alert("Success!");
+			alert(data.info);
 			return true;
 		}
 	},'json');
@@ -130,7 +128,7 @@ $('#delete').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, databse:database}, function( data ){
+	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( data ){
 		if (!data.status){
 			alert("Fail to Delete!");
 			return false;

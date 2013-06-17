@@ -40,9 +40,9 @@ class AdminAction extends Action {
     //     $condition['name'] = "root";
     //     $result = $DB->where($condition)->select();
     //     var_dump($result);
-    //     //delete
-    //     $condition['name'] = "ddl";
-    //     $DB->where($condition)->delete();
+    //     // //delete
+    //     // $condition['name'] = "ddl";
+    //     // $DB->where($condition)->delete();
     // }
 
     Public function postAdd() {
@@ -63,8 +63,8 @@ class AdminAction extends Action {
             $data['VIP'] = $this->_post('vip');
             $data['BLACKLIST'] = $this->_post('blacklist');
         }
-        $state = $DB->add($data);
-        if ($state) $this->ajaxReturn('', 'Add Successfully', 1);
+        $status = $DB->add($data);
+        if ($status) $this->ajaxReturn('', 'Add Successfully', 1);
         else $this->ajaxReturn('', 'Add Failed', 0);
     }
 
@@ -72,22 +72,20 @@ class AdminAction extends Action {
         $database = $this->_post('database');
         $DB = D($database);
         if ($database == "Admin") {
-            if ($name) $condition['name'] = $name;
-            if ($info) $condition['info'] = $info;
-            var_dump(1);
+            if ($this->_post('name')) $condition['name'] = $this->_post('name');
+            if ($this->_post('info')) $condition['info'] = $this->_post('info');
         }
         if ($database == "User") {
-            if ($name) $condition['USERNAME'] = $name;
-            if ($type) $condition['TYPE'] = $type;
-            if ($email) $condition['EMAIL'] = $email;
-            if ($balance) $condition['BALANCE'] = $balance;
-            if ($phone) $condition['PHONE'] = $phone;
-            if ($vip) $condition['VIP'] = $vip;
-            if ($blacklist) $condition['BLACKLIST'] = $blacklist;
+            if ($this->_post('name')) $condition['USERNAME'] = $this->_post('name');
+            if ($this->_post('type')) $condition['TYPE'] = $this->_post('type');
+            if ($this->_post('email')) $condition['EMAIL'] = $this->_post('email');
+            if ($this->_post('balance')) $condition['BALANCE'] = $this->_post('balance');
+            if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
+            if ($this->_post('vip')) $condition['VIP'] = $this->_post('vip');
+            if ($this->_post('blacklist')) $condition['BLACKLIST'] = $this->_post('blacklist');
         }
-        var_dump(2);
         $result = $DB->where($condition)->select();
-        if ($result != "") $this->ajaxReturn($result, "Select Successfully", 1);
+        if ($result) $this->ajaxReturn($result, "Select Successfully", 1);
         else $this->ajaxReturn($result, 'Select Failed', 0);
     }
 
@@ -95,20 +93,20 @@ class AdminAction extends Action {
         $database = $this->_post('database');
         $DB = D($database);
         if ($database == "Admin") {
-            if ($name) $condition['name'] = $name;
-            if ($info) $condition['info'] = $info;
+            if ($this->_post('name')) $condition['name'] = $this->_post('name');
+            if ($this->_post('info')) $condition['info'] = $this->_post('info');
         }
         if ($database == "User") {
-            if ($name) $condition['USERNAME'] = $name;
-            if ($type) $condition['TYPE'] = $type;
-            if ($email) $condition['EMAIL'] = $email;
-            if ($balance) $condition['BALANCE'] = $balance;
-            if ($phone) $condition['PHONE'] = $phone;
-            if ($vip) $condition['VIP'] = $vip;
-            if ($blacklist) $condition['BLACKLIST'] = $blacklist;
+            if ($this->_post('name')) $condition['USERNAME'] = $this->_post('name');
+            if ($this->_post('type')) $condition['TYPE'] = $this->_post('type');
+            if ($this->_post('email')) $condition['EMAIL'] = $this->_post('email');
+            if ($this->_post('balance')) $condition['BALANCE'] = $this->_post('balance');
+            if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
+            if ($this->_post('vip')) $condition['VIP'] = $this->_post('vip');
+            if ($this->_post('blacklist')) $condition['BLACKLIST'] = $this->_post('blacklist');
         }
-        $state = $DB->where($condition)->delete();
-        if ($state) $this->ajaxReturn('', 'Delete Successfully', 1);
+        $status = $DB->where($condition)->delete();
+        if ($status) $this->ajaxReturn('', 'Delete Successfully', 1);
         else $this->ajaxReturn('', 'Delete Failed', 0);
     }
 
@@ -116,16 +114,16 @@ class AdminAction extends Action {
         $database = $this->_post('database');
         $DB = D($database);
         if ($database == "User") {
-            if ($name) $condition['USERNAME'] = $name;
-            if ($type) $condition['TYPE'] = $type;
-            if ($email) $condition['EMAIL'] = $email;
-            if ($balance) $condition['BALANCE'] = $balance;
-            if ($phone) $condition['PHONE'] = $phone;
-            if ($blacklist) $condition['BLACKLIST'] = $blacklist;
+            if ($this->_post('name')) $condition['USERNAME'] = $this->_post('name');
+            if ($this->_post('type')) $condition['TYPE'] = $this->_post('type');
+            if ($this->_post('email')) $condition['EMAIL'] = $this->_post('email');
+            if ($this->_post('balance')) $condition['BALANCE'] = $this->_post('balance');
+            if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
+            if ($this->_post('blacklist')) $condition['BLACKLIST'] = $this->_post('blacklist');
         }
         $data['VIP'] = $vip;
-        $state = $DB->where($condition)->save($data);
-        if ($state) $this->ajaxReturn('', 'Set VIP Successfully', 1);
+        $status = $DB->where($condition)->save($data);
+        if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
         else $this->ajaxReturn('', 'Set VIP Failed', 0);
     }
 }
