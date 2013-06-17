@@ -26,7 +26,7 @@ class OrderAction extends Action{
             case 'auditing':
             case 'audited':
             case 'failed':
-            case 'finished': return null;
+            case 'finished': return "comment";
             default: return 'wait';
             }
         } else {	//seller state
@@ -157,6 +157,10 @@ get isBuyer from group 1
             {
                 $orderresult[$i]['HREF']='./back';	
             }
+            if($state==="comment")
+            {
+                $orderresult[$i]['HREF']='__APP__/Purchase/comment';
+            }
 
             switch($orderresult[$i]['STATE']){
             case 'created':{
@@ -194,7 +198,7 @@ get isBuyer from group 1
         }
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
-        $this->display();
+         $this->display();
     }
 
 
@@ -223,9 +227,9 @@ get isBuyer from group 1
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
         $userID = $this->getUserID();
-	//var_dump($userID);
+
         /*get authentication from group 1*/
- 	$usertype=$this->getusertype($userID);
+        $usertype=$this->getusertype($userID);
         $authen=0;
         if(!$usertype)
         {
@@ -242,16 +246,17 @@ get isBuyer from group 1
             if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
                 $authen=1;
         }
-	  
+
         if($authen==1){
-            $userdb=D('User');
-            $operations = D('OrderOperation');
+            $operations = D('OrderOperation');/*change operation*/
             $operations->addOperation($oid, "pay", $userID);
 
-            $orders=D('Orders');
+            $orders=D('Orders');/*change order state*/
             $orders->changeState($oid, 'payed');
-            $orderinfo=$orders->findorderbyid($oid);
-            $userdb->moneyTransfer($orderinfo['BUYER'],$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);
+
+            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+            $userdb=D('User');
+            $userdb->moneyTransfer($orderinfo['BUYER'],$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
             $this->success('付款成功', U('Order/showorders'));
         } else{
             $this->error('付款失败，密码错误', U('Order/showorders'));
@@ -283,7 +288,7 @@ get isBuyer from group 1
         $userID = $this->getUserID();
 
         /*get authentication from group 1*/
-        
+
         $usertype=$this->getusertype($userID);
         $authen=0;
         if(!$usertype)
@@ -304,8 +309,14 @@ get isBuyer from group 1
         if($authen){
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "confirm_receipt", $userID);
+
             $orders=D('Orders');
             $orders->changeState($oid, 'finished');
+
+           // $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+           // $userdb=D('User');
+           // $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
+
             $this->success('确认成功', U('Order/showorders'));
         } else{
             $this->error('确认失败，密码错误', U('Order/showorders'));
@@ -325,6 +336,9 @@ get isBuyer from group 1
         $orders=D('Orders');
         $orders->changeState($oid, 'refunded');
 
+            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+            $userdb=D('User');
+            $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
 
         $this->success('确认退款', U('Order/showorders'));
     }
@@ -448,40 +462,40 @@ get isBuyer from group 1
         if($isbuyer)
         {   if($orderresult['BUYER']!=$userid)
         {  $this->display("showorders");
-                 return;
+        return;
         }}
         else{
             if($orderresult['SELLER']!=$userid)
             {     $this->display("showorders");
-                return;
-        }}
-        
-        $goods=D('OrderGoods');
-        $goodsresult=$goods->searchbyid($oid);
-        $linecount=count($goodsresult);
-        $time=$operation->getoptime($oid);
-        $style="width:25%";
-        if($time['pay']!=null)
-            $style="width:50%";
-        if($time['ship']!=null)
-            $style="width:75%";
-        if($time['confirm']!=null)
-            $style="width:100%";
+            return;
+            }}
 
-        $orderstate=$orderresult['STATE'];
+                $goods=D('OrderGoods');
+            $goodsresult=$goods->searchbyid($oid);
+            $linecount=count($goodsresult);
+            $time=$operation->getoptime($oid);
+            $style="width:25%";
+            if($time['pay']!=null)
+                $style="width:50%";
+            if($time['ship']!=null)
+                $style="width:75%";
+            if($time['confirm']!=null)
+                $style="width:100%";
 
-        $receiveaddress=D('receiveaddress');
-        $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
-        $addressinfo=$receiveaddress->where($addresscondition)->find();
+            $orderstate=$orderresult['STATE'];
 
-        $content=$this->getshowcontent($orderstate,$isbuyer);
-        $this->assign('prostyle',$style);
-        $this->assign('optime',$time);
-        $this->assign('goods',$goodsresult);
-        $this->assign('goodsize',$linecount);
-        $this->assign('order',$orderresult);
-        $this->assign('addressinfo',$addressinfo);
-        $this->assign('content',$content);
-        $this->display();
+            $receiveaddress=D('receiveaddress');
+            $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
+            $addressinfo=$receiveaddress->where($addresscondition)->find();
+
+            $content=$this->getshowcontent($orderstate,$isbuyer);
+            $this->assign('prostyle',$style);
+            $this->assign('optime',$time);
+            $this->assign('goods',$goodsresult);
+            $this->assign('goodsize',$linecount);
+            $this->assign('order',$orderresult);
+            $this->assign('addressinfo',$addressinfo);
+            $this->assign('content',$content);
+            $this->display();
     }
 }
