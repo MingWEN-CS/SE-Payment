@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS payment;
 CREATE DATABASE payment;
 /* if failed on following CREATE USER sql due to exits laolao already just delete it and redo >.<*/
 -- CREATE USER 'laolao'@'localhost' IDENTIFIED BY 'laolao';
-GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
+-- GRANT ALL PRIVILEGES ON payment.* TO 'laolao'@'localhost';
 USE payment;
 /* if you are using sqlite please start here */
 /* key tables has referenced foreign keys*/
@@ -44,7 +44,7 @@ CREATE TABLE se_goods(
 --
 
 CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
-  `ADDRESSID` char(50) NOT NULL DEFAULT '',
+  `ADDRESSID` INT NOT NULL AUTO_INCREMENT,
   `UID` int(11) NOT NULL,
   `RECEIVERNAME` char(50) DEFAULT NULL,
   `RECEIVERPHONE` char(20) DEFAULT NULL,
@@ -64,10 +64,10 @@ CREATE TABLE se_orders(
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	BUYER INT(10) NOT NULL,
 	SELLER INT(10) NOT NULL,
-	TOTALPRICE numeric(15,2),
-    	ADDRESSID char(50) CHARACTER SET utf8 NOT NULL,
+	TOTALPRICE numeric(15,2) NOT NULL,
+    	ADDRESSID INT DEFAULT NULL,
 	ISDELETE varchar(5) CHARACTER SET utf8 NOT NULL DEFAULT 'NO',
-	STATE char(20) CHARACTER SET utf8 NOT NULL,
+	STATE char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'created',
    	 ISAUDIT varchar(5) CHARACTER SET utf8 NOT NULL DEFAULT 'NO',
 	foreign key (BUYER) references `se_user`(`UID`) on delete cascade,
 	foreign key (SELLER) references `se_user`(`UID`) on delete cascade,
@@ -156,6 +156,7 @@ CREATE TABLE se_order_goods(
 	PRICE numeric(15,2) NOT NULL,
 	AMOUNT INTEGER NOT NULL,
 	NAME VARCHAR(256) CHARACTER SET utf8 NOT NULL,
+    IMGURL VARCHAR(256) CHARACTER SET utf8 NOT NULL,
 	PRIMARY KEY(oid,gid),
 	foreign key (OID) references se_orders(ID) on delete cascade,
 	foreign key (GID) references se_goods(ID) on delete cascade
@@ -163,9 +164,9 @@ CREATE TABLE se_order_goods(
 DROP TABLE IF EXISTS se_order_operation;
 CREATE TABLE se_order_operation(
     	`OID` INTEGER NOT NULL,
-	`OPERAION` char(20) CHARACTER SET utf8 NOT NULL,
+	`OPERATION` char(20) CHARACTER SET utf8 NOT NULL,
 	`TIME` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`OPERATOR` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'system',
+	`OPERATOR` INTEGER NOT NULL DEFAULT 0,
 	primary key(`OID`,`TIME`),
 	foreign key (`OID`) references `se_orders`(`ID`) on delete cascade
 );
@@ -285,3 +286,14 @@ CREATE TABLE se_shopping_cart(
 /* group 4 */
 
 /* group 5 */
+DROP TABLE IF EXISTS se_admin;
+CREATE TABLE se_admin (
+  	id int(8) NOT NULL AUTO_INCREMENT,
+  	name char(32) CHARACTER SET utf8 NOT NULL,
+  	password char(32) CHARACTER SET utf8 NOT NULL,
+  	info char(128) CHARACTER SET utf8,
+  	PRIMARY KEY (id),
+  	UNIQUE KEY (name)
+);
+INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
+
