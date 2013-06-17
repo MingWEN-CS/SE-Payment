@@ -223,9 +223,27 @@ get isBuyer from group 1
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
         $userID = $this->getUserID();
-
+	//var_dump($userID);
         /*get authentication from group 1*/
-        if(1){
+ 	$usertype=$this->getusertype($userID);
+        $authen=0;
+        if(!$usertype)
+        {
+            $buyerdb=D('Buyer');
+            $buyercondition['UID']=$userID;
+            $buyerinfo=$buyerdb->where($buyercondition)->find();
+            if(md5($psw)===$buyerinfo['PASSWDPAYMENT'])
+                $authen=1;
+        }
+        else{
+            $sellerdb=D('Seller');
+            $sellercondition['UID']=$userID;
+            $buyerinfo=$sellerdb->where($sellercondition)->find();
+            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+                $authen=1;
+        }
+	  
+        if($authen==1){
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "pay", $userID);
 
@@ -262,14 +280,32 @@ get isBuyer from group 1
         $userID = $this->getUserID();
 
         /*get authentication from group 1*/
-        if(1){
+        
+        $usertype=$this->getusertype($userID);
+        $authen=0;
+        if($usertype)
+        {
+            $buyerdb=D('Buyer');
+            $buyercondition['UID']=$userID;
+            $buyerinfo=$buyerdb->where($buyercondition)->find();
+            if(md5($psw)==$buyerinfo['PASSWDPAYMENT'])
+                $authen=1;
+        }
+        else{
+            $sellerdb=D('Seller');
+            $sellercondition['UID']=$userID;
+            $buyerinfo=$sellerdb->where($sellercondition)->find();
+            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+                $authen=1;
+        }
+        if($authen){
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "confirm_receipt", $userID);
             $orders=D('Orders');
             $orders->changeState($oid, 'finished');
-            $this->success('确认成功', U('Order/showorders'));
+           // $this->success('确认成功', U('Order/showorders'));
         } else{
-            $this->error('确认失败，密码错误', U('Order/showorders'));
+            //$this->error('确认失败，密码错误', U('Order/showorders'));
         }
     }
 
