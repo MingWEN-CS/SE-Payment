@@ -17,7 +17,6 @@
 </div>
 -->
 <include file="../header"/>
-
 <div id = "container" style="margin-top:100px;height:400px;">
 	<image src="../Public/img/meng.jpg" class = "span7"/>
 	<div class="left-center">
@@ -27,7 +26,17 @@
 		<input type="text" id = "loginName" name="username" placeholder="Username">
 		<label for="inputPassword">Password:</label>
 		<input type="password" id = "loginPassword" name="password" placeholder="Password">
-		<div id="loginInfo" class="alert hide" style="width:230px; margin-left:0px"></div>
+		<!--
+		<label class="radio">
+  		<input type="radio" name="type" id="type1" value="Buyer" checked>
+  			Buyer
+		</label>
+		<label class="radio">
+  		<input type="radio" name="type" id="type2" value="Seller">
+  			Seller
+		</label>
+		-->
+		<div id="loginInfo" class="alert hide" style="width:160px; margin-left:0px"></div>
 		<button class="btn btn-success" onclick = "postLogin()">Sign In</button>
 	</div>
 	</div>
