@@ -31,7 +31,7 @@
 			<volist name="goods_info_list" id="goods_info_vo" empty="No goods in the order!">
 			<tbody>
 				<tr>
-					<td><img src="{$goods_info_vo.img_url}" /></td>
+					<td><img src="{$goods_info_vo.img_uri}" /></td>
 					<td>{$goods_info_vo.name}</td>
 					<td>{$goods_info_vo.count}</td>
 					<td>{$goods_info_vo.price}</td>
@@ -64,7 +64,12 @@
 			<volist name="addr_list" id="addr_vo">
 			<tbody>
 				<tr>
+					<if condition="$i eq 1">
+					<td><input type="radio" name="addr_sel" value="{$addr_vo.ADDRESSID}"
+						checked="checked"></td>
+					<else />
 					<td><input type="radio" name="addr_sel" value="{$addr_vo.ADDRESSID}"></td>
+					</if>
 					<td>{$addr_vo.RECEIVERNAME}</td>
 					<td>{$addr_vo.CITY}, {$addr_vo.PROVINCE}</td>
 					<td>{$addr_vo.STREET}, {$addr_vo.STRICT} Strict</td>

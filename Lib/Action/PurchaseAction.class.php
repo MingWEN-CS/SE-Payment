@@ -197,7 +197,6 @@ class PurchaseAction extends Action {
 		$addr = D('Receiveaddress');
 		$condition['UID'] = $uid;
 		$addr_list = $addr->where($condition)->select();
-		//var_dump($addr_list);
 
 		
 		$this->assign('addr_list', $addr_list);
@@ -216,7 +215,6 @@ class PurchaseAction extends Action {
 
 		$order_info = $this->_post();
 		$Order = D('Orders');
-
 		$order_count = $order_info['order_count'];
 		
 		//generate order
