@@ -1,0 +1,137 @@
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    background-repeat: repeat;
+    background-position: 0 40px;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+    overflow-y: hidden;
+}
+
+footer {
+    text-align: center;
+}
+
+/* ========================================================================== */
+#title {
+    padding: 5px 10px;
+}
+
+#search_input {
+    margin-left: 10px;
+    width: 75%;
+}
+#operation_list_body {
+    overflow-y: auto;
+    text-align: center;
+}
+#param_list_body {
+    overflow-y: auto;
+    height: 20%;
+}
+
+#param_list hr {
+    margin: 0;
+}
+
+#alert {
+    position: absolute;
+    left: 40%;
+    top: 0;
+    z-index: 9999;
+}
+#fancybox-wrapper {
+    height: 90%;
+    display: block;
+}
+#preview_image_inner {
+    box-shadow: 0 0 7px 5px #CCC;
+    display: block;
+    margin: 0 auto;
+}
+#texture_modal {
+    width: 800px;
+    margin-left: -350px;
+}
+#texture_modal_list {
+    max-height: 320px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#texture_modal_preview {
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+    box-shadow: 0 0 7px 5px #CCC;
+}
+
+#new_modal_input {
+    margin: 10px;
+}
+
+#renderWhat {
+	width:100px;
+}
+
+#delete_option{
+    display: none;
+}
+
+#search_input {
+    margin-left: 10px;
+    width: 75%;
+}
+
+#result_list_body {
+    overflow-y: auto;
+    text-align: center;
+}
+/* ========================================================================== */
+
+.operation_item {
+    background: white;
+    cursor: pointer;
+}
+.form-horizontal .control-label {
+    width: 110px;
+}
+.form-horizontal .controls {
+    margin-left: 130px;
+}
+.input-medium {
+    width: 70%;
+}
+.param_list_btn {
+    margin: 0 3%;
+}
+.verify_btn {
+    margin: 0 3%;
+}
+.icon-edit {
+    border: 1px solid gray;
+}
+.white_well {
+    margin: 10px 0 10px 0;
+    background: white;
+    padding: 10px;
+    border: 1px #CCC solid;
+    border-radius: 5px;
+}
+/* ========================================================================== */
+/* Google scrollbar style */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #FFF;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: #CCC;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #AAA;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #888;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+}

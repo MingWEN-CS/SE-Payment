@@ -13,7 +13,7 @@ class AdminAction extends Action {
         $condition['name'] = $name;
         $admin = $se_admin->where($condition)->find();
     	if($password == $admin['password']) {
-    		$this->display('header');
+    		$this->display('index');
     	}
         else {
             $this->display();
