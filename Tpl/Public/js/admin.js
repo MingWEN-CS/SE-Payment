@@ -19,7 +19,7 @@ $(function () {
 				else {
 					$('#loginInfo').text(data.info).removeClass('alert-error').addClass('alert-success').slideDown();
 					setTimeout(function(){
-						location.href = ROOT + '/admin';
+						location.href = ROOT + '/index';
 					},1000);
 				}
 			},'json');

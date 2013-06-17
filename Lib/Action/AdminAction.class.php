@@ -1,6 +1,7 @@
- // 本类由系统自动生成，仅供测试用途
- class AdminAction extends Action {
-     
+<?php
+// 本类由系统自动生成，仅供测试用途
+class AdminAction extends Action {
+    
     Public function login() {
         if(IS_AJAX) {
             $adminname = $this->_post('adminname');
@@ -18,10 +19,13 @@
                 $this->ajaxReturn('', 'Login Successfully', 1);
             }
         }
+        else {
+            $this->display();
+        }
+    }
 
-
-   Public function admin() {
-       $this->display();
-   }
- }
- 
+    Public function index() {
+        $this->display();
+    }
+}
+?>
