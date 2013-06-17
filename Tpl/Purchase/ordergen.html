@@ -1,0 +1,10 @@
+<html>
+	<body onload="document.form1.submit()">
+		<form name="form1" action="__APP__/Purchase/orderinfo" method="post">
+		    <volist name="order_list" id="order_vo">
+			<input type="hidden" name="order_id_{$i}" value="{$order_vo.OID}"/>
+			</volist>
+			<input type="hidden" name="order_count" value="{$order_count}"/>
+		</form>
+	</body>
+</html>
