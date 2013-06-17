@@ -359,13 +359,13 @@ CREATE TABLE se_feedback(
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	user_id INTEGER,
-	transaction_id INTEGER,
+	order_id INTEGER,
 	goods_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
-	date_time BIGINT,
+	date_time DATETIME,
 	foreign key (user_id) references se_user(UID) on delete cascade,
-	foreign key (transaction_id) references se_orders(id) on delete cascade,
+	foreign key (order_id) references se_orders(id) on delete cascade,
 	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
 	/* foreign key (transaction_id) references transactions(id) on delete cascade */
