@@ -121,10 +121,39 @@ class AdminAction extends Action {
             if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
             if ($this->_post('blacklist')) $condition['BLACKLIST'] = $this->_post('blacklist');
         }
-        $data['VIP'] = $this->_post('vip');
-        $status = $DB->where($condition)->save($data);
-        if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
-        else $this->ajaxReturn('', 'Set VIP Failed', 0);
+        $isVIP = $DB->where($condition)->find();
+        if ($isVIP['VIP'] == $this->_post('vip')) {
+            return $this->ajaxReturn('', 'Remain The Same', 1);
+        }
+        else {
+            $data['VIP'] = $this->_post('vip');
+            $status = $DB->where($condition)->save($data);
+            if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
+            else $this->ajaxReturn('', 'Set VIP Failed', 0);
+        }
+    }
+
+    Public function postSetBL() {
+        $database = $this->_post('database');
+        $DB = D($database);
+        if ($database == "User") {
+            if ($this->_post('name')) $condition['USERNAME'] = $this->_post('name');
+            if ($this->_post('type')) $condition['TYPE'] = $this->_post('type');
+            if ($this->_post('email')) $condition['EMAIL'] = $this->_post('email');
+            if ($this->_post('balance')) $condition['BALANCE'] = $this->_post('balance');
+            if ($this->_post('phone')) $condition['PHONE'] = $this->_post('phone');
+            if ($this->_post('vip')) $condition['VIP'] = $this->_post('vip');
+        }
+        $isBL = $DB->where($condition)->find();
+        if ($isBL['BLACKLIST'] == $this->_post('blacklist')) {
+            return $this->ajaxReturn('', 'Remain The Same', 1);
+        }
+        else {
+            $data['BLACKLIST'] = $this->_post('blacklist');
+            $status = $DB->where($condition)->save($data);
+            if ($status) $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
+            else $this->ajaxReturn('', 'Set Blacklist Failed', 0);
+        }
     }
 
     Public function postVRN() {
