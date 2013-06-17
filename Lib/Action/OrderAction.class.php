@@ -2,6 +2,7 @@
 import("@.Util.Goods.GoodsHelper");
 class OrderAction extends Action{
 
+
     private function getUserID(){
 
         $userid=$_SESSION['uid'];
@@ -59,8 +60,50 @@ class OrderAction extends Action{
 
         return $result;
     }
+    private function getusertype($uid){
+        $user=D('User');
+        $condition['UID']=$uid;
+        $userinfo=$user->where($condition)->field('TYPE')->find();
+        return $userinfo['TYPE'];
+    }
 
+    private function getshowcontent($state,$isbuyer)
+    {
+        if($isbuyer){
 
+            switch($state){
+            case 'created':{$content="The order has been created,pay the order to make seller send the goods";break;}
+            case 'payed':{$content="waiting for the seller to ship";break;}
+            case 'shipping':{$content="the seller has shiped the goods,confirm recepit if you have received the goods";break;}
+            case 'refunding':{$content="waiting for the seller to confirm the refund";break;}
+            case 'refunded':{$content="the refund request has been aggreed by the seller";break;}
+            case 'finished':{$content="the transaction has been finished";break;}
+            case 'canceled':{$content="the order has been canceled";break;}
+            case 'auditing':{$content="the order is being auditing";break;}
+            case 'audited':{$content="the order has been audited";break;}
+            case 'failed':{$content="the transaction is failed";break;}
+            default:break;
+            }
+        }
+        else
+        {
+            switch($state){
+            case 'created':{$content="The order has been created,waiting for the buyer to pay the order";break;}
+            case 'payed':{$content="the buyer has payed the order,please ship the goods as soon as possible";break;}
+            case 'shipping':{$content="waiting for the buyer to recieve the goods";break;}
+            case 'refunding':{$content="the buyer request refund for some reason,if you agree on the refund,confirm to return the money back to the user";break;}
+            case 'refunded':{$content="the order has been refunded";break;}
+            case 'finished':{$content="the transaction has been finished";break;}
+            case 'canceled':{$content="the order has been canceled";break;}
+            case 'auditing':{$content="the order is being auditing";break;}
+            case 'audited':{$content="the order has been audited";break;}
+            case 'failed':{$content="the transaction is failed";break;}
+            default:break;
+
+            }
+        }
+        return $content;
+    }
     public function index() {
         $this->display('showorders');
     }
@@ -74,15 +117,15 @@ class OrderAction extends Action{
             $this->display();
             return;
         }
-        $isBuyer = 1;
 /*
 get isBuyer from group 1
  */
-
+        $isSeller=$this->getusertype($userID);
+        $isBuyer=!$isSeller;
         $orders=D('Orders');
         $ordergoods=D('OrderGoods');
         $operation=D('OrderOperation');
-        if($isBuyer){
+        if(!$isSeller){
             $userorders= $orders->searchIDbyBuyerName($userID);
         } else{
             $userorders= $orders->searchIDbySellerName($userID);
@@ -96,7 +139,6 @@ get isBuyer from group 1
         $condition['userorders']=$useroid;
         $searchResult = $ordergoods->searchbyname($condition);//搜索类似商品名称的订单，结果可能大于1
         $searchResult = $this->removeDeletedOrders($searchResult);
-        //var_dump($searchRe);
         $orderresult=null;
         for($i=0;$i<count($searchResult);$i++)
         {
@@ -181,9 +223,27 @@ get isBuyer from group 1
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
         $userID = $this->getUserID();
-
+	//var_dump($userID);
         /*get authentication from group 1*/
-        if(1){
+ 	$usertype=$this->getusertype($userID);
+        $authen=0;
+        if(!$usertype)
+        {
+            $buyerdb=D('Buyer');
+            $buyercondition['UID']=$userID;
+            $buyerinfo=$buyerdb->where($buyercondition)->find();
+            if(md5($psw)===$buyerinfo['PASSWDPAYMENT'])
+                $authen=1;
+        }
+        else{
+            $sellerdb=D('Seller');
+            $sellercondition['UID']=$userID;
+            $buyerinfo=$sellerdb->where($sellercondition)->find();
+            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+                $authen=1;
+        }
+	  
+        if($authen==1){
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "pay", $userID);
 
@@ -220,7 +280,25 @@ get isBuyer from group 1
         $userID = $this->getUserID();
 
         /*get authentication from group 1*/
-        if(1){
+        
+        $usertype=$this->getusertype($userID);
+        $authen=0;
+        if(!$usertype)
+        {
+            $buyerdb=D('Buyer');
+            $buyercondition['UID']=$userID;
+            $buyerinfo=$buyerdb->where($buyercondition)->find();
+            if(md5($psw)==$buyerinfo['PASSWDPAYMENT'])
+                $authen=1;
+        }
+        else{
+            $sellerdb=D('Seller');
+            $sellercondition['UID']=$userID;
+            $buyerinfo=$sellerdb->where($sellercondition)->find();
+            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+                $authen=1;
+        }
+        if($authen){
             $operations = D('OrderOperation');
             $operations->addOperation($oid, "confirm_receipt", $userID);
             $orders=D('Orders');
@@ -293,8 +371,8 @@ get isBuyer from group 1
         redirect(U('Order/showorders'));
     }
 
-public function audited($oid, $auditorID) {
-// with Audit group
+    public function audited($oid, $auditorID) {
+        // with Audit group
         $userID = $auditorID;
 
         $operations = D('OrderOperation');
@@ -302,90 +380,105 @@ public function audited($oid, $auditorID) {
 
         $orders=D('Orders');
         $orders->changeState($oid, 'audited');
-$orders->audited($oid);
-}
-
-public function createorder(){
-    /*cartinfo:good id and good amount list*/
-    /*data for test*/
-    $cartinfo[0]['goods_id']='1';
-    $cartinfo[0]['goods_count']=1;
-    $cartinfo[1]['goods_id']='4';
-    $cartinfo[1]['goods_count']=3;
-    $cartinfo[2]['goods_id']='2';
-    $cartinfo[2]['goods_count']=2;
-    for($i=0;$i<count($cartinfo);$i++){
-        $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
-        $seller_id=$goodinfo['seller_id'];
-        $goodlist['GID']=$cartinfo[$i]['goods_id'];
-        $goodlist['PRICE']=$goodinfo['price'];
-        $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
-        $goodlist['NAME']=$goodinfo['name'];
-        $goodlist['IMGURL']=$goodinfo['image_uri'];
-        $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
-        $classifiedinfo[$seller_id]['SELLER']=$seller_id;
+        $orders->audited($oid);
     }
-    $orderdb=D('Orders');
-    $operation=D('OrderOperation');
-    $ordergoodsdb=D('OrderGoods');
-    foreach($classifiedinfo as $orderinfo){
-        $neworder['SELLER']=$orderinfo['SELLER'];
-        $neworder['BUYER']=$this->getUserID();
-        $neworder['TOTALPRICE']=0.00;
-        foreach($orderinfo['goods'] as $eachgood){
-            $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
+
+    public function createorder(){
+        /*cartinfo:good id and good amount list*/
+        /*data for test*/
+        $cartinfo[0]['goods_id']='1';
+        $cartinfo[0]['goods_count']=1;
+        $cartinfo[1]['goods_id']='4';
+        $cartinfo[1]['goods_count']=3;
+        $cartinfo[2]['goods_id']='2';
+        $cartinfo[2]['goods_count']=2;
+        for($i=0;$i<count($cartinfo);$i++){
+            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
+            $seller_id=$goodinfo['seller_id'];
+            $goodlist['GID']=$cartinfo[$i]['goods_id'];
+            $goodlist['PRICE']=$goodinfo['price'];
+            $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
+            $goodlist['NAME']=$goodinfo['name'];
+            $goodlist['IMGURL']=$goodinfo['image_uri'];
+            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
+            $classifiedinfo[$seller_id]['SELLER']=$seller_id;
+        }
+        $orderdb=D('Orders');
+        $operation=D('OrderOperation');
+        $ordergoodsdb=D('OrderGoods');
+        foreach($classifiedinfo as $orderinfo){
+            $neworder['SELLER']=$orderinfo['SELLER'];
+            $neworder['BUYER']=$this->getUserID();
+            $neworder['TOTALPRICE']=0.00;
+            foreach($orderinfo['goods'] as $eachgood){
+                $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
+            }
+
+            $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
+            $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
+            $newoid[$i]['result']='success';
+            foreach($orderinfo['goods'] as $eachgood){
+                $newordergood=$eachgood;
+                $newordergood['OID']=$newoid[$i]['OID'];
+                $ogid=$ordergoodsdb->insertnewgood($newordergood);
+                if($ogid===false)
+                    $newoid[$i]['result']='fail';
+                var_dump($newoid);
+            }
+        }
+        return $newoid;
+    }
+    public function detail(){
+        /*check if the asking order is the user's order*/
+        $userid=$this->getUserID();
+        if($userid===null)
+        {
+            $this->display("showorders");   
+            return;
         }
 
-        $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
-        $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
-        $newoid[$i]['result']='success';
-        foreach($orderinfo['goods'] as $eachgood){
-            $newordergood=$eachgood;
-            $newordergood['OID']=$newoid[$i]['OID'];
-            $ogid=$ordergoodsdb->insertnewgood($newordergood);
-            if($ogid===false)
-                $newoid[$i]['result']='fail';
-            var_dump($newoid);
-        }
-}
-return $newoid;
-}
-public function detail(){
-    /*check if the asking order is the user's order*/
-    $userid=$this->getUserID();
-    if($userid===null)
-    {
-        $this->display("showorders");   
-        return;
-    }
-
-    $oid=$this->_get('oid');
-    $Orders=D('Orders');
-    $operation=D('OrderOperation');
-    $orderresult=$Orders->findorderbyid($oid);
-    if($orderresult['BUYER']!=$userid)
-    {
-        $this->display("showorders");
-        return;
-    }
-    $goods=D('OrderGoods');
-    $goodsresult=$goods->searchbyid($oid);
-    $linecount=count($goodsresult);
-    $time=$operation->getoptime($oid);
+        $isbuyer=!$this->getusertype($userid);
+        $oid=$this->_get('oid');
+        $Orders=D('Orders');
+        $operation=D('OrderOperation');
+        $orderresult=$Orders->findorderbyid($oid);
+        if($isbuyer)
+        {   if($orderresult['BUYER']!=$userid)
+        {  $this->display("showorders");
+                 return;
+        }}
+        else{
+            if($orderresult['SELLER']!=$userid)
+            {     $this->display("showorders");
+                return;
+        }}
+        
+        $goods=D('OrderGoods');
+        $goodsresult=$goods->searchbyid($oid);
+        $linecount=count($goodsresult);
+        $time=$operation->getoptime($oid);
         $style="width:25%";
-    if($time['pay']!=null)
-        $style="width:50%";
-    if($time['ship']!=null)
-        $style="width:75%";
-    if($time['confirm']!=null)
-        $style="width:100%";
-    
-    
-    $this->assign('prostyle',$style);
-    $this->assign('optime',$time);
-    $this->assign('goods',$goodsresult);
-    $this->assign('goodsize',$linecount);
-    $this->assign('order',$orderresult);
-    $this->display();
-}
+        if($time['pay']!=null)
+            $style="width:50%";
+        if($time['ship']!=null)
+            $style="width:75%";
+        if($time['confirm']!=null)
+            $style="width:100%";
+
+        $orderstate=$orderresult['STATE'];
+
+        $receiveaddress=D('receiveaddress');
+        $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
+        $addressinfo=$receiveaddress->where($addresscondition)->find();
+
+        $content=$this->getshowcontent($orderstate,$isbuyer);
+        $this->assign('prostyle',$style);
+        $this->assign('optime',$time);
+        $this->assign('goods',$goodsresult);
+        $this->assign('goodsize',$linecount);
+        $this->assign('order',$orderresult);
+        $this->assign('addressinfo',$addressinfo);
+        $this->assign('content',$content);
+        $this->display();
+    }
 }
