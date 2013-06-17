@@ -283,7 +283,7 @@ get isBuyer from group 1
         
         $usertype=$this->getusertype($userID);
         $authen=0;
-        if($usertype)
+        if(!$usertype)
         {
             $buyerdb=D('Buyer');
             $buyercondition['UID']=$userID;
@@ -303,9 +303,9 @@ get isBuyer from group 1
             $operations->addOperation($oid, "confirm_receipt", $userID);
             $orders=D('Orders');
             $orders->changeState($oid, 'finished');
-           // $this->success('确认成功', U('Order/showorders'));
+            $this->success('确认成功', U('Order/showorders'));
         } else{
-            //$this->error('确认失败，密码错误', U('Order/showorders'));
+            $this->error('确认失败，密码错误', U('Order/showorders'));
         }
     }
 
@@ -472,7 +472,6 @@ get isBuyer from group 1
         $addressinfo=$receiveaddress->where($addresscondition)->find();
 
         $content=$this->getshowcontent($orderstate,$isbuyer);
-        var_dump($content);
         $this->assign('prostyle',$style);
         $this->assign('optime',$time);
         $this->assign('goods',$goodsresult);
