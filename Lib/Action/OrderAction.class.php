@@ -20,13 +20,13 @@ class OrderAction extends Action{
             case 'payed': return 'refund';
             case 'shipping': return 'confirm_receipt';
 
+            case 'finished': return "comment";
             case 'canceled':
             case 'refunding':
             case 'refunded':
             case 'auditing':
             case 'audited':
-            case 'failed':
-            case 'finished': return "comment";
+            case 'failed':return null;
             default: return 'wait';
             }
         } else {	//seller state
