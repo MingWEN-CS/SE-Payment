@@ -23,7 +23,13 @@ footer {
     overflow-y: auto;
     text-align: center;
 }
+
 #param_list_body {
+    overflow-y: auto;
+    height: 200px;
+}
+
+#result_list_body {
     overflow-y: auto;
     height: 200px;
 }
@@ -88,6 +94,10 @@ footer {
 /* ========================================================================== */
 
 .operation_item {
+    background: white;
+    cursor: pointer;
+}
+.result_item {
     background: white;
     cursor: pointer;
 }
