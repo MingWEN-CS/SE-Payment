@@ -249,7 +249,7 @@ class PurchaseAction extends Action {
 					$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 					$order_list[$i]['GOODS'][$j]['PRICE'] = $goods_list[$j]['PRICE'];
 					$order_list[$i]['GOODS'][$j]['COUNT'] = $goods_list[$j]['AMOUNT'];
-					$order_list[$i]['GOODS'][$j]['URI'] = $goods_item['image_uri'];
+					$order_list[$i]['GOODS'][$j]['URI'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 					$order_list[$i]['GOODS'][$j]['NAME'] = $goods_item['name'];
 				}
 			}
@@ -408,7 +408,7 @@ class PurchaseAction extends Action {
 		krsort($distance);
 		print_r($distance);
 		// vote
-		for ($j = 0; $j < length($goods); ++$j) {
+		for ($j = 0; $j < $goods; ++$j) {
 			// init voting
 			$votes[$j] = - $K * $matrix[$id][$j];
 		}
@@ -420,8 +420,9 @@ class PurchaseAction extends Action {
 		}
 		// recommend
 		arsort($votes);
+		print_r(array_slice($votes, 1, $N));
 		$this->assign('' ,array_slice($votes, 1, $N));
-		$this->display();
+		// $this->display();
 	}
 }
 ?>
