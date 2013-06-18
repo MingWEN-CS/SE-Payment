@@ -74,6 +74,9 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 			$startTime = strtotime($arrivalPlace);
 			$condition['arrival_date_time'] = array('between',array($startTime, $startTime + 60 * 5));
 		}
+		if((($nonStop = $purchaseAction->_get('non_stop'))&&$nonStop!=-1)||$nonStop==0) {
+			$condition['non_stop'] = $nonStop;
+		}
 		return $condition;
 	}
 	

@@ -64,9 +64,15 @@ class PurchaseAction extends Action {
 		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArrayWithHead());
 		//hotel suit
-		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
+		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArrayWithHead());
 		//airplane carbin
-		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
+		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArrayWithHead());
+		//hotest goods
+		$hotest = GoodsHelper::getHotestGoods(10);
+		for($i = 0; $i < count($hotest);$i++) {
+			$hotest[$i][image_uri] = CommonValue::getImgUploadPath() . $hotest[$i][image_uri];
+		}
+		$this->assign('hotest_goods', $hotest);
 		$this->display();
 	}
 
@@ -367,5 +373,54 @@ class PurchaseAction extends Action {
 		}
 	}
 
+	
+	public function recommend() {
+		// init
+		$id = $this->_session('uid');
+		$K = 10;	// for k-nn
+		$N = 10;	// recommend N goods
+		// get raw data
+		$Order = D('Orders');
+		$prefix = C('DB_PREFIX');
+		$tuples = $Order->field('buyer, gid')->join($prefix.'order_goods ON '.$prefix.'order_goods.OID = '.$prefix.'orders.ID')->select();
+		$buyers = D('Buyer')->count();
+		$goods = D('Goods')->count();
+		// init matrix
+		for ($i = 0; $i < $buyers; ++$i) {
+			for ($j = 0; $j < $goods; ++$j) {
+				$matrix[$i][$j] = 0;
+			}
+		}
+		// matrix form data
+		foreach ($tuples as $tuple) {
+			++$matrix[$tuple['buyer']][$tuple['gid']];
+		}
+		// calc distance
+		for ($i = 0; $i < $buyers; ++$i) {
+			$sum = 0;
+			for ($j = 0; $j < $goods; ++$j) {
+				// using abs distance
+				$sum += abs($matrix[$id][$j] - $matrix[$i][$j]);
+			}
+			$distance[$sum] = $i;
+		}
+		krsort($distance);
+		print_r($distance);
+		// vote
+		for ($j = 0; $j < length($goods); ++$j) {
+			// init voting
+			$votes[$j] = - $K * $matrix[$id][$j];
+		}
+		for ($i = 0; $i < $K; ++$i) {
+			for ($j = 0; $j < $goods; ++$j) {
+				// voting
+				$votes[$j] += $matrix[array_shift($distance)][$j];
+			}
+		}
+		// recommend
+		arsort($votes);
+		$this->assign('' ,array_slice($votes, 1, $N));
+		$this->display();
+	}
 }
 ?>
