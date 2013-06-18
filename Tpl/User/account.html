@@ -5,9 +5,12 @@
    	<link rel="stylesheet" href="../Public/css/group1.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+	<script src="../Public/js/user.js" type="text/javascript"></script>
 </head>
 <script>
+var ROOT = '__APP__';
 $(function(){
+
 	num = 2;	
 	for (i = 1; i <=3; i++){
 		if (i==num)
@@ -29,10 +32,10 @@ $(function(){
 		<div id="balance">
 			<div class="span2">
 				<h4>Balance:</h4>
-				<h3 style="color:#5bb75b; margin-top:-15px;">00.00<span style="color:#999; font-size:18px;">RMB</span></h3>
+				<h3 style="color:#5bb75b; margin-top:-15px;">{$balance}<span style="color:#999; font-size:18px;">RMB</span></h3>
 			</div>
 			<div class="span2" style="margin-top:10px;">
-				<button class="btn btn-large btn-warning">Charge</button>
+				<button class="btn btn-large btn-warning" data-toggle="modal" data-target="#chargeMoney">Charge</button>
 			</div>
 		</div>
 
@@ -42,52 +45,104 @@ $(function(){
 
 		<div id="bankInfo">
 			<div class="span6">
-				<h4>Bank Card:<span><label>Connected to 2 cards</label></span></h4>
+				<h4>Bank Card:<span><label>Connected to {$number}  cards</label></span></h4>
 			</div>
 			<div class="span10" style="margin-left:-5px;">
-				
-				<div class="card span2">
-    				<h2 class="card-name">中国文明银行</h2>
+				<volist name="cards" id="vo">
+					<div class="card span2">
+    				<h2 class="card-name">软件工程银行</h2>
    				
 	   				<div class="card-context">
 	        			<div class="card-number">
-	            			<h5 class="h5style">No.1111 2222 3333</h5>
+	            			<h5 class="h5style">No.{$vo.CARDID}</h5>
 	        			</div>
 	    			</div>
 	    			
-	    			<div class="card-operate">
-	                     <button class="btn btn-small btn-info">Disconnect</button>
+	    			<div class="card-operate" style="margin-bottom:20px;">
+	                     <button class="btn btn-small btn-info" onclick="deleteCard({$vo.ID})">Disconnect</button>
 	            	</div>
-				</div>
 
-				<div class="card span2">
-    				<h2 class="card-name">中国文明银行</h2>
-   				
-	   				<div class="card-context">
-	        			<div class="card-number">
-	            			<h5 class="h5style">No.1111 2222 3333</h5>
-	        			</div>
-	    			</div>
-	    			
-	    			<div class="card-operate">
-	                     <button class="btn btn-small btn-info">Disconnect</button>
-	            	</div>
+					<div id="deleteCard{$vo.ID}" class = "warningInfo" style="display:none">
+					<h4 style="color:#bd362f">Warning!</h4>
+					<div id="deleteCardInfo">
+						Are you sure to delete this card?
+					</div>
+			  		<div class="alert-footer">
+			    		<button href="#" class="btn" onclick = "deleteCardCancel({$vo.ID})">Cancel</button>
+			    		<button href="#" class="btn btn-danger" onclick="deleteCardConfirm({$vo.ID})">Confirm</button>
+			  		</div>
+					</div>
 				</div>
+				</volist>	
+
 
 				<div class="card span2">
 	                <div class="card-number" style="margin-top:40px;">
-	                	<button class="btn btn-large btn-warning">Add a Card</button>						
+	                	<button class="btn btn-large btn-warning" data-toggle="modal" data-target="#addBankCard">Add a Card</button>						
 					</div>
 				</div>
-
-				
-				
 			</div>
 		</div>
 	</div>
 </div>
 </div>
 
+
+<div id="addBankCard" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Add a bank card</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Card Number:<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="addCardNumber" placeholder="your card number" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>The password for you card:<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="addCardPwd" placeholder="your card password" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="addBankCardInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "addBankCard()">submit</a>
+  	</div>
+</div>
+
+<div id="chargeMoney" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Change your account</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Charge Amount:<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="chargeAmount" placeholder="Charge amount(>= 0)" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Choose the card you want to charge:<span style="color:#ff0000; font-family:song">*</span></label>
+				<select id = "chargeCardId" name="cardId">
+					<volist name="cards" id="vo">
+						<option value = "{$vo.CARDID}">{$vo.CARDID}</option>
+					</volist>
+				</select>
+			</p>
+			<p>
+				<label>Card Password:<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="chargeCardPwd" placeholder="Your password for the card" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="chargeMoneyInfo" class="alert hide" style="width:330px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "chargeMoney()">submit</a>
+  	</div>
+</div>
 <include file="../footer"/>
 </body>
 </html>

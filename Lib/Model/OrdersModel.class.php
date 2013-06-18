@@ -7,12 +7,12 @@ class OrdersModel extends Model{
     }
     public function searchIDbyBuyerName($username) {
         $condition['BUYER']=$username;
-        return $this->field('ID')->where($condition)->select();
+        return $this->where($condition)->select();
     }
 
     public function searchIDbySellerName($username) {
         $condition['SELLER']=$username;
-        return $this->field('ID')->where($condition)->select();
+        return $this->where($condition)->select();
     }
 
     public function changeState($oid, $newState) {

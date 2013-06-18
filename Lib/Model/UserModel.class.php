@@ -42,7 +42,28 @@ class UserModel extends Model{
 
 	public function deleteUserById($id){
 
-		return $this->where('ID ='.$id)->delete();
+		return $this->where('UID ='.$id)->delete();
+	}
+
+	public function checkEmail($email, $type){
+		$user = $this->where('EMAIL = "'. $email .'" and TYPE = '.$type)->find();
+		
+		$typeName = '';
+		if ($type == 0) $typeName = " buyer ";
+		else if ($type == 1) $typeName = " seller ";
+		
+		if (!empty($user)){
+			$msg = "The Email has albready been registered as a" .$typeName;
+			return $msg;
+		}else return NULL;
+	}
+
+	public function setPhone($id,$phone){
+		return $this->where('UID ='.$id)->setField('PHONE',$phone);
+	}
+
+	public function modifyPhone($id,$phone){
+		return $this->where('UID ='.$id)->setField('PHONE',$phone);	
 	}
 
 	public function checkUser($useremail,$password){
@@ -57,5 +78,16 @@ class UserModel extends Model{
 			else return 1;
 		}
 	}
+    public function moneyTransfer($payerid,$receiver,$money){
+        $payercondition['UID']=$payerid;
+        $receivercondition['UID']=$receiver;
+        $payerbalance=$this->where($payercondition)->field('BALANCE')->find();
+        $receiverbalance=$this->where($receivercondition)->field('BALANCE')->find();
+        $payernewdata['BALANCE']=$payerbalance['BALANCE']-$money;
+        $receivernewdata['BALANCE']=$receiverbalance['BALANCE']+$money;
+        $this->where($payercondition)->save($payernewdata);
+        $this->where($receivercondition)->save($receivernewdata);
+
+    }
 }
 ?>

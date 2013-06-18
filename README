@@ -1,1 +1,7 @@
 This is the project of Software Engineering Course of Zhejiang University
+
+数据库：
+在phpmyadmin中导入根目录下的payment.sql即可
+
+配置：
+将Conf目录下的config.php文件里面的localhost密码修改成你对应的密码即可使用了。
