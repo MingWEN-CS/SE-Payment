@@ -333,14 +333,32 @@ class PurchaseAction extends Action {
 		//	$this->error('Please login as a buyer first!','__APP__/User/login');
 		//}
 		$comment_info = $this->_post();
-		//var_dump($comment_info);
 		$order_id = $comment_info['order_id'];
-
+		var_dump($comment_info);
 		if(!$order_id) {
 			$this->error('Invalid access!', '__APP__/Order/showorders');
 		}
 		else {
-			if (isset($order_info['confirm'])) {
+			if(isset($comment_info['confirm'])) {
+				//Add Feedback
+				$Feedback = D('Feedback');
+				$goods_count = $comment_info['goods_count'];
+				$order_id = $comment_info['order_id'];
+				$data['user_id'] = $uid;
+				$data['transaction_id'] = $order_id;
+				$date = date('Y-m-d H:i:s');
+				$data['date_time'] = $date;
+				for ($i = 1; $i <= $goods_count; $i++) {
+					$data['goods_id'] = $comment_info['goods_id_'.$i];
+					$data['score'] = $comment_info['score_'.$i];
+					$data['comment'] = $comment_info['comment_'.$i];
+					$Feedback->add($data);
+				}
+
+					//$this->success('Score and comment successfully!', '__APP__/Order/showorders');
+					//$this->error('Fail!', '__APP__/User');
+				
+			}
 		}
 	}
 
