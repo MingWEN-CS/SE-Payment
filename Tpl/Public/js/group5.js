@@ -1,13 +1,4 @@
-﻿/* =============================================================================
-* MaterialGenius/index.js
-* ------------------------------------------------------------
-* Copyright 2012 Exacloud, Inc.
-* http://www.qunhe.cc
-* ========================================================================== */
-
-
-
-var PARAM_TYPE_ICON_LIST = {
+﻿var PARAM_TYPE_ICON_LIST = {
 	Texture : 'icon-picture',
 	Float : 'icon-resize-horizontal',
 	Float3 : 'icon-pencil'
@@ -133,12 +124,13 @@ $('#select').live('click', function(){
    var blacklist = $('#Blacklist').val();
    if (database == 'Admin') {
         results = '';
-        $('#result_list_body').html();
 	    $.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+	    	if (result.data!=null)
 	    	$.each(result.data, function(index, obj){
  		    	results += ADMIN_SELECT_RESULT_TPL.format(index, obj["id"], obj["name"], obj["password"], obj["info"]);               
 		    })
  		     $('#result_list_body').html(results);
+		    $('#result_list_body').html(results);
 	    },'json');
    } else {
    	    if (database == "Vip"){
@@ -148,12 +140,12 @@ $('#select').live('click', function(){
             blacklist = 1;
         }   
         results = '';
-        $('#result_list_body').html();
 	    $.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+	    	if (result.data!=null)
 	    	$.each(result.data, function(index, obj){
 		    	results += USER_SELECT_RESULT_TPL.format(index, obj["UID"], obj["USERNAME"], obj["PASSWD"], obj["EMAIL"], obj["TYPE"], obj["BALANCE"], obj["PHONE"], obj["VIP"], obj["BLACKLIST"]);
 		    })
- 		     $('#result_list_body').html(results);
+		    $('#result_list_body').html(results);
 	    },'json');
 	}
  })
