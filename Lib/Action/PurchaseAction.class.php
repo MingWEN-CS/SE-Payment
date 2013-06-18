@@ -249,7 +249,7 @@ class PurchaseAction extends Action {
 					$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 					$order_list[$i]['GOODS'][$j]['PRICE'] = $goods_list[$j]['PRICE'];
 					$order_list[$i]['GOODS'][$j]['COUNT'] = $goods_list[$j]['AMOUNT'];
-					$order_list[$i]['GOODS'][$j]['URI'] = $goods_item['image_uri'];
+					$order_list[$i]['GOODS'][$j]['URI'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 					$order_list[$i]['GOODS'][$j]['NAME'] = $goods_item['name'];
 				}
 			}
