@@ -51,6 +51,7 @@ class PurchaseAction extends Action {
 		}
 		for($i = 0; $i < count($searchResult);$i++) {
 			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
+			$searchResult[$i][score] = round($searchResult[$i][score], 2);
 		}
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);

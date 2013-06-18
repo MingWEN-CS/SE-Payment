@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
 -- Table structure for table `se_usercard`
 --
 
--- <<<<<<< HEAD
+
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -394,7 +394,6 @@ CREATE TABLE se_admin (
   	UNIQUE KEY (name)
 );
 INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
-<<<<<<< HEAD
 
 DROP TABLE IF EXISTS se_card;
 CREATE TABLE se_card (
