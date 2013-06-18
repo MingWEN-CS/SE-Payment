@@ -1,6 +1,6 @@
 <?php
 class FeedbackModel extends Model{
-	public function score_update($goods_id){
+	public function score_sale_update($goods_id){
 		$score_set = $this->where('goods_id='.$goods_id)->select();
 		$score_sum = 0;
 		foreach($score_set as $score_each) {
@@ -20,6 +20,7 @@ class FeedbackModel extends Model{
 			$GoodsAllKinds = D('AirplaneTicket');
 		}
 		$data['score'] = $score_avg;
+		$data['bought_count'] = $goodsResult['bought_count'] + 1;
 		return $GoodsAllKinds->where('id='.$goods_id)->save($data);
 	}
 	protected $_auto = array(

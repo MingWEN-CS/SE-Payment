@@ -15,11 +15,23 @@ class SellAction extends Action {
 		$general = D('GeneralGoods');
 		$hotel = D('HotelRoom');
 		$airplane = D('AirplaneTicket');
-		$filter = '';//'seller_id = '.$user_id;
+		$filter = 'seller_id = '.$user_id;
 		$this->assign('good_type', $good_type);
-		$this->assign('general_goods', $general->where($filter)->select());
-		$this->assign('hotel_room', $hotel->where($filter)->select());
-		$this->assign('airplane_ticket', $airplane->where($filter)->select());
+		$goods = $general->where($filter)->select();
+		for($i = 0;$i < count($goods);$i++){
+			$goods[$i]['score'] = round($goods[$i]['score'], 2);
+		}
+		$this->assign('general_goods', $goods);
+		$goods = $hotel->where($filter)->select();
+		for($i = 0;$i < count($goods);$i++){
+			$goods[$i]['score'] = round($goods[$i]['score'], 2);
+		}
+		$this->assign('hotel_room', $goods);
+		$goods = $airplane->where($filter)->select();
+		for($i = 0;$i < count($goods);$i++){
+			$goods[$i]['score'] = round($goods[$i]['score'], 2);
+		}
+		$this->assign('airplane_ticket', $goods);
 		$this->assign('info', $info);
 		
 		$this->display('index');
