@@ -346,7 +346,7 @@ class PurchaseAction extends Action {
 		krsort($distance);
 		print_r($distance);
 		// vote
-		for ($j = 0; $j < length($goods); ++$j) {
+		for ($j = 0; $j < $goods; ++$j) {
 			// init voting
 			$votes[$j] = - $K * $matrix[$id][$j];
 		}
@@ -358,8 +358,9 @@ class PurchaseAction extends Action {
 		}
 		// recommend
 		arsort($votes);
+		print_r(array_slice($votes, 1, $N));
 		$this->assign('' ,array_slice($votes, 1, $N));
-		$this->display();
+		// $this->display();
 	}
 }
 ?>
