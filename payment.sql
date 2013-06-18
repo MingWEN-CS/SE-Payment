@@ -363,7 +363,7 @@ CREATE TABLE se_feedback(
 	goods_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
-	date_time BIGINT,
+	date_time DATETIME,
 	foreign key (user_id) references se_user(UID) on delete cascade,
 	foreign key (transaction_id) references se_orders(id) on delete cascade,
 	foreign key (goods_id) references se_goods(id) on delete cascade
