@@ -160,6 +160,7 @@ class PurchaseAction extends Action {
 		//Session info
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
+		//$is_vip = BuyerHelper
 
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
@@ -298,13 +299,50 @@ class PurchaseAction extends Action {
 	}
 	public function comment() {
 		$order_id_list = $this->_post();
-		$order_id = $order_id_list['OID'];
-		$Order = D('Order');
-		$goods_list = $Order->searchbyid($order_id);
+		//$order_id = $order_id_list['OID'];
+		$order_id = 68;
+		$OrderGoods = D('OrderGoods');
+		$goods_list = $OrderGoods->searchbyid($order_id);
+		$goods_count = count($goods_list);
+		if(!$goods_list) {
+			$this->error('Order dismissed!', '__APP__/Order/showorders');
+		}
+		//var_dump($goods_list);
+		else {
+			for($i = 0; $i < $goods_count; $i++) {
+				$goods_id = $goods_list[$i]['GID'];
+				$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
+				$goods_info_list[$i] = $goods_item; 
+				$goods_info_list[$i]['count'] = $goods_list[$i]['AMOUNT'];
+			}
 
-
-		$this->display();
+			$this->assign('order_id', $order_id);
+			$this->assign('goods_count', $goods_count);
+			$this->assign('goods_info_list', $goods_info_list);
+			$this->display();
+		}
 
 	}
+	public function commentprocess() {
+		//Session info
+		$uid = $this->_session('uid');
+		$uname = $this->_session('username');
+
+		//$User = D('Buyer');
+		//if(!$uid || !$User->where('UID='.$uid)->select()) {
+		//	$this->error('Please login as a buyer first!','__APP__/User/login');
+		//}
+		$comment_info = $this->_post();
+		//var_dump($comment_info);
+		$order_id = $comment_info['order_id'];
+
+		if(!$order_id) {
+			$this->error('Invalid access!', '__APP__/Order/showorders');
+		}
+		else {
+			if (isset($order_info['confirm'])) {
+		}
+	}
+
 }
 ?>
