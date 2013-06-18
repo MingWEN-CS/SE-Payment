@@ -366,6 +366,7 @@ class PurchaseAction extends Action {
 				for ($i = 1; $i <= $goods_count; $i++) {
 					$goods_id = $comment_info['goods_id_'.$i];
 					$Feedback->score_update($goods_id);
+					$Feedback->bought_update($goods_id);
 				}
 				$this->success('Score and comment successfully!', '__APP__/Order/showorders');
 			}
