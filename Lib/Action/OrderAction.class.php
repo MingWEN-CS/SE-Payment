@@ -20,13 +20,13 @@ class OrderAction extends Action{
             case 'payed': return 'refund';
             case 'shipping': return 'confirm_receipt';
 
+            case 'finished': return "comment";
             case 'canceled':
             case 'refunding':
             case 'refunded':
             case 'auditing':
             case 'audited':
-            case 'failed':
-            case 'finished': return "comment";
+            case 'failed':return null;
             default: return 'wait';
             }
         } else {	//seller state
@@ -133,7 +133,7 @@ get isBuyer from group 1
         }
         $orderstate=$this->_get('state');
         $keywords=$this->_get('keywords');
-
+        $pagenum=$this->_get('pagenum');
         $condition['keywords']=$keywords;
         /*save the orders id*/
         for($i=0;$i<count($userorders);$i++)
@@ -151,7 +151,45 @@ get isBuyer from group 1
         $searchResult = $this->removeDeletedOrders($searchResult);
 
         $orderresult=null;
-        for($i=0;$i<count($searchResult);$i++)
+        if($pagenum===null)
+            $pagenum=1;
+        $totalpage=count($searchResult)/5+1;
+        if($pagenum>3)
+            $page[0]['num']=$pagenum-3;
+        else
+            $page[0]['num']=0;
+        if($pagenum*1===1)
+            $page[0]['class']="disabled";
+        
+        for($i=1;$i<6;$i++)
+        {
+            $page[$i]['num']=$page[$i-1]['num']+1;
+            $page[$i]['link']='?pagenum='.$page[$i]['num'];
+            if($page[$i]['num']>$totalpage)
+                $page[$i]['class']="disabled";
+            if($page[$i]['num']===$pagenum*1)
+                $page[$i]['class']="active";
+        }
+
+        if($pagenum*1===1)
+        {
+            $page[0]['class']="disabled";
+            $page[0]['link']='?pagenum=1';
+        }
+        else
+        {
+            $page[0]['link']='?pagenum='.($pagenum-1);
+        }
+        if($pagenum*1+1>$totalpage)
+        {
+            $page[6]['class']="disabled";
+            $page[6]['link']="?pagenum=".$totalpage;
+        }
+        else
+        {
+            $page[6]['link']="?pagenum=".($pagenum+1);
+        }
+        for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
@@ -207,6 +245,7 @@ get isBuyer from group 1
             }
 
         }
+        $this->assign('page',$page);
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
         $this->display();

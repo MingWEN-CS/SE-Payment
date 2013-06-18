@@ -21,6 +21,23 @@
                     </form>
                 </div>
 
+                <div class="pagination pagination-right pagination-small">
+                    <ul><if condition="$page[0]['class'] neq 'disabled'">
+                        <li class="{$page[0]['class']}"><a href="{$page[0]['link']}">&laquo;</a></li><else/></if>
+                    <if condition="$page[1]['class'] neq 'disabled'">
+                    <li class="{$page[1]['class']}"><a href="{$page[1]['link']}">{$page[1]['num']}</a></li><else/></if>
+                    <if condition="$page[2]['class'] neq 'disabled'">
+                    <li class="{$page[2]['class']}"><a href="{$page[2]['link']}">{$page[2]['num']}</a></li><else/></if>
+                    <if condition="$page[3]['class'] neq 'disabled'">
+                    <li class="{$page[3]['class']}"><a href="{$page[3]['link']}">{$page[3]['num']}</a></li><else/></if>
+                    <if condition="$page[4]['class'] neq 'disabled'">
+                    <li class="{$page[4]['class']}"><a href="{$page[4]['link']}">{$page[4]['num']}</a></li><else/></if>
+                    <if condition="$page[5]['class'] neq 'disabled'">
+                    <li class="{$page[5]['class']}"><a href="{$page[5]['link']}">{$page[5]['num']}</a></li><else/></if>
+                    <if condition="$page[6]['class'] neq 'disabled'">
+                    <li class="{$page[6]['class']}"><a href="{$page[6]['link']}">&raquo;</a></li><else/></if>
+                    </ul>
+                </div>
                 <div>                        
                 <table class="table table-bordered">
                     <thead>
