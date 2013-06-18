@@ -2,6 +2,7 @@
 import("@.Util.Goods.SourcePlace");
 import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
+import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
 
 class PurchaseAction extends Action {
@@ -166,7 +167,7 @@ class PurchaseAction extends Action {
 		//Session info
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
-		//$is_vip = BuyerHelper
+		$is_vip = BuyerHelper::getIsVip($uid);
 
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
@@ -185,6 +186,7 @@ class PurchaseAction extends Action {
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
+				$goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
 			}
 
 			//Generate imcomplete order and get order_id list (int group 2)
@@ -304,9 +306,8 @@ class PurchaseAction extends Action {
 		}
 	}
 	public function comment() {
-		$order_id_list = $this->_post();
-		//$order_id = $order_id_list['OID'];
-		$order_id = 68;
+		$order_id_list = $this->_get();
+		$order_id = $order_id_list['oid'];
 		$OrderGoods = D('OrderGoods');
 		$goods_list = $OrderGoods->searchbyid($order_id);
 		$goods_count = count($goods_list);

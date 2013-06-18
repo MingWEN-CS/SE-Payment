@@ -5,9 +5,13 @@
    	<link rel="stylesheet" href="../Public/css/group1.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+	<script src="../Public/js/user.js" type="text/javascript"></script>
 </head>
 
 <script>
+
+var ROOT = '__APP__';
+
 $(function(){
 	num = 1;	
 	for (i = 1; i <=3; i++){
@@ -29,19 +33,46 @@ $(function(){
 			<div class="span2">
 				<img src="../Public/img/avatar.gif"/>
 			</div>
-			<div class="span2">
-				<p><h4>文明</h4></p>
-				<p>821817954@qq.com</p>
-				<p><button class="btn btn-danger">Authenticate</button></p>
+			<div class="span2" style="margin-top:-10px">
+				<p><h4>{$name}
+					<span style="font-size:14px; font-weight:100; color:#f89406">
+					
+					<if condition="$type == 0">
+					(buyer)
+					<else />
+					(Seller)
+					</if>
+					</span>
+				</h4></p>
+				<p>{$email}</p>
+			<if condition="$type == 0">
+				<p><span class="label label-info" style="margin-right:10px">Credit:</span>{$credit}</p>
+				<p>
+					<if condition="$isAuth == 1">
+					<span class="label label-success">Authenticated</span>
+					<else />
+					<button class="btn btn-danger" data-toggle="modal" data-target="#authentication">Authenticate</button>
+					</if>
+				</p>
+			</if>
 			</div>		
 		</div>
 		
-		<div id="password" class="span6" style="margin-left:80px;margin-top:25px">
-			<button class="btn btn-large btn-warning">Password</button>
+		<div id="password" class="span4" style="margin-left:80px;margin-top:0px">
+			<H1 style = "color:#f89406">Password</H1>
 			<label></label>
 			<a href="#loginPassword" data-toggle="modal">modify your password for login </a>
 			<label></label>
-			<a href="#paymentPassword" data-toggle="modal">modify your password for payment</a>
+
+			<a href="#paymentPassword" data-toggle="modal">
+				<if condition="$type == 0">
+					modify your password for payment
+				<else />
+					modify your password for consignment
+				</if>
+
+				
+			</a>
 		</div>
 
 		<div class="horizon-line span10" style="margin-top:20px;margin-bottom:20px;">
@@ -50,84 +81,197 @@ $(function(){
 		<div id="otherInfo" style="margin-top:100px;">
 			<div class="span9">
 				<h4>Other Information:</h4>
-				<label>Gender:</label>
-				<label>Phone Number:<span>18768113960</span></label>
-				<label>Address:<span>浙江大学玉泉校区30舍1001</span></label>
-				<button class="btn btn-small btn-danger" data-toggle="modal" data-target="#myModal">Modify</button>
+				<if condition = "$phone == ''">
+				<a>Phone Number:<span>Not Set</span><button class="btn btn-mini btn-warning" style="margin-left:5px;" 
+					data-toggle="modal" data-target="#setPhone">Set</button></a>
+				
+				<else />
+				<a>Phone Number:<span>{$phone}</span><button class="btn btn-mini btn-warning" style="margin-left:5px;"
+					data-toggle="modal" data-target="#modifyPhone">Modify</button></a>
+				</if>
+
+				<h4 style="color:#279c27">Address:</h4>
+				<volist name="address" id="vo">
+				<p>
+					<span style="margin-right:5px;">{$vo[PROVINCE]}</span>
+					<span style="margin-right:5px;">{$vo.CITY}</span>
+					<span style="margin-right:5px;">{$vo.STRICT}</span>
+					<span style="margin-right:5px;">{$vo.STREET}</span>
+					<button class="btn btn-mini btn-danger" id = "addressId" onclick="deleteAddress({$vo.ADDRESSID})">Delete</button>
+				</p>
+
+				<div id="deleteAddress{$vo.ADDRESSID}" class = "warningInfo" style="display:none">
+					<h4 style="color:#bd362f">Warning!</h4>
+					<div id="deleteAddressInfo">
+						Are you sure to delete this address?
+					</div>
+			  		<div class="alert-footer">
+			    		<button href="#" class="btn" onclick = "deleteAddressCancel({$vo.ADDRESSID})">Cancel</button>
+			    		<button href="#" class="btn btn-danger" onclick="deleteAddressConfirm({$vo.ADDRESSID})">Confirm</button>
+			  		</div>
+				</div>
+
+				</volist>
+				<button class="btn btn-small btn-success" data-toggle="modal" data-target="#addAddress">Add a Address</button>
 			</div>
 		</div>
 	</div>
 
-	<div id="loginPassword" class="modal hide fade">
-  		<div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    	<h3>Change your password for login</h3>
-  		</div>
-  		<div class="modal-body">
-    		<fieldset class="step">
-				<p>
-					<label>Password for login<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="password" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-				<p>	
-					<label>New password for login<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="confirmPassword" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-				<p>	
-					<label>Confirm again<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="confirmPassword" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-			</fieldset>
-  		</div>
-	  	<div class="modal-footer">
-	    	<a href="#" class="btn btn-success">Close</a>
-	    	<a href="#" class="btn btn-warning">Save changes</a>
-	  	</div>
-	</div>
-
-	<div id="paymentPassword" class="modal hide fade">
-  		<div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    	<h3>Change your password for payment</h3>
-  		</div>
-  		<div class="modal-body">
-    		<fieldset class="step">
-				<p>
-					<label>Password for payment<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="password" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-				<p>	
-					<label>New password for payment<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="confirmPassword" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-				<p>	
-					<label>Confirm again<span style="color:#ff0000; font-family:song">*</span>:</label>
-					<input type="password" name="confirmPassword" placeholder="Password" AUTOCOMPLETE=OFF>
-				</p>
-			</fieldset>
-  		</div>
-	  	<div class="modal-footer">
-	    	<a href="#" class="btn btn-success">Close</a>
-	    	<a href="#" class="btn btn-warning">Save changes</a>
-	  	</div>
-	</div>
-
-	<div id="myModal" class="modal hide fade">
-  		<div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    	<h3>Modal header</h3>
-  		</div>
-  		<div class="modal-body">
-    		<p>One fine body…</p>
-  		</div>
-	  	<div class="modal-footer">
-	    	<a href="#" class="btn">Close</a>
-	    	<a href="#" class="btn btn-primary">Save changes</a>
-	  	</div>
-	</div>
 </div>
 </div>
 
+<!--
+All the modals for infirmation change
+-->
+<div id="loginPassword" class="modal hide fade">
+		<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Change your password for login</h3>
+		</div>
+		<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Your Current Password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id = "oldLoginPwd" name="password" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>New password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="newLoginPwd" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Confirm your new password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="newLoginRepwd" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+		</div>
+
+	<div id="changeLoginPwdInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "changeLoginPwd()">Save changes</a>
+  	</div>
+</div>
+
+<div id="paymentPassword" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Change your password for payment</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="oldPaymentPwd" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>New password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="newPaymentPwd" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Confirm your new password<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="password" id="newPaymentRepwd" placeholder="Password" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="changePaymentPwdInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "changePaymentPwd()">Save changes</a>
+  	</div>
+</div>
+
+<div id="setPhone" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Set your phone number</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			<label>Your Phone Number<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<input type="text" id="setPhoneNumber" placeholder="Phone Number" AUTOCOMPLETE=OFF>
+		</p>
+	</div>
+	<div id="setPhoneInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    	<a href="#" class="btn btn-success" onclick ="setPhone()">Submit</a>
+  	</div>
+</div>
+
+<div id="modifyPhone" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Modify your phone number</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			<label>Your Phone Number<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<input type="text" id="modifyPhoneNumber" placeholder="{$phone}" AUTOCOMPLETE=OFF>
+		</p>
+	</div>
+  	<div id="modifyPhoneInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    	<a href="#" class="btn btn-success" onclick="modifyPhone()">Submit</a>
+  	</div>
+</div>
+
+<div id="authentication" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Real Name Authentication</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Your Real Name<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="realName" placeholder="Real Name" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Your Id Number<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="idNumber" placeholder="Id Number" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="authenticateInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "authenticate()">Authenticate</a>
+  	</div>
+</div>
+
+
+<div id="addAddress" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Add a Address</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Province<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="addrProvince" placeholder="Province" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>City<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="addrCity" placeholder="City" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>District<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="addrDistrict" placeholder="District" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Street<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<input type="text" id="addrStreet" placeholder="Street" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="addAddressInfo" class="alert hide" stype="width:200px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "addAddress()">Submit</a>
+  	</div>
+</div>
 
 <include file="../footer"/>
 </body>

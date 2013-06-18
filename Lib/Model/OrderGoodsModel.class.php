@@ -9,6 +9,8 @@ class OrderGoodsModel extends Model{
 			}
             $condition['NAME'] = array('LIKE', $keywordArray, 'OR');
             $condition['OID']=array('IN',$constraint['userorders']);
+            
+            if($constraint!=null)
             $selectCause=$this->where($condition)->group('OID');
 			$result=$selectCause->select();
 			return $result;
