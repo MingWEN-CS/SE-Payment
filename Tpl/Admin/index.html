@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<script>
+  var ROOT = '__APP__/Admin';
+</script>
 	<head>
 		<meta charset="utf-8">
 		<title>Management System</title>
@@ -48,32 +51,17 @@
 						</form>
 						<form id="param_list_body" class="form-horizontal"></form>
 					</div>
-					<div  class="btn btn-inverse param_list_btn">
+					<div  id="add" class="btn btn-inverse param_list_btn">
 						Add
 					</div>
-					<div  class="btn btn-inverse param_list_btn">
+					<div  id="select" class="btn btn-inverse param_list_btn">
 						Select
 					</div>
-					<div id="delete_option" class="white_well">
-						<div class="row span12">
-							<div class="control-group span6">
-								<label class="control-label">ID</label>
-								<div class="controls">
-									<input id="texture_name" class="span12"/>
-								</div>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Name</label>
-							<div class="controls">
-								    <input id="texture_info" rows="2" class="span6">
-							</div>
-						</div>
-					</div>
-
-					<div class="btn btn-inverse param_list_btn">
+					<div id="delete" class="btn btn-inverse param_list_btn">
 						Delete
 					</div>
+
+
 				</div>
 				<!-- preview image panel -->
 				<div id="result_list" class="well span4">

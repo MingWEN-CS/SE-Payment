@@ -5,15 +5,7 @@
 * http://www.qunhe.cc
 * ========================================================================== */
 
-// ================= GLOBAL VARIABLES ==========================================
-var MATERIALS_URL = 'api/materials';
-var SHADERS_URL = 'api/shaders';
-var RENDER_URL = 'api/render';
-var TEXTURESCAT_URL = 'api/textureCategories';
-var TEXTURES_PATH = '/mnt/exaclouddata/texture';
 
-var TEXTURES_URL = '/textures';
-var PREVIEW_URL = 'http://10.1.1.10:7080/TextureRepo/?sort=1&file={0}';
 
 var PARAM_TYPE_ICON_LIST = {
 	Texture : 'icon-picture',
@@ -22,13 +14,8 @@ var PARAM_TYPE_ICON_LIST = {
 }
 
 var PARAM_ITEM_TPL = '<div class="control-group"><label class="control-label">{0}</label><div class="controls"><div class="input-medium"><input id={0} class="span12"></div></div></div>';
-var SHADER_ITEM_TPL = '<option id={0} class="shader_item">{1}</option>';
-var TEXTURES_ITEM_TPL = '<option class="texture_item">{0}</option>';
 var BUTTON_TPL = '<div class="btn btn-inverse verify_btn">{0}</div>'
-var SELECTED_MATERIAL;
-var SELECTED_PARAM_ID;
-var UNSAVED_CHANGES;
-
+var database;
 // ================= INIT FUNCTIONS ============================================
 $(function() {
 	// init viewport height
@@ -52,12 +39,15 @@ $(function() {
 
 $('#admin').live("click", function(){
 	load_admin();
+	database = "Admin";
 })
 $('#user').live("click", function(){
 	load_user();
+	database = "User";
 })
 $('#vip').live("click", function(){
 	load_vip();
+	database = "Vip";
 })
 $('#verify').live("click", function(){
 	load_verify();
@@ -87,26 +77,94 @@ $('.editable').on('focus', function() {
 	UNSAVED_CHANGES = true;
 });
 
+$('#add').live('click', function(){
+   var name = $('#Name').val();
+   var password = $('#Password').val();
+   var email = $('#Email').val();
+   var type = $('#Type').val();
+   var balance = $('#Balance').val();
+   var phone = $('#Phone').val();
+   var vip = $('#VIP').val();
+   var info = $('#Info').val();
+   var blacklist = $('#Blacklist').val();
+   if (database == "Vip"){
+   	alert("postVIP");
+   	vip = 1;
+   	alert(vip);
+ 	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 	
+   } else {
+	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+		alert(result.info);
+	},'json');
+    }
+})
+
+$('#select').live('click', function(){
+   var name = $('#Name').val();
+   var password = $('#Password').val();
+   var email = $('#Email').val();
+   var type = $('#Type').val();
+   var balance = $('#Balance').val();
+   var phone = $('#Phone').val();
+   var vip = $('#VIP').val();
+   var info = $('#Info').val();
+   var blacklist = $('#Blacklist').val();
+   if (database == "Vip"){
+        vip = "1";
+    }
+	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		for (var i in result.data){
+			alert(result.data[i]["USERNAME"]);
+		}
+	},'json');
+ })
+$('#delete').live('click', function(){
+   var name = $('#Name').val();
+   var password = $('#Password').val();
+   var email = $('#Email').val();
+   var type = $('#Type').val();
+   var balance = $('#Balance').val();
+   var phone = $('#Phone').val();
+   var vip = $('#VIP').val();
+   var info = $('#Info').val();
+   var blacklist = $('#Blacklist').val();
+   if (database == "Vip"){
+     alert("postVIP");
+   	vip = 0;
+   	alert(vip);
+ 	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 	
+   } else {
+	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+		alert(result.info);
+	},'json');
+    }
+})
 
 
 // ================= COMMON FUNCTIONS ==========================================
 function load_admin() {
 	var param_item = '';
-	param_item += PARAM_ITEM_TPL.format("ID");
 	param_item += PARAM_ITEM_TPL.format("Name");
-	param_item += PARAM_ITEM_TPL.format("Email");
+	param_item += PARAM_ITEM_TPL.format("Password");
+	param_item += PARAM_ITEM_TPL.format("Info");
 	$('#param_list_body').html(param_item);
 	$('#delete_option').show();
 	$('.param_list_btn').show();
 }
 function load_user() {
 	var param_item = '';
-	param_item += PARAM_ITEM_TPL.format("ID");
 	param_item += PARAM_ITEM_TPL.format("Name");
+	param_item += PARAM_ITEM_TPL.format("Password");
 	param_item += PARAM_ITEM_TPL.format("Email");
 	param_item += PARAM_ITEM_TPL.format("Type");
 	param_item += PARAM_ITEM_TPL.format("Balance");
 	param_item += PARAM_ITEM_TPL.format("Phone");
+	param_item += PARAM_ITEM_TPL.format("VIP");
+	param_item += PARAM_ITEM_TPL.format("Blacklist");
 	$('#param_list_body').html(param_item);
 	$('#delete_option').show();
 	$('.param_list_btn').show();
@@ -114,7 +172,6 @@ function load_user() {
 
 function load_vip() {
 	var param_item = '';
-	param_item += PARAM_ITEM_TPL.format("ID");
 	param_item += PARAM_ITEM_TPL.format("Name");
 	param_item += PARAM_ITEM_TPL.format("Email");
 	param_item += PARAM_ITEM_TPL.format("Type");
@@ -137,21 +194,6 @@ function load_verify() {
 	$('.param_list_btn').hide();
 }
 
-function pack_material() {
-	SELECTED_MATERIAL.textureInfo.name = $('#texture_name').val();
-	SELECTED_MATERIAL.textureCategory = $('#texture_category').get(0).selectedIndex;
-	SELECTED_MATERIAL.textureInfo.info = $('#texture_info').val();
-	SELECTED_MATERIAL.textureInfo.description = $('#texture_description').val();
-	SELECTED_MATERIAL.shaderName = $('#shader_name').val();
-	SELECTED_MATERIAL.parameters = [];
-	$.each($('.param_item'), function(index, item) {
-		SELECTED_MATERIAL.parameters.push({
-			name : item.id,
-			type : $(item).attr('type'),
-			value : $(item).attr('value')
-		});
-	});
-}
 
 // string formatter
 String.prototype.format = function() {

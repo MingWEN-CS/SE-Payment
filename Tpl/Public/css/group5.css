@@ -25,7 +25,7 @@ footer {
 }
 #param_list_body {
     overflow-y: auto;
-    height: 20%;
+    height: 200px;
 }
 
 #param_list hr {
@@ -68,10 +68,11 @@ footer {
 }
 
 #renderWhat {
-	width:100px;
+    width:100px;
 }
 
 #delete_option{
+    margin: 10px 0 10px 0;
     display: none;
 }
 
