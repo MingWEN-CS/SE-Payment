@@ -328,13 +328,12 @@ class PurchaseAction extends Action {
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
 
-		//$User = D('Buyer');
-		//if(!$uid || !$User->where('UID='.$uid)->select()) {
-		//	$this->error('Please login as a buyer first!','__APP__/User/login');
-		//}
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
 		$comment_info = $this->_post();
 		$order_id = $comment_info['order_id'];
-		var_dump($comment_info);
 		if(!$order_id) {
 			$this->error('Invalid access!', '__APP__/Order/showorders');
 		}
@@ -355,9 +354,15 @@ class PurchaseAction extends Action {
 					$Feedback->add($data);
 				}
 
-					//$this->success('Score and comment successfully!', '__APP__/Order/showorders');
-					//$this->error('Fail!', '__APP__/User');
-				
+				//Update Score
+				for ($i = 1; $i <= $goods_count; $i++) {
+					$goods_id = $comment_info['goods_id_'.$i];
+					$Feedback->score_update($goods_id);
+				}
+				$this->success('Score and comment successfully!', '__APP__/Order/showorders');
+			}
+			else {
+				$this->sucess('Make Feedback later!', '__APP__/Order/showorders');
 			}
 		}
 	}
