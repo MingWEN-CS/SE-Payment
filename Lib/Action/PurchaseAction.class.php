@@ -2,6 +2,7 @@
 import("@.Util.Goods.SourcePlace");
 import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
+import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
 
 class PurchaseAction extends Action {
@@ -167,6 +168,7 @@ class PurchaseAction extends Action {
 		//Session info
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
+		$is_vip = BuyerHelper::getIsVip($uid);
 
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
@@ -185,6 +187,7 @@ class PurchaseAction extends Action {
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
+				$goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
 			}
 
 			//Generate imcomplete order and get order_id list (int group 2)
@@ -247,7 +250,7 @@ class PurchaseAction extends Action {
 					$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 					$order_list[$i]['GOODS'][$j]['PRICE'] = $goods_list[$j]['PRICE'];
 					$order_list[$i]['GOODS'][$j]['COUNT'] = $goods_list[$j]['AMOUNT'];
-					$order_list[$i]['GOODS'][$j]['URI'] = $goods_item['image_uri'];
+					$order_list[$i]['GOODS'][$j]['URI'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 					$order_list[$i]['GOODS'][$j]['NAME'] = $goods_item['name'];
 				}
 			}
@@ -304,15 +307,74 @@ class PurchaseAction extends Action {
 		}
 	}
 	public function comment() {
-		$order_id_list = $this->_post();
-		$order_id = $order_id_list['OID'];
-		$Order = D('Order');
-		$goods_list = $Order->searchbyid($order_id);
+		$order_id_list = $this->_get();
+		$order_id = $order_id_list['oid'];
+		$OrderGoods = D('OrderGoods');
+		$goods_list = $OrderGoods->searchbyid($order_id);
+		$goods_count = count($goods_list);
+		if(!$goods_list) {
+			$this->error('Order dismissed!', '__APP__/Order/showorders');
+		}
+		//var_dump($goods_list);
+		else {
+			for($i = 0; $i < $goods_count; $i++) {
+				$goods_id = $goods_list[$i]['GID'];
+				$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
+				$goods_info_list[$i] = $goods_item; 
+				$goods_info_list[$i]['count'] = $goods_list[$i]['AMOUNT'];
+			}
 
-
-		$this->display();
+			$this->assign('order_id', $order_id);
+			$this->assign('goods_count', $goods_count);
+			$this->assign('goods_info_list', $goods_info_list);
+			$this->display();
+		}
 
 	}
+	public function commentprocess() {
+		//Session info
+		$uid = $this->_session('uid');
+		$uname = $this->_session('username');
+
+		$User = D('Buyer');
+		if(!$uid || !$User->where('UID='.$uid)->select()) {
+			$this->error('Please login as a buyer first!','__APP__/User/login');
+		}
+		$comment_info = $this->_post();
+		$order_id = $comment_info['order_id'];
+		if(!$order_id) {
+			$this->error('Invalid access!', '__APP__/Order/showorders');
+		}
+		else {
+			if(isset($comment_info['confirm'])) {
+				//Add Feedback
+				$Feedback = D('Feedback');
+				$goods_count = $comment_info['goods_count'];
+				$order_id = $comment_info['order_id'];
+				$data['user_id'] = $uid;
+				$data['transaction_id'] = $order_id;
+				$date = date('Y-m-d H:i:s');
+				$data['date_time'] = $date;
+				for ($i = 1; $i <= $goods_count; $i++) {
+					$data['goods_id'] = $comment_info['goods_id_'.$i];
+					$data['score'] = $comment_info['score_'.$i];
+					$data['comment'] = $comment_info['comment_'.$i];
+					$Feedback->add($data);
+				}
+
+				//Update Score
+				for ($i = 1; $i <= $goods_count; $i++) {
+					$goods_id = $comment_info['goods_id_'.$i];
+					$Feedback->score_update($goods_id);
+				}
+				$this->success('Score and comment successfully!', '__APP__/Order/showorders');
+			}
+			else {
+				$this->sucess('Make Feedback later!', '__APP__/Order/showorders');
+			}
+		}
+	}
+
 	
 	public function recommend() {
 		// init

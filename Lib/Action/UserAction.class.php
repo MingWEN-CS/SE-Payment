@@ -104,7 +104,7 @@ class UserAction extends Action {
                     }
                 }
                 else {
-                    $this->ajaxReturn('',$User->getError(),0);
+                    $this->ajaxReturn(0,'Register a Failed!',0);
                 }
             }
         }
