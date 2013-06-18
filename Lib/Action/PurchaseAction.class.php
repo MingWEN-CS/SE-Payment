@@ -92,7 +92,7 @@ class PurchaseAction extends Action {
 		$userId = $this->_session('uid');
 		if (IS_POST) {
 			$buyer = M('Buyer');
-			if (!$user_id || !$buyer->where('uid = '.$user_id)->find()) {
+			if (!$userId || !$buyer->where('uid = '.$userId)->find()) {
 				$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
 				return;
 			}
