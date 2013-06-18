@@ -15,5 +15,6 @@ class BuyerModel extends Model{
 	public function authenticate($id){
 		return $this->where('UID ='.$id)->setField('AUTHENTICATED',1);
 	}
+	
 }
 ?>

@@ -1,0 +1,201 @@
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+   	<link rel="stylesheet" href="../Public/css/index.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/jquery.extend.js" type="text/javascript"></script>
+	<script src="../Public/js/showhint.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			<if condition="$info neq null">
+				showHint();
+			</if>
+			
+			$('input:checkbox.all').change(function() {
+				$('input:checkbox[good_type=' + $(this).attr('good_type') + ']').prop('checked', this.checked);
+			});
+			
+			$('input:checkbox[good_id]').change(function() {
+				if (!$(this).prop('checked')) {
+					$('input:checkbox.all[good_type=' + $(this).attr('good_type') + ']').prop('checked', false);
+				}
+			});
+			
+			$('.add').click(function() {
+				$.form('__URL__/add', {good_type: $(this).attr('good_type')}, 'GET').submit();
+			});
+			
+			$('.modify').click(function() {
+				$.form('__URL__/add', {good_type: $(this).attr('good_type'), good_id: $(this).attr('good_id')}, 'GET').submit();
+			});
+			
+			$('.delete').click(function() {
+				var good_type = $(this).attr('good_type');
+				var selection = $('input:checkbox:checked[good_id][good_type=' + good_type + ']');
+				if (selection.length) {
+					$.form('__URL__/delete', {good_ids: $.map(selection, function(val) {
+						return $(val).attr('good_id');
+					}), good_type: good_type}, 'POST').submit();
+				} else {
+					showHint("No selection to delete!");
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	
+<include file="../header"/>
+
+<div id="container" style="margin-top:100px;">
+	<ul class="nav nav-tabs" id="goods-type-tab">
+	  <li class="<eq name='good_type' value='general-goods'>active</eq><if condition='$good_type eq null'>active</if>"><a href="#general-goods" data-toggle="tab">Gernal Goods</a></li>
+	  <li class="<eq name='good_type' value='hotel-room'>active</eq>"><a href="#hotel-room" data-toggle="tab">Hotel Rooms</a></li>
+	  <li class="<eq name='good_type' value='airplane-ticket'>active</eq>"><a href="#airplane-ticket" data-toggle="tab">Airplane Tickets</a></li>
+	</ul>
+
+	<div id="goods-type-tab_content" class="tab-content">
+		<div class="tab-pane <eq name='good_type' value='general-goods'>active</eq>" id="general-goods">
+			<h4>General Goods List</h4>
+			
+			<if condition="$general_goods eq null">
+				You do not sell this kind of goods! <div class='add btn-link help-inline' good_type='general-goods'>Add some!</div>
+			<else />
+				<div class="alert-info hide text-center">{$info}</div>
+				<table class="table table-bordered table-hover table-striped">
+					<thead>
+						<th><input type='checkbox' class='checkbox all' good_type='general-goods'>select all</input></th>
+						<th>name</th>
+						<th>price</th>
+						<th>bought</th>
+						<th>score</th>
+						<th>stock</th>
+						<th>operation</th>
+					</thead>
+					<tbody>
+						<volist name="general_goods" id="vo">
+							<tr>
+								<td>
+									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='general-goods'></input>
+								</td>
+								<td>
+									<a href='__APP__/Purchase/detail?id={$vo.id}' good_id='{$vo.id}'>{$vo.name}</a>
+								</td>
+								<td>{$vo.price}</td>
+								<td>{$vo.bought_count}</td>
+								<td>{$vo.score}</td>
+								<td>{$vo.stock}</td>
+								<td>
+									<div class='modify btn-link' good_id='{$vo.id}' good_type='general-goods'>modify</div>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<h4 class='text-center'>
+					<div class='add btn-link help-inline' good_type='general-goods'>add</div>
+					<div class='delete btn-link help-inline' good_type='general-goods'>delete selection</div>
+				</h4>
+			</if>
+		</div>
+		
+		<div class="tab-pane <eq name='good_type' value='hotel-room'>active</eq>" id="hotel-room">
+			<h4>Hotel Room List</h4>
+			
+			<if condition="$hotel_room eq null">
+				You do not sell this kind of goods! <div class='add btn-link help-inline' good_type='hotel-room'>Add some!</div>
+			<else />
+				<div id="info" class="alert-info text-center">{$info}</div>
+				<table class="table table-bordered table-hover table-striped">
+					<thead>
+						<th><input type='checkbox' class='checkbox all' good_type='hotel-room'>select all</input></th>
+						<th>name</th>
+						<th>price</th>
+						<th>bought</th>
+						<th>score</th>
+						<th>place</th>
+						<th>stock</th>
+						<th>type</th>
+						<th>operation</th>
+					</thead>
+					<tbody>
+						<volist name="hotel_room" id="vo">
+							<tr>
+								<td>
+									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='hotel-room'></input>
+								</td>
+								<td>
+									<a href='#' good_id='{$vo.id}'>{$vo.name}</a>
+								</td>
+								<td>{$vo.price}</td>
+								<td>{$vo.bought_count}</td>
+								<td>{$vo.score}</td>
+								<td>{$vo.place}</td>
+								<td>{$vo.stock}</td>
+								<td>{$vo.suit_type}</td>
+								<td>
+									<div class='modify btn-link help-inline' good_id='{$vo.id}' good_type='hotel-room'>modify</div>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<h4 class='text-center'>
+					<div class='add btn-link help-inline' good_type='hotel-room'>add</div>
+					<div class='delete btn-link help-inline' good_type='hotel-room'>delete selection</div>
+				</h4>
+			</if>
+		</div>
+		
+		<div class="tab-pane <eq name='good_type' value='airplane-ticket'>active</eq>" id="airplane-ticket">
+			<h4>Airplane Ticket List</h4>
+
+			<if condition="$airplane_ticket eq null">
+				You do not sell this kind of goods! <div class='add btn-link help-inline' good_type='airplane-ticket'>Add some!</div>
+			<else />
+				<div id="info" class="alert-info hide text-center">{$info}</div>
+				<table class="table table-bordered table-hover table-striped">
+					<thead>
+						<th><input type='checkbox' class='checkbox all' good_type='airplane-ticket'>select all</input></th>
+						<th>name</th>
+						<th>bought</th>
+						<th>score</th>
+						<th>stock</th>
+						<th>price</th>
+						<th>operation</th>
+					</thead>
+					<tbody>
+						<volist name="airplane_ticket" id="vo">
+							<tr>
+								<td>
+									<input type='checkbox' class='checkbox' good_id='{$vo.id}' good_type='airplane-ticket'></input>
+								</td>
+								<td>
+									<a href='#' good_id='{$vo.id}'>{$vo.name}</a>
+								</td>
+								<td>{$vo.bought_count}</td>
+								<td>{$vo.score}</td>
+								<td>{$vo.stock}</td>
+								<td>{$vo.price}</td>
+								<td>
+									<div class='modify btn-link help-inline' good_id='{$vo.id}' good_type='airplane-ticket'>modify</div>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<h4 class='text-center'>
+					<div class='add btn-link help-inline' good_type='airplane-ticket'>add</div>
+					<div class='delete btn-link help-inline' good_type='airplane-ticket'>delete selection</div>
+				</h4>
+			</if>
+		</div>
+	</div>
+</div>
+
+<include file="../footer"/>
+</body>
+</html>
