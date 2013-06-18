@@ -27,5 +27,32 @@ class GoodsHelper {
 		}
 		return null;
 	}
+
+	
+	static public function getHotestGoods($topNum){
+		if(!$allKindsGoods) {
+			$allKindsGoods = array(D('GeneralGoods'), D('HotelRoom'), D('AirplaneTicket'));
+		}
+		$result = array();
+		foreach($allKindsGoods as $eachKind) {
+			$result = array_merge($result, $eachKind->order('bought_count desc')->limit($topNum)->select());
+		}
+		uasort($result, "boughtCountCompare");
+		return $result;
+	}
+	
+
 }
+
+function boughtCountCompare($a, $b) {
+	if($a[bought_count] == $b[bought_count]) {
+		return 0;
+	}
+	else if($a[bought_count] < $b[bought_count]) {
+		return 1;
+	}
+	else
+		return -1;
+}
+
 ?>

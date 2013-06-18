@@ -67,9 +67,15 @@ class PurchaseAction extends Action {
 		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArrayWithHead());
 		//hotel suit
-		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
+		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArrayWithHead());
 		//airplane carbin
-		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
+		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArrayWithHead());
+		//hotest goods
+		$hotest = GoodsHelper::getHotestGoods(10);
+		for($i = 0; $i < count($hotest);$i++) {
+			$hotest[$i][image_uri] = CommonValue::getImgUploadPath() . $hotest[$i][image_uri];
+		}
+		$this->assign('hotest_goods', $hotest);
 		$this->display();
 	}
 	
