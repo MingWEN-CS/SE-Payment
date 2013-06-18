@@ -21,10 +21,12 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   `TYPE` tinyint(1) NOT NULL,
   `BALANCE` int(11) DEFAULT '0',
   `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `BLACKLIST` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
 
 DROP TABLE IF EXISTS se_goods;
 CREATE TABLE se_goods(
@@ -40,21 +42,19 @@ CREATE TABLE se_goods(
 -- --------------------------------------------------------
 
 --
--- Table structure for table `se_receiveaddress`
+-- Table structure for table `se_address`
 --
 
-CREATE TABLE IF NOT EXISTS `se_receiveaddress` (
-  `ADDRESSID` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `se_address` (
+  `ADDRESSID` int(11) NOT NULL AUTO_INCREMENT,
   `UID` int(11) NOT NULL,
-  `RECEIVERNAME` char(50) DEFAULT NULL,
-  `RECEIVERPHONE` char(20) DEFAULT NULL,
   `PROVINCE` char(50) DEFAULT NULL,
   `CITY` char(50) DEFAULT NULL,
   `STRICT` char(50) DEFAULT NULL,
   `STREET` char(100) DEFAULT NULL,
   PRIMARY KEY (`ADDRESSID`),
   KEY `UID` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
 
 
 DROP TABLE IF EXISTS se_orders;
@@ -71,7 +71,7 @@ CREATE TABLE se_orders(
    	 ISAUDIT varchar(5) CHARACTER SET utf8 NOT NULL DEFAULT 'NO',
 	foreign key (BUYER) references `se_user`(`UID`) on delete cascade,
 	foreign key (SELLER) references `se_user`(`UID`) on delete cascade,
-   	 foreign key (ADDRESSID) references `se_receiveaddress`(`ADDRESSID`) on delete cascade
+   	 foreign key (ADDRESSID) references `se_address`(`ADDRESSID`) on delete cascade
 );
 
 
@@ -100,7 +100,8 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
 
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
-  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+   KEY `se_seller_ibfk_1` (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -128,10 +129,10 @@ ALTER TABLE `se_buyer`
   ADD CONSTRAINT `se_buyer_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
 --
--- Constraints for table `se_receiveaddress`
+-- Constraints for table `se_address`
 --
-ALTER TABLE `se_receiveaddress`
-  ADD CONSTRAINT `se_receiveaddress_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
+ALTER TABLE `se_address`
+  ADD CONSTRAINT `se_address_ibfk_1` FOREIGN KEY (`UID`) REFERENCES `se_user` (`UID`);
 
 --
 -- Constraints for table `se_seller`
