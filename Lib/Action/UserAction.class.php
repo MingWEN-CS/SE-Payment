@@ -26,6 +26,7 @@ class UserAction extends Action {
             else {
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
+				session('type',$user[TYPE]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
             }
         }   
@@ -76,9 +77,30 @@ class UserAction extends Action {
                                 }
                                 else  $this->ajaxReturn(0,'Register failed',0);
                             }
+<<<<<<< HEAD
+                            else  $this->ajaxReturn(0,'Register c failed',0);
+                        }
+                        else {
+                            $this->ajaxReturn(0,'Register Buyer failed!',0);
+                        }
+                    }
+                    else if ($type == 1){
+                        $Seller = D("Seller");
+                        $data = array('uid' => $uid,
+                                    'pwd2' => $pwd2);
+                        if ($Seller->create($data)){
+                            $sid = $Seller->add();
+                            if ($sid){
+                                session('uid',$uid);
+                                session('username',$name);
+                                $this->ajaxReturn($sid,'Register successfully!',1);
+                            }
+                            else  $this->ajaxReturn(0,'Register b failed',0);
+=======
                             else {
                                 $this->ajaxReturn(0,'Register Buyer failed!',0);
                             }
+>>>>>>> 30c6d2593392e76dfbaa2abf09532dd7d543fe1e
                         }
                         else if ($type == 1){
                             $Seller = D("Seller");
@@ -103,7 +125,11 @@ class UserAction extends Action {
                     }
                 }
                 else {
+<<<<<<< HEAD
+                    $this->ajaxReturn(0,'Register a Failed!',0);
+=======
                     $this->ajaxReturn('',$User->getError(),0);
+>>>>>>> 30c6d2593392e76dfbaa2abf09532dd7d543fe1e
                 }
             }
         }
