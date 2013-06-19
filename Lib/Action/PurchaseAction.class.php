@@ -265,7 +265,7 @@ class PurchaseAction extends Action {
 		}
 		
 		//Show and select shipping address
-		$addr = D('Receiveaddress');
+		$addr = D('Address');
 		$condition['UID'] = $uid;
 		$addr_list = $addr->where($condition)->select();
 		//If Buyer has no shipping address

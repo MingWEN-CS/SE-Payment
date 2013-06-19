@@ -1,11 +1,28 @@
 $(function() {
 	var args = {};
     var match = null;
+	// format of url is &key=value
     var search = decodeURIComponent(location.search.substring(1));
     var reg = /(?:([^&;]+)=([^&;]+))/g;
     while((match = reg.exec(search))!==null){
         args[match[1]] = match[2];
     }
+	// format of url is /key/value
+	if(!args['goods-type']) {
+		search = location.pathname.substring(location.pathname.indexOf('search') + 6);
+		reg = /([^/]+)/g;
+	    while((match = reg.exec(search))!==null) {
+	    	console.log(match[1]);
+			var value = reg.exec(search);
+			if(value) {
+				args[match[1]] = value[1];
+			}
+			else break;
+		}
+	}
+	if(!args['goods-type']) {
+		args['goods-type'] = args['type']
+	}
 	var goodDiv;
 	if(args['goods-type'] == 'general-goods') {
 		$('#goods-type-tab a[href="#general-goods"]').tab('show');

@@ -18,7 +18,7 @@ class ShoppingCartAction extends Action {
 			$this->error('To use shopping cart, you must login as a buyer!', 'redir');
 		$shoppingCart = M('ShoppingCart');
 		// select from shopping cart database, get this user's cart
-		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->find();
+		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->select();
 		$resultArray = array();
 		// static info to get total count and total price
 		// init static info
@@ -65,7 +65,9 @@ class ShoppingCartAction extends Action {
 		$cart = D('ShoppingCart');
 		// call a method in shopping cart model
 		// decide by return value to give different hint
+		echo $_POST;
 		if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['good_count'], $_POST['add'])) {
+		// if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['good_count'], $_POST['add'])) {
 			$this->success('Modification succeeded!');
 		} else {
 			$this->error('Modification failed!');
