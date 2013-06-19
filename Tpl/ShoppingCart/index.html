@@ -29,26 +29,25 @@
 				var next = $(this).next();
 				var count = parseInt(next.text());
 				var price = parseFloat($(this).parent().next().text());
-				if (count > 1) {
-					$.post('__URL__/modify', {good_id: next.attr('good_id'), add: false}, function(json) {
-						showHint(json.info);
-						if (json.status == 1) {
-							next.text(count - 1);
-							$('#totalcount').text(parseInt($('#totalcount').text()) - 1);
-							$('#totalprice').text((parseFloat($('#totalprice').text()) - price).toFixed(1));
-						} else {
-						}
-					});
-				}
+				$.post('__URL__/modify', {good_id: next.attr('good_id'), good_count: count, add: false}, function(json) {
+					showHint(json.info);
+					if (json.status == 1) {
+						next.text(count - 1);
+						$('#totalcount').text(parseInt($('#totalcount').text()) - 1);
+						$('#totalprice').text((parseFloat($('#totalprice').text()) - price).toFixed(1));
+					} else {
+					}
+				});
 			});
 			
 			$("button.inc").click(function() {
 				var prev = $(this).prev();
+				var count = parseInt(prev.text());
 				var price = parseFloat($(this).parent().next().text());
-				$.post('__URL__/modify', {good_id: prev.attr('good_id'), add: true}, function(json) {
+				$.post('__URL__/modify', {good_id: prev.attr('good_id'), good_count: count, add: true}, function(json) {
 					showHint(json.info);
 					if (json.status == 1) {
-						prev.text(parseInt(prev.text()) + 1);
+						prev.text(count + 1);
 						$('#totalcount').text(parseInt($('#totalcount').text()) + 1);
 						$('#totalprice').text((parseFloat($('#totalprice').text()) + price).toFixed(1));
 					} else {
@@ -136,6 +135,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="result page">{$page}</div>
 		<button id='settlement' class="btn btn-success">Settlement</button>
 	</if>
 </div>

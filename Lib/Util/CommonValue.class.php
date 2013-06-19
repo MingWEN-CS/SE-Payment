@@ -6,5 +6,8 @@ class CommonValue {
 	static public function getVipDiscount(){
 		return 0.8;
 	}
+	static public function getNumberPerPage(){
+		return 1;
+	}
 }
 ?>

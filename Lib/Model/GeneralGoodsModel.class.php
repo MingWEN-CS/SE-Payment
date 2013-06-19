@@ -23,7 +23,13 @@ class GeneralGoodsModel extends Model{
 		return $this->where($condition)->find();
 	}
 	
-	public function getGoodsWithPurchaseAction($purchaseAction) {
+	// get goods count with purchase action
+	public function getGoodsCountWithPurchaseAction($purchaseAction) {
+		// get parameters from purchase action and query the conresponding database
+		return $this->where($this->generateCondition($purchaseAction))->count();
+	}
+	
+	public function getGoodsWithPurchaseActionAndPage($purchaseAction, $Page) {
 		$condition = $this->generateCondition($purchaseAction);
 		$selectCause = $this->where($condition);
 		//sort field
@@ -37,7 +43,7 @@ class GeneralGoodsModel extends Model{
 				}
 			}
 		}
-		$result = $selectCause->select();
+		$result = $selectCause->limit($Page->firstRow.','.$Page->listRows)->select();
 		return $result;		
 	}
 	

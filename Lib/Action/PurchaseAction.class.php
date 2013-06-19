@@ -4,6 +4,7 @@ import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
 import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
+import('@.ORG.Util.Page');
 
 class PurchaseAction extends Action {
 
@@ -17,6 +18,9 @@ class PurchaseAction extends Action {
 
 	public function search(){
 		$goods_type = $this->_get('goods-type');
+		if (!$goods_type) {
+			$goods_type = $this->_get('type');
+		}
 		$keywords = $this->_get('keywords');
 		if($userId = $this->_session('uid')) {
 			$searchHistory = D('SearchHistory');
@@ -38,7 +42,12 @@ class PurchaseAction extends Action {
 		else if($goods_type == 'hotel-room') {
 			$goods = D('HotelRoom');
 		}
-		$searchResult = $goods->getGoodsWithPurchaseAction($this);
+		// paging
+		// get total count of goods to be paged
+		$count = $goods->getGoodsCountWithPurchaseAction($this);
+		// new a Page class, with total number of goods and goods per page as parameters
+		$Page = new Page($count, CommonValue::getNumberPerPage());
+		$searchResult = $goods->getGoodsWithPurchaseActionAndPage($this, $Page);
 		if($goods->getType() == HotelRoomModel::getType()) {
 			for($i = 0; $i < count($searchResult);$i++) {
 				$searchResult[$i][date_time] = TimeFormatter::formatTime($searchResult[$i][date_time]);
@@ -51,9 +60,13 @@ class PurchaseAction extends Action {
 			}
 		}
 		for($i = 0; $i < count($searchResult);$i++) {
-			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
+			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath().$searchResult[$i][image_uri];
 			$searchResult[$i][score] = round($searchResult[$i][score], 2);
 		}
+		// paging
+		$show = $Page->show();
+		$this->assign('page', $show);
+		// search result
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
 		//3 kinds goods' sort option

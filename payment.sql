@@ -68,6 +68,17 @@ CREATE TABLE IF NOT EXISTS `se_address` (
   PRIMARY KEY (`ADDRESSID`),
   KEY `UID` (`UID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `se_address` (
+  `ADDRESSID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  `UID` int(11) NOT NULL,
+  `PROVINCE` char(50) DEFAULT NULL,
+  `CITY` char(50) DEFAULT NULL,
+  `STRICT` char(50) DEFAULT NULL,
+  `STREET` char(100) DEFAULT NULL
+);
+*/
 
 
 DROP TABLE IF EXISTS se_orders;
@@ -356,7 +367,7 @@ DROP TABLE IF EXISTS se_feedback;
 CREATE TABLE se_feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
-	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, */
 	user_id INTEGER,
 	transaction_id INTEGER,
 	goods_id INTEGER,
@@ -367,7 +378,7 @@ CREATE TABLE se_feedback(
 	foreign key (transaction_id) references se_orders(id) on delete cascade,
 	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
-	/* foreign key (transaction_id) references transactions(id) on delete cascade */
+	/* foreign key (transaction_id) references transactions(id) on delete cascade, */
 );
 
 DROP TABLE IF EXISTS se_shopping_cart;

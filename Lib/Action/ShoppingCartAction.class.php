@@ -6,68 +6,66 @@ import("@.Util.CommonValue");
 
 class ShoppingCartAction extends Action {
 	
+	// main shopping cart page, show all goods in user's cart
+	// also provide operations such as delete, modify quantity
 	public function index($info = null) {
+		// get user id
 		$user_id = $this->_session('uid');
-		$prefix = C('DB_PREFIX');
 		$buyer = M('Buyer');
+		// check if logged in and if this user is a buyer
 		if (!$user_id || !$buyer->where('uid = '.$user_id)->find())
-			$this->error('To use shopping cart, you must login as a buyer!');
-		$prefix = C('DB_PREFIX');
-		$case_template = 'CASE '.
-			'WHEN type = 1 THEN '.$prefix.'general_goods.${ph} '.
-			'WHEN type = 2 THEN '.$prefix.'hotel_room.${ph} '.
-			'WHEN type = 3 THEN '.$prefix.'airplane_ticket.${ph} '.
-		'END ';
+			// if not, redirecting...
+			$this->error('To use shopping cart, you must login as a buyer!', 'redir');
 		$shoppingCart = M('ShoppingCart');
-		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->select();
+		// select from shopping cart database, get this user's cart
+		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->find();
 		$resultArray = array();
+		// static info to get total count and total price
+		// init static info
 		$static = array('price' => 0, 'count' => 0);
+		// check if this user is VIP
 		$isVip = BuyerHelper::getIsVip($user_id);
-		foreach($itemArray as $item) {
+		// tranverse the result to get static info
+		foreach ($itemArray as $item) {
 			$newGoods = GoodsHelper::getBasicGoodsInfoOfId($item[good_id]);
+			// if a VIP
 			if($isVip) {
+				// reduce price by VIP discount
 				$newGoods[price] = CommonValue::getVipDiscount() * $newGoods[price];
 			}
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
+			// update static info
 			$static['price'] += $newGoods[price] * $item[good_count];
 			$static['count'] += $item[good_count];
 		}
-		
-		
-		// $model = new Model();
 		$this->assign('list', $resultArray);
-		
-		// $this->assign('list', $model->query('SELECT '.str_replace('${ph}', 'name', $case_template).'as name, good_id, good_count, '.
-		// 	str_replace('${ph}', 'price', $case_template).
-		// 	'as price '.
-		// 	'FROM '.$prefix.'shopping_cart, '.$prefix.'goods, '.$prefix.'general_goods, '.$prefix.'hotel_room, '.$prefix.'airplane_ticket '.
-		// 	'WHERE se_user_id = '.$user_id.' AND good_id = '.
-		// 	str_replace('${ph}', 'id', $case_template)));
-			//'GROUP BY name WITH ROLLUP');
 		$this->assign('static', $static);
-		// $this->assign('static', $model->query('SELECT sum(good_count) as count, sum('.
-		// 	str_replace('${ph}', 'price', $case_template).
-		// 	' * good_count) as price '.
-		// 	'FROM '.$prefix.'shopping_cart, '.$prefix.'goods, '.$prefix.'general_goods, '.$prefix.'hotel_room, '.$prefix.'airplane_ticket '.
-		// 	'WHERE se_user_id = '.$user_id.' AND good_id = '.
-		// 	str_replace('${ph}', 'id', $case_template)));
+		// show info from other pages
 		$this->assign('info', $info);
 		$this->display('index');
     }
 	
+	// all deletion will be POSTed here
+	// with an array containg all good_id to be deleted as parameter
 	public function delete() {
 		$cart = D('ShoppingCart');
 		$ret = true;
+		// get good_id to delete from the POSTed array
 		foreach ($_POST['good_ids'] as $good_id) {
+			// delete each good
 			$ret &= $cart->where('user_id = '.$this->_session('uid').' AND good_id = '.$good_id)->delete();
 		}
+		// return hint, show index page
 		$this->index($ret ? 'Deletion succeeded!' : 'Deletion failed!');
 	}
 	
+	// modification will be POSTed here
+	// add 1 or sub 1 of the quantity of a good
 	public function modify() {
 		$cart = D('ShoppingCart');
-		//$this->success($_POST['add']);
-		if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['add'])) {
+		// call a method in shopping cart model
+		// decide by return value to give different hint
+		if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['good_count'], $_POST['add'])) {
 			$this->success('Modification succeeded!');
 		} else {
 			$this->error('Modification failed!');
