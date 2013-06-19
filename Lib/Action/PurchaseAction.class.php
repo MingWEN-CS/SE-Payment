@@ -200,9 +200,9 @@ class PurchaseAction extends Action {
 				for ($i = 0; $i < $list_count; $i++) {
 					$goods_id = $goods_list_int[$i]['goods_id'];
 					$goods_count = $goods_list_int[$i]['goods_count'];
-					$GoodsAllKinds = GoodsHelper::getGoodsTypeOfId($goods_id);
-					$GoodsAllKinds->where('id='$goods_id)->setInc('bought_count', $goods_count);
-					$GoodsAllKinds->where('id='$goods_id)->setDec('stock', $goods_count);
+					if(!$Goods->changeStock($goods_id, -$goods_count)) {
+						$this->error('System error! Stock fail to change','__APP__/Purchase');
+					}
 				}				
 			}
 			else {
@@ -239,6 +239,7 @@ class PurchaseAction extends Action {
 				Please add one before you place an order', '__APP__/User');
 		}
 		$this->assign('addr_list', $addr_list);
+		
 		//Check valid access
 		$order_info = $this->_post();
 		if(!$order_info) {
@@ -249,7 +250,6 @@ class PurchaseAction extends Action {
 			$OrderGoods = D('OrderGoods');
 			$order_count = $order_info['order_count'];
 			$total_price = 0;
-			//var_dump($order_info);
 
 			//Get order info list
 			for($i = 1; $i <= $order_count; $i++) {
@@ -285,7 +285,6 @@ class PurchaseAction extends Action {
 			$this->assign('total_price', $total_price);
 			$this->assign('order_count', $order_count);
 
-
 			$this->display();
 
 		}
@@ -306,13 +305,12 @@ class PurchaseAction extends Action {
 
 		$Order = D('Orders');
 		//generate order
-		if (isset($order_info['generate'])) {
+		if(isset($order_info['generate'])) {
 			for($i = 1; $i <= $order_count; $i++) {
 				$order_id = $order_info['order_id_'.$i];
 				$data['ADDRESSID'] = $order_info['addr_sel'];
 				$result = $Order->where('ID='.$order_id)->save($data);
 			}
-
 			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders/');
 		}
 
@@ -328,6 +326,7 @@ class PurchaseAction extends Action {
 			$this->success('Your Order is canceled', '__APP__');
 		}
 	}
+
 	public function comment() {
 		$order_id_list = $this->_get();
 		$order_id = $order_id_list['oid'];
