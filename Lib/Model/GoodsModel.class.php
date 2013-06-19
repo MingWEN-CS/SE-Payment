@@ -27,5 +27,24 @@ class GoodsModel extends Model{
 		return($GoodsAllKinds->where('id='.$id)->setInc('stock', $count) &&
 			$GoodsAllKinds->where('id='.$id)->setDec('bought_count', $count));
 	}
+	
+	public function getStockById($id){
+		$search_result = $this->where('id = '.$id)->find();
+		$goods_type = $search_result['type'];
+		switch($goods_type) {
+		case '1':
+			$GoodsAllKinds = D('GeneralGoods');
+			break;
+		case '2':
+			$GoodsAllKinds = D('HotelRoom');
+			break;
+		case '3':
+			$GoodsAllKinds = D('AirplaneTicket');
+			break;
+		default:
+			return 0;
+		}
+		return $GoodsAllKinds->where('id = '.$id)->getField('stock', $count);
+	}
 }
 ?>

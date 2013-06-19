@@ -18,7 +18,7 @@ class ShoppingCartAction extends Action {
 			$this->error('To use shopping cart, you must login as a buyer!', 'redir');
 		$shoppingCart = M('ShoppingCart');
 		// select from shopping cart database, get this user's cart
-		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->find();
+		$itemArray = $shoppingCart->where('user_id = ' . $user_id)->select();
 		$resultArray = array();
 		// static info to get total count and total price
 		// init static info
@@ -33,6 +33,8 @@ class ShoppingCartAction extends Action {
 				// reduce price by VIP discount
 				$newGoods[price] = CommonValue::getVipDiscount() * $newGoods[price];
 			}
+			print_r($item);
+			print_r($newGoods);
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
 			// update static info
 			$static['price'] += $newGoods[price] * $item[good_count];
