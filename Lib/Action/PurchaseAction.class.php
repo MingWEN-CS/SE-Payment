@@ -17,7 +17,11 @@ class PurchaseAction extends Action {
 
 	public function search(){
 		$goods_type = $this->_get('goods-type');
+		if(!$goods_type) {
+			$goods_type = $this->_get('type');
+		}
 		$keywords = $this->_get('keywords');
+		//set on new search history
 		if($userId = $this->_session('uid')) {
 			$searchHistory = D('SearchHistory');
 			$data = array(
@@ -29,6 +33,7 @@ class PurchaseAction extends Action {
 				$id = $searchHistory->add();
 			}
 		}
+		//to set the correct goods type
 		if($goods_type == 'general-goods') {
 			$goods = D('GeneralGoods');
 		}
@@ -38,61 +43,74 @@ class PurchaseAction extends Action {
 		else if($goods_type == 'hotel-room') {
 			$goods = D('HotelRoom');
 		}
+		//get goods from database
 		$searchResult = $goods->getGoodsWithPurchaseAction($this);
+		//format time to readable format
+		//date_time field in hotel room
 		if($goods->getType() == HotelRoomModel::getType()) {
 			for($i = 0; $i < count($searchResult);$i++) {
 				$searchResult[$i][date_time] = TimeFormatter::formatTime($searchResult[$i][date_time]);
 			}
 		}
+		//departure_date_time field and arrival_date_time field in airplane ticket
 		else if($goods->getType() == AirplaneTicketModel::getType()) {
 			for($i = 0; $i < count($searchResult);$i++) {
 				$searchResult[$i][departure_date_time] = TimeFormatter::formatTime($searchResult[$i][departure_date_time]);
 				$searchResult[$i][arrival_date_time] = TimeFormatter::formatTime($searchResult[$i][arrival_date_time]);
 			}
 		}
+		//add prefix image_uri generate vip price and format score
 		for($i = 0; $i < count($searchResult);$i++) {
 			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
+			$searchResult[$i][vip_price] = $searchResult[$i][price] * CommonValue::getVipDiscount();
 			$searchResult[$i][score] = round($searchResult[$i][score], 2);
 		}
+		//set keywords
 		$this->assign($goods->getDataName(), $searchResult);
 		$this->assign('keywords', $keywords);
-		//3 kinds goods' sort option
+		//set 3 kinds goods' sort options
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArrayWithHead());
 		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArrayWithHead());
 		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArrayWithHead());
-		//3 kinds goods' source place option
+		//set 3 kinds goods' source place option
 		$this->assign('general_goods_source_place', GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('hotel_room_source_place', HotelRoomModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArrayWithHead());
-		//hotel suit
+		//set hotel suit options
 		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArrayWithHead());
-		//airplane carbin
+		//set airplane carbin options
 		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArrayWithHead());
-		//hotest goods
+		//set hotest goods
 		$hotest = GoodsHelper::getHotestGoods(10);
 		for($i = 0; $i < count($hotest);$i++) {
 			$hotest[$i][image_uri] = CommonValue::getImgUploadPath() . $hotest[$i][image_uri];
 		}
 		$this->assign('hotest_goods', $hotest);
+		//set if the user is a vip
+		$this->assign('is_vip',BuyerHelper::getIsVip($userId));
 		$this->display();
 	}
 
 	public function detail() {
 		$id = $this->_get('id');
+		//if the id is none
 		if(!$id) {
 			$this->error();
 			return;
 		}
 		$good = GoodsHelper::getBasicGoodsInfoOfId($id);
 		$type = GoodsHelper::getGoodsTypeOfId($id);
+		//if the id is wrong, no corresponding goods
 		if(!$good) {
 			$this->error();
 			return;
 		}
 		$userId = $this->_session('uid');
+		//add to shopping cart port request
 		if (IS_POST) {
 			$buyer = M('Buyer');
+			//if not a buyer
 			if (!$userId || !$buyer->where('uid = '.$userId)->find()) {
 				$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
 				return;
@@ -100,19 +118,20 @@ class PurchaseAction extends Action {
 			else {
 				$shoppingCart = D('ShoppingCart');
 				$shoppingCartRecord = $shoppingCart->where('user_id = '.$userId.' AND good_id = '.$id)->find();
-				//exists already
+				//exists already, add the count of goods to buy
 				if($shoppingCartRecord) {
 					$shoppingCart->modifyCount($userId, $id, 'true');
 					$this->ajaxReturn(0, "Add succeeded", 1);
 					return;
 				}
-				//no this goods in shopping cart
+				//no this goods in shopping cart, good_count of 1
 				else {
 					$data = array(
 						'good_id' => $id,
 						'user_id' => $userId,
 						'good_count' => 1,
 					);
+					//create succeed
 					if ($shoppingCart->create($data)){
 						$id = $shoppingCart->add();
 						if($id) {
@@ -124,7 +143,9 @@ class PurchaseAction extends Action {
 				$this->ajaxReturn(0, "Add failed.", 0);
 			}
 		}
+		//show details of good
 		else {
+			//add browse history
 			if($userId) {
 				$browseHistory = D('BrowseHistory');
 				$data = array(
@@ -133,25 +154,30 @@ class PurchaseAction extends Action {
 					'date_time' => time(),
 				);
 				if ($browseHistory->create($data)){
-					$id = $browseHistory->add();
+					$history_id = $browseHistory->add();
 				}
 			}
 			$feedback = D('Feedback');
 			$user = D('User');
+			//find feedbacks
 			$feedbacks = $feedback->where('goods_id=' . $id)->select();
 			$feedbacksFull = array();
+			//find feedbacks' user
 			foreach($feedbacks as $eachFeedback) {
 				$userInfo = $user->where('UID=' . $eachFeedback[user_id])->find();
 				$newFeedback = array_merge($eachFeedback, array(username => $userInfo[USERNAME]));
 				$feedbacksFull = array_merge($feedbacksFull, array($newFeedback));
 			}
+			//special information about hotel room
 			if($type == HotelRoomModel::getType()) {
 				$good[date_time] = TimeFormatter::formatTime($good[date_time]);
 			}
+			//special information about airplane
 			else if($type == AirplaneTicketModel::getType()) {
 				$good[departure_date_time] = TimeFormatter::formatTime($good[departure_date_time]);
 				$good[arrival_date_time] = TimeFormatter::formatTime($good[arrival_date_time]);
 			}
+			//assign all these data to the webpage
 			$this->assign('feedbacks', $feedbacksFull);
 			$good[score] = intval($good[score]);
 			$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
@@ -183,7 +209,6 @@ class PurchaseAction extends Action {
 		else {
 			$commodity_list = $shopping_cart_list['good_pairs'];
 			$list_count = count($commodity_list) / 2;
-			//$total_price = 0;
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
@@ -365,8 +390,7 @@ class PurchaseAction extends Action {
 				//Update Score
 				for ($i = 1; $i <= $goods_count; $i++) {
 					$goods_id = $comment_info['goods_id_'.$i];
-					$Feedback->score_update($goods_id);
-					$Feedback->bought_update($goods_id);
+					$Feedback->score_sale_update($goods_id);
 				}
 				$this->success('Score and comment successfully!', '__APP__/Order/showorders');
 			}

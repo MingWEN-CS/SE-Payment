@@ -31,7 +31,6 @@ class GeneralGoodsModel extends Model{
 			$availableSortArray = $this->getSortFieldArray();
 			foreach($availableSortArray as $sortField) {
 				if($sortField->field == $sort) {
-					//print_r($this->getSortFieldSqlArray()[$sort]);
 					$temp = $this->getSortFieldSqlArray();
 					$selectCause = $selectCause->order($temp[$sort]);
 				}
@@ -42,17 +41,18 @@ class GeneralGoodsModel extends Model{
 	}
 	
 	static public function getDataName() {
-		//本来想写general-goods的可是volist不认识。
 		return 'general_goods';
 	}
 	
 	static protected function generateCondition($purchaseAction) {
 		$keywords = $purchaseAction->_get('keywords');
+		//like cause with split words
 		$keywordArray = split(" +", $keywords);
 		for($i = 0; $i < count($keywordArray); $i++) {
 			$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
 		}
 		$condition['name'] = array('like', $keywordArray, 'OR');
+		//where cause of price range
 		$priceLowerBound = $purchaseAction->_get('price-lower-bound');
 		$priceUpperBound = $purchaseAction->_get('price-upper-bound');
 		//lower bound : upper bound or 0 : upper bound
@@ -72,7 +72,23 @@ class GeneralGoodsModel extends Model{
 	
 	static $sortFieldSqlArray = null;
 	
-	static public function getSortFieldSqlArray() {
+	//sort field array
+   	static public function getSortFieldArray() {
+		return array(new SortField('sort by price ↑', 'priceAsc'),
+		new SortField('sort by sales ↓', 'boughtCountDesc'),
+		new SortField('sort by score ↓', 'scoreDesc'));
+	}
+
+	//sort field array with head
+   	static public function getSortFieldArrayWithHead() {
+		return array(new SortField('sort by nothing -', 'nothing'),
+		new SortField('sort by price ↑', 'priceAsc'),
+		new SortField('sort by sales ↓', 'boughtCountDesc'),
+		new SortField('sort by score ↓', 'scoreDesc'));
+	}
+
+	//sort field sql array
+   	static public function getSortFieldSqlArray() {
 		if(!$sortFieldSqlArray) {
 			$sortFieldSqlArray = array('priceAsc' => 'price asc',
 				'boughtCountDesc' => 'bought_count desc',
@@ -81,29 +97,19 @@ class GeneralGoodsModel extends Model{
 		return $sortFieldSqlArray;
 	}
 	
-   	static public function getSortFieldArray() {
-		return array(new SortField('sort by price ↑', 'priceAsc'),
-		new SortField('sort by sales ↓', 'boughtCountDesc'),
-		new SortField('sort by score ↓', 'scoreDesc'));
-	}
-	
-   	static public function getSortFieldArrayWithHead() {
-		return array(new SortField('sort by nothing -', 'nothing'),
-		new SortField('sort by price ↑', 'priceAsc'),
-		new SortField('sort by sales ↓', 'boughtCountDesc'),
-		new SortField('sort by score ↓', 'scoreDesc'));
-	}
-	
+	//source place array
 	static public function getSourcePlaceObjectsArray() {
 		return SourcePlace::getSourcePlaceObjectsArray();
 	}
 	
+	//source place array with head
 	static public function getSourcePlaceObjectsArrayWithHead() {
 		$arrayContent = SourcePlace::getSourcePlaceObjectsArray();
 		$arrayContent = array_merge(array(new SourcePlace("source place", "anyplace")), $arrayContent);
 		return $arrayContent;
 	}
 	
+	//type of this class
 	static public function getType() {
 		return "GeneralGoodsModel";
 	}

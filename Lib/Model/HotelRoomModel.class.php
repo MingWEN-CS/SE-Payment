@@ -30,12 +30,18 @@ class HotelRoomModel extends GeneralGoodsModel{
 	
 	static protected function generateCondition($purchaseAction) {
 		$condition = parent::generateCondition($purchaseAction);
+		//where cause of suit_type
 		if(($suit = $purchaseAction->_get('suit_type')) && $suit != "anytype") {
 			$condition['suit_type'] = $suit;
 		}
+		//where cause of dete_time
 		if(($arrivalPlace = $purchaseAction->_get('date_time'))) {
 			$startTime = strtotime($arrivalPlace);
 			$condition['date_time'] = array('between',array($startTime, $startTime + 60 * 5));
+		}
+		//where cause of stars
+		if(($stars = $purchaseAction->_get('stars'))) {
+			$condition['stars'] = $stars;
 		}
 		return $condition;
 	}

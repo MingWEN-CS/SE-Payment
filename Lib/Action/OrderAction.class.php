@@ -199,8 +199,8 @@ get isBuyer from group 1
 
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
             $orderresult[$i]['BUTTONTYPE']=$state;
-            $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i]['OID'];
-            $orderresult[$i]['detail']='./detail'.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['HREF']='__APP__/Order/'.$state.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['detail']='__APP__/Order/detail'.'?oid='.$searchResult[$i]['OID'];
             $orderresult[$i]['createtime']=$createtime;
             if($state===null)
             {
@@ -450,15 +450,15 @@ get isBuyer from group 1
         $orders->audited($oid);
     }
 
-    public function createorder(){
+    public function createorder($cartinfo){
         /*cartinfo:good id and good amount list*/
-        /*data for test*/
-        $cartinfo[0]['goods_id']='1';
-        $cartinfo[0]['goods_count']=1;
-        $cartinfo[1]['goods_id']='4';
-        $cartinfo[1]['goods_count']=3;
-        $cartinfo[2]['goods_id']='2';
-        $cartinfo[2]['goods_count']=2;
+        /*data for test*/        // 
+        // $cartinfo[0]['goods_id']='1';
+        // $cartinfo[0]['goods_count']=1;
+        // $cartinfo[1]['goods_id']='4';
+        // $cartinfo[1]['goods_count']=3;
+        // $cartinfo[2]['goods_id']='2';
+        // $cartinfo[2]['goods_count']=2;
         for($i=0;$i<count($cartinfo);$i++){
             $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
             $seller_id=$goodinfo['seller_id'];

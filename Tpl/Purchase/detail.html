@@ -65,9 +65,11 @@
 					<if condition='$goods_type neq $airplane_ticket_type'>
 						<dt>place</dt>
 						<dd>{$goods_info[place]}</dd>
-						<if condition='$goods_type eq $hotel_room_ticket'>
+						<if condition='$goods_type neq $general_goods_type'>
 							<dt>date and time</dt>
 							<dd>{$goods_info[date_time]}</dd>
+							<dt>stars</dt>
+							<dd>{$goods_info[stars]}</dd>
 						</if>
 					<else />
 						<dt>departure place</dt>
