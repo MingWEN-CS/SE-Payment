@@ -8,190 +8,306 @@
 	<script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="../Public/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="../Public/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-	<script src="../Public/js/purchase_search.js" type="text/javascript"></script>
+	<script src="../Public/js/purchase/search.js" type="text/javascript"></script>
 </head>
 
 <body>
 	
 <include file="../header"/>
 
-<div id="container" style="margin-top:100px;height:400px;">
-	<ul class="nav nav-tabs" id="goods-type-tab">
-	  <li class="active"><a href="#general-goods" data-toggle="tab">Gernal Goods</a></li>
-	  <li><a href="#hotel-room" data-toggle="tab">Hotel Rooms</a></li>
-	  <li><a href="#airplane-ticket" data-toggle="tab">Airplane Tickets</a></li>
-	</ul>
-	<div id="goods-type-tab_content" class="tab-content">
-		<div class="tab-pane active" id="general-goods">
-			<form class="form-search" method="get" action="__APP__/Purchase/search">
-			    <div class="input-append">
-					<input name="goods-type" type="hidden" value="general-goods">
-					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-					<button type="submit" class="btn btn-primary">Search</button>
-				</div>
-				<div class='help-inline'>
-					View your <a href='__APP__/Purchase/shoppingcart'>Shopping Cart</a>
-				</div>
-				<p>
-				<div>
-					<select class="span2" name="sort_field">
-						<volist name="general_goods_sort_options" id="each_option">
-							<option value='{$each_option->field}'>{$each_option->display}</option>
-						</volist>
-					</select>
-					<div class="input-prepend input-append" >
-						<span class="add-on">price range</span>
-						<input class="span1" name="price-lower-bound" type="text">
-						<span class="add-on">upto</span>
-						<input class="span1" name="price-upper-bound" type="text">
+<div id="container" style="margin-top:100px;height:auto;" class="row-fluid">
+	<div class="span9">
+		<ul class="nav nav-tabs" id="goods-type-tab">
+		  <li class="active"><a href="#general-goods" data-toggle="tab">Gernal Goods</a></li>
+		  <li><a href="#hotel-room" data-toggle="tab">Hotel Rooms</a></li>
+		  <li><a href="#airplane-ticket" data-toggle="tab">Airplane Tickets</a></li>
+		</ul>
+		<div id="goods-type-tab_content" class="tab-content">
+			<div class="tab-pane active" id="general-goods">
+				<form class="form-search" method="get" action="__APP__/Purchase/search">
+				    <div class="input-append">
+						<input name="goods-type" type="hidden" value="general-goods">
+						<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+						<button type="submit" class="btn btn-primary">Search</button>
 					</div>
-					<select class="span2" name="place">
-						<volist name="general_goods_source_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
-				</div>
-			</form>
-			<h4>General Goods Search results</h4>
+					<p>
+					<div class="row-fluid">
+						<div class="span3">
+							<select  class="span12" class="sort-select" name="sort_field">
+								<volist name="general_goods_sort_options" id="each_option">
+									<option value='{$each_option->field}'>{$each_option->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+							<div class="input-prepend input-append" >
+								<span class="add-on">price range</span>
+								<input class="span1" name="price-lower-bound" type="text">
+								<span class="add-on">upto</span>
+								<input class="span1" name="price-upper-bound" type="text">
+							</div>
+						</div>
+						<div class="span3">
+							<select class="span12" name="place">
+								<volist name="general_goods_source_place" id="source_place">
+									<option value='{$source_place->value}'>{$source_place->display}</option>
+								</volist>
+							</select>
+						</div>
+					</div>
+				</form>
+				<h4>General Goods Search results</h4>
 
-			<volist name="general_goods" id="each_goods">
-				{$each_goods.name}
-				<p/>
-				{$each_goods.price}
-				<p/>
-				score:{$each_goods.score}
-				<p/>
-				sales:{$each_goods.bought_count}
-				<p/>
-			</volist>
-		</div>
+				<table class="table table-striped">
+					<volist name="general_goods" id="each_goods">
+						<tr><td>
+							<div class="row-fluid">
+							    <div class="span2">
+									<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
+								</div>
+								<div class="span6">
+									<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
+								</div>
+								<div class="span3">
+								    <div class="row">
+										<if condition='$is_vip eq 1'>
+											<s>￥{$each_goods.price}</s>
+											<span>VIP price:￥{$each_goods.vip_price}</span>
+										<else />
+											￥{$each_goods.price}
+										</if>
+									</div>
+								    <div class="row">
+										score:{$each_goods.score}
+									</div>
+								    <div class="row">
+										sales:{$each_goods.bought_count}
+									</div>
+								</div>
+							</div>
+						</td></tr>
+					</volist>
+				</table>
+			</div>
 		
-		<div class="tab-pane" id="hotel-room">
-			<form class="form-search" method="get" action="__APP__/Purchase/search">
-			    <div class="input-append">
-					<input name="goods-type" value="hotel-room" type="hidden">
-					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-					<button type="submit" class="btn btn-primary">Search</button>
-				</div>
-				<p>
-				<div>
-					<select class="span2" name="sort_field">
-						<volist name="hotel_room_sort_options" id="each_option">
-							<option value='{$each_option->field}'>{$each_option->display}</option>
-						</volist>
-					</select>
-					<div class="input-prepend input-append" >
-						<span class="add-on">price range</span>
-						<input class="span1" name="price-lower-bound" type="text">
-						<span class="add-on">upto</span>
-						<input class="span1" name="price-upper-bound" type="text">
+			<div class="tab-pane" id="hotel-room">
+				<form class="form-search" method="get" action="__APP__/Purchase/search">
+				    <div class="input-append">
+						<input name="goods-type" value="hotel-room" type="hidden">
+						<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+						<button type="submit" class="btn btn-primary">Search</button>
 					</div>
-				</div>
-				<div>
-					<select class="span2" name="place">
-						<volist name="hotel_room_source_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
-					<select class="span2" name="suit_type">
-						<volist name="hotel_room_suit" id="suit_type">
-							<option value='{$suit_type->value}'>{$suit_type->display}</option>
-						</volist>
-					</select>
-	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="hotel_date_time">
-	                    <span class="add-on">time</span>
-						<input size="16" type="text" value="" readonly>
-	                    <span class="add-on"><i class="icon-remove"></i></span>
-						<span class="add-on"><i class="icon-th"></i></span>
-	                </div>
-					<input type="hidden" id="hotel_date_time" name="date_time"/><br/>
-				</div>
-			</form>
-			<h4>Hotel Room Search results</h4>
-
-			<volist name="hotel_room" id="each_goods">
-				{$each_goods.name}
-				<p/>
-				{$each_goods.price}
-				<p/>
-				score:{$each_goods.score}
-				<p/>
-				sales:{$each_goods.bought_count}
-				<p/>
-			</volist>
-		</div>
+					<p/>
+					<div class="row-fluid">
+						<div class="span3">
+							<select class="span12 sort-select" name="sort_field">
+								<volist name="hotel_room_sort_options" id="each_option">
+									<option value='{$each_option->field}'>{$each_option->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+							<div class="input-prepend input-append" >
+								<span class="add-on">price range</span>
+								<input class="span1" name="price-lower-bound" type="text">
+								<span class="add-on">upto</span>
+								<input class="span1" name="price-upper-bound" type="text">
+							</div>
+						</div>
+						<div class="span3">
+							<select class="span12" name="suit_type">
+								<volist name="hotel_room_suit" id="suit_type">
+									<option value='{$suit_type->value}'>{$suit_type->display}</option>
+								</volist>
+							</select>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">
+							<select class="span12" name="place">
+								<volist name="hotel_room_source_place" id="source_place">
+									<option value='{$source_place->value}'>{$source_place->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+			                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="hotel_date_time">
+			                    <span class="add-on">time</span>
+								<input size="16" type="text" value="" readonly>
+			                    <span class="add-on"><i class="icon-remove"></i></span>
+								<span class="add-on"><i class="icon-th"></i></span>
+			                </div>
+							<input type="hidden" id="hotel_date_time" name="date_time"/><br/>
+						</div>
+					</div>
+				</form>
+				<h4>Hotel Room Search results</h4>
+				<table class="table table-striped">
+					<volist name="hotel_room" id="each_goods">
+						<tr><td>
+							<div class="row-fluid">
+							    <div class="span2">
+								    <div>
+										<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
+									</div>
+								</div>
+								<div class="span6">
+									<div class="row">
+										<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
+									</div>
+									<div class="row">
+										<small>{$each_goods.place} - {$each_goods.date_time}</small>
+									</div>
+								</div>
+								<div class="span3">
+								    <div class="row">
+										<if condition='$is_vip eq 1'>
+											<s>￥{$each_goods.price}</s>
+											<span>VIP price:￥{$each_goods.vip_price}</span>
+										<else />
+											￥{$each_goods.price}
+										</if>
+									</div>
+								    <div class="row">
+										score:{$each_goods.score}
+									</div>
+								    <div class="row">
+										sales:{$each_goods.bought_count}
+									</div>
+								</div>
+							</div>
+						</td></tr>
+					</volist>
+				</table>
+			</div>
 		
-		<div class="tab-pane" id="airplane-ticket">
-			<form class="form-search" method="get" action="__APP__/Purchase/search">
-			    <div class="input-append">
-					<input name="goods-type" value="airplane-ticket" type="hidden">
-					<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
-					<button type="submit" class="btn btn-primary">Search</button>
-				</div>
-				<p>
-				<div>
-					<select class="span2" name="sort_field">
-						<volist name="airplane_ticket_sort_options" id="each_option">
-							<option value='{$each_option->field}'>{$each_option->display}</option>
-						</volist>
-					</select>
-					<div class="input-prepend input-append">
-						<span class="add-on">price range</span>
-						<input class="span1" name="price-lower-bound" type="text">
-						<span class="add-on">upto</span>
-						<input class="span1" name="price-upper-bound" type="text">
+			<div class="tab-pane" id="airplane-ticket">
+				<form class="form-search" method="get" action="__APP__/Purchase/search">
+				    <div class="input-append">
+						<input name="goods-type" value="airplane-ticket" type="hidden">
+						<input name="keywords" type="text" class="input-xxlarge search-query" value='{$keywords}'>
+						<button type="submit" class="btn btn-primary">Search</button>
 					</div>
-					<select class="span2" name="carbin_type">
-						<volist name="airpalne_ticket_carbin" id="carbin_type">
-							<option value='{$carbin_type->value}'>{$carbin_type->display}</option>
-						</volist>
-					</select>
-				</div>
-				<div>
-					<select class="span2" name="departure_place">
-						<volist name="airplane_ticket_departure_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
-	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="departure_date_time">
-	                    <span class="add-on">departure time</span>
-						<input size="16" type="text" value="" readonly>
-	                    <span class="add-on"><i class="icon-remove"></i></span>
-						<span class="add-on"><i class="icon-th"></i></span>
-	                </div>
-					<input type="hidden" id="departure_date_time" name="departure_date_time"/><br/>
-				</div>
-				<div>
-					<select class="span2" name="arrival_place">
-						<volist name="airplane_ticket_arrival_place" id="source_place">
-							<option value='{$source_place->value}'>{$source_place->display}</option>
-						</volist>
-					</select>
-	                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="arrival_date_time">
-	                    <span class="add-on">arrival time</span>
-						<input size="16" type="text" value="" readonly>
-	                    <span class="add-on"><i class="icon-remove"></i></span>
-						<span class="add-on"><i class="icon-th"></i></span>
-	                </div>
-					<input type="hidden" id="arrival_date_time" name="arrival_date_time"/><br/>
-				</div>		
-			</form>
-			<h4>Airplane Ticket Search results</h4>
-
-			<volist name="airplane_ticket" id="each_goods">
-				{$each_goods.name}
-				<p/>
-				{$each_goods.price}
-				<p/>
-				score:{$each_goods.score}
-				<p/>
-				sales:{$each_goods.bought_count}
-				<p/>
-			</volist>
+					<p>
+					<div class="row-fluid">
+						<div class="span3">
+							<select class="span12 sort-select" id='aa' name="sort_field">
+								<volist name="airplane_ticket_sort_options" id="each_option">
+									<option value='{$each_option->field}'>{$each_option->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+							<div class="input-prepend input-append">
+								<span class="add-on">price range</span>
+								<input class="span1" name="price-lower-bound" type="text">
+								<span class="add-on">upto</span>
+								<input class="span1" name="price-upper-bound" type="text">
+							</div>
+						</div>
+						<div class="span3">
+							<select class="span12" name="carbin_type">
+								<volist name="airpalne_ticket_carbin" id="carbin_type">
+									<option value='{$carbin_type->value}'>{$carbin_type->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span2">
+							<select class="span12" name="non_stop">
+								<option value='-1'>nonstop</option>
+								<option value='1'>yes</option>
+								<option value='0'>no</option>
+							</select>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">
+							<select class="span12" name="departure_place">
+								<volist name="airplane_ticket_departure_place" id="source_place">
+									<option value='{$source_place->value}'>{$source_place->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+			                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="departure_date_time">
+			                    <span class="add-on">departure time</span>
+								<input size="16" type="text" value="" readonly>
+			                    <span class="add-on"><i class="icon-remove"></i></span>
+								<span class="add-on"><i class="icon-th"></i></span>
+			                </div>
+							<input type="hidden" id="departure_date_time" name="departure_date_time"/><br/>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">
+							<select class="span12" name="arrival_place">
+								<volist name="airplane_ticket_arrival_place" id="source_place">
+									<option value='{$source_place->value}'>{$source_place->display}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="span3">
+			                <div class="controls input-prepend input-append date form_datetime" data-date="2013-06-20T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="arrival_date_time">
+			                    <span class="add-on">arrival time</span>
+								<input size="16" type="text" value="" readonly>
+			                    <span class="add-on"><i class="icon-remove"></i></span>
+								<span class="add-on"><i class="icon-th"></i></span>
+			                </div>
+							<input type="hidden" id="arrival_date_time" name="arrival_date_time"/><br/>
+						</div>
+					</div>		
+				</form>
+				<h4>Airplane Ticket Search results</h4>
+				<table class="table table-striped">
+					<volist name="airplane_ticket" id="each_goods">
+						<tr><td>
+							<div class="row-fluid">
+							    <div class="span2">
+									<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
+								</div>
+								<div class="span6">
+									<div class="row">
+										<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
+									</div>
+									<div class="row">
+										<small>{$each_goods.departure_place} - {$each_goods.departure_date_time} ==> {$each_goods.arrival_place} - {$each_goods.arrival_date_time}</small>
+									</div>
+								</div>
+								<div class="span3">
+								    <div class="row">
+										<if condition='$is_vip eq 1'>
+											<s>￥{$each_goods.price}</s>
+											<span>VIP price:￥{$each_goods.vip_price}</span>
+										<else />
+											￥{$each_goods.price}
+										</if>
+									</div>
+								    <div class="row">
+										score:{$each_goods.score}
+									</div>
+								    <div class="row">
+										sales:{$each_goods.bought_count}
+									</div>
+								</div>
+							</div>
+						</td></tr>
+					</volist>
+				</table>
+			</div>
 		</div>
 	</div>
+	<div class="span3">
+		<h5>Hotest goods:</h5>
+		<table class="table table-condensed">
+			<volist name="hotest_goods" id="each_goods">
+				<tr><td>
+					<img src='{$each_goods.image_uri}' alt="{$each_goods.name}" width='50px'/>
+					<a href="./detail?id={$each_goods.id}" class="btn btn-link">{$each_goods.name}</a>
+				</td></tr>
+			</volist>
+		</table>
+	</div>
 </div>
-
 <include file="../footer"/>
 </body>
 </html>

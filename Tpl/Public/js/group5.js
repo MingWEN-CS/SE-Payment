@@ -1,21 +1,15 @@
-﻿/* =============================================================================
-* MaterialGenius/index.js
-* ------------------------------------------------------------
-* Copyright 2012 Exacloud, Inc.
-* http://www.qunhe.cc
-* ========================================================================== */
-
-
-
-var PARAM_TYPE_ICON_LIST = {
+﻿var PARAM_TYPE_ICON_LIST = {
 	Texture : 'icon-picture',
 	Float : 'icon-resize-horizontal',
 	Float3 : 'icon-pencil'
 }
 
 var PARAM_ITEM_TPL = '<div class="control-group"><label class="control-label">{0}</label><div class="controls"><div class="input-medium"><input id={0} class="span12"></div></div></div>';
-var BUTTON_TPL = '<div class="btn btn-inverse verify_btn">{0}</div>'
+var BUTTON_TPL = '<div id={0} class="btn btn-inverse verify_btn" style="position:absolute;left:36%">{1}</div>';
+var USER_SELECT_RESULT_TPL = '<li><a id="{0}" class="result_item">ID:{1} Name:{2} Password:{3} Email:{4} Type:{5} Balance:{6} Phone:{7} VIP:{8} Blacklist:{9}</a></li>';
+var ADMIN_SELECT_RESULT_TPL = '<li><a id="{0}" class="result_item">ID:{1} Name:{2} Password:{3} Info:{4}</a></li>';
 var database;
+var total = 0;
 // ================= INIT FUNCTIONS ============================================
 $(function() {
 	// init viewport height
@@ -54,6 +48,7 @@ $('#verify').live("click", function(){
 })
 $('#blacklist').live("click", function(){
 	load_blacklist();
+	database = "Blacklist";
 })
 $('.operation_item').live("click", function() {
 	// toggle material selection
@@ -68,6 +63,18 @@ $('.operation_item').live("click", function() {
 	});
 });
 
+$('.result_item').live("click", function() {
+	// toggle material selection
+	var w = $('#param_list_container').width();
+	$('.result_item').css({
+		'background' : 'white',
+		'color' : '#3A88CC'
+	});
+	$(this).css({
+		'background' : '#3A88CC',
+		'color' : 'white'
+	});
+});
 
 $('.editable').on('focus', function() {
 	$('#' + SELECTED_MATERIAL._id).css({
@@ -88,17 +95,21 @@ $('#add').live('click', function(){
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
    if (database == "Vip"){
-   	alert("postVIP");
    	vip = 1;
-   	alert(vip);
  	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
 		alert(result.info);
 	},'json'); 	
    } else {
+   if (database == "Blacklist"){
+   	blacklist = 1;
+ 	$.post(ROOT + '/postSetBL', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 
+   } else{
 	$.post(ROOT + '/postAdd', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
 		alert(result.info);
 	},'json');
-    }
+    }}
 })
 
 $('#select').live('click', function(){
@@ -111,14 +122,32 @@ $('#select').live('click', function(){
    var vip = $('#VIP').val();
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
-   if (database == "Vip"){
-        vip = "1";
-    }
-	$.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
-		for (var i in result.data){
-			alert(result.data[i]["USERNAME"]);
-		}
-	},'json');
+   if (database == 'Admin') {
+        results = '';
+	    $.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
+	    	if (result.data!=null)
+	    	$.each(result.data, function(index, obj){
+ 		    	results += ADMIN_SELECT_RESULT_TPL.format(index, obj["id"], obj["name"], obj["password"], obj["info"]);               
+		    })
+ 		     $('#result_list_body').html(results);
+		    $('#result_list_body').html(results);
+	    },'json');
+   } else {
+   	    if (database == "Vip"){
+         	vip = 1;
+        } 
+        if (database == "Blacklist"){
+            blacklist = 1;
+        }   
+        results = '';
+	    $.post(ROOT + '/postSelect', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+	    	if (result.data!=null)
+	    	$.each(result.data, function(index, obj){
+		    	results += USER_SELECT_RESULT_TPL.format(index, obj["UID"], obj["USERNAME"], obj["PASSWD"], obj["EMAIL"], obj["TYPE"], obj["BALANCE"], obj["PHONE"], obj["VIP"], obj["BLACKLIST"]);
+		    })
+		    $('#result_list_body').html(results);
+	    },'json');
+	}
  })
 $('#delete').live('click', function(){
    var name = $('#Name').val();
@@ -131,19 +160,31 @@ $('#delete').live('click', function(){
    var info = $('#Info').val();
    var blacklist = $('#Blacklist').val();
    if (database == "Vip"){
-     alert("postVIP");
    	vip = 0;
-   	alert(vip);
  	$.post(ROOT + '/postSetVIP', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
 		alert(result.info);
 	},'json'); 	
    } else {
+    if (database == "Blacklist"){
+   	blacklist = 0;
+ 	$.post(ROOT + '/postSetBL', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:"User"}, function( result ){
+		alert(result.info);
+	},'json'); 	
+   } else
+   	{
 	$.post(ROOT + '/postDelete', {name:name, password:password, email:email, type:type, balance:balance, phone:phone, vip:vip, info:info, blacklist:blacklist, database:database}, function( result ){
 		alert(result.info);
 	},'json');
-    }
+    }}
 })
 
+$('#verify1').live('click', function(){
+	var name = $('#Name').val();
+	var id = $('#ID').val();
+ 	$.post(ROOT + '/postVRN', {name:name, id:id}, function( result ){
+		alert(result.info);
+	},'json'); 	
+})
 
 // ================= COMMON FUNCTIONS ==========================================
 function load_admin() {
@@ -187,13 +228,24 @@ function load_verify() {
 	param_item += PARAM_ITEM_TPL.format("Name");
 	param_item += PARAM_ITEM_TPL.format("ID Number");
 	param_item += "<hr><br>";
-	param_item += BUTTON_TPL.format("Verify");
-	param_item += BUTTON_TPL.format("Report");
+	param_item += BUTTON_TPL.format("verify1","Verify");
 	$('#param_list_body').html(param_item);
 	$('#delete_option').hide();
 	$('.param_list_btn').hide();
 }
 
+function load_blacklist() {
+	var param_item = '';
+	param_item += PARAM_ITEM_TPL.format("Name");
+	param_item += PARAM_ITEM_TPL.format("Email");
+	param_item += PARAM_ITEM_TPL.format("Type");
+	param_item += PARAM_ITEM_TPL.format("Balance");
+	param_item += PARAM_ITEM_TPL.format("Phone");
+	param_item += PARAM_ITEM_TPL.format("VIP");
+	$('#param_list_body').html(param_item);
+	$('#delete_option').show();
+	$('.param_list_btn').show();
+}
 
 // string formatter
 String.prototype.format = function() {

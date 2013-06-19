@@ -26,6 +26,7 @@ class UserAction extends Action {
             else {
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
+				session('type',$user[TYPE]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
             }
         }   
@@ -103,7 +104,7 @@ class UserAction extends Action {
                     }
                 }
                 else {
-                    $this->ajaxReturn('',$User->getError(),0);
+                    $this->ajaxReturn(0,'Register a Failed!',0);
                 }
             }
         }
