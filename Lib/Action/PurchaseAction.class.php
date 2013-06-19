@@ -196,6 +196,7 @@ class PurchaseAction extends Action {
 		$uname = $this->_session('username');
 		$is_vip = BuyerHelper::getIsVip($uid);
 
+		//Check identification
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
@@ -207,6 +208,7 @@ class PurchaseAction extends Action {
 			$this->error('No goods! Please make some purchase.', '__APP__/Purchase/index');
 		}
 		else {
+			//Generate ordercreate interface with group2
 			$commodity_list = $shopping_cart_list['good_pairs'];
 			$list_count = count($commodity_list) / 2;
 			for($i = 0; $i < $list_count; $i++) {
@@ -217,6 +219,22 @@ class PurchaseAction extends Action {
 
 			//Generate imcomplete order and get order_id list (int group 2)
 			$order_list = R('Order/createorder',array($goods_list_int));
+			
+			//Change stock and bought_count
+			if($order_list) {
+				$Goods = D('Goods');
+				for ($i = 0; $i < $list_count; $i++) {
+					$goods_id = $goods_list_int[$i]['goods_id'];
+					$goods_count = $goods_list_int[$i]['goods_count'];
+					if(!$Goods->changeStock($goods_id, -$goods_count)) {
+						$this->error('System error! Stock fail to change','__APP__/Purchase');
+					}
+				}				
+			}
+			else {
+				$this->error('Invalid request!','__APP__/Purchase');
+			}
+
 			$order_count = count($order_list);
 
 			$this->assign('order_list', $order_list);
@@ -236,7 +254,18 @@ class PurchaseAction extends Action {
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
 		}
-
+		
+		//Show and select shipping address
+		$addr = D('Receiveaddress');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//If Buyer has no shipping address
+		if(!$addr_list) {
+			$this->error('Your do not have any shipping address. 
+				Please add one before you place an order', '__APP__/User');
+		}
+		$this->assign('addr_list', $addr_list);
+		
 		//Check valid access
 		$order_info = $this->_post();
 		if(!$order_info) {
@@ -247,7 +276,6 @@ class PurchaseAction extends Action {
 			$OrderGoods = D('OrderGoods');
 			$order_count = $order_info['order_count'];
 			$total_price = 0;
-			//var_dump($order_info);
 
 			//Get order info list
 			for($i = 1; $i <= $order_count; $i++) {
@@ -283,12 +311,6 @@ class PurchaseAction extends Action {
 			$this->assign('total_price', $total_price);
 			$this->assign('order_count', $order_count);
 
-			//Show and select shipping address
-			$addr = D('Receiveaddress');
-			$condition['UID'] = $uid;
-			$addr_list = $addr->where($condition)->select();
-			$this->assign('addr_list', $addr_list);
-
 			$this->display();
 
 		}
@@ -309,13 +331,12 @@ class PurchaseAction extends Action {
 
 		$Order = D('Orders');
 		//generate order
-		if (isset($order_info['generate'])) {
+		if(isset($order_info['generate'])) {
 			for($i = 1; $i <= $order_count; $i++) {
 				$order_id = $order_info['order_id_'.$i];
 				$data['ADDRESSID'] = $order_info['addr_sel'];
 				$result = $Order->where('ID='.$order_id)->save($data);
 			}
-
 			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders/');
 		}
 
@@ -331,6 +352,7 @@ class PurchaseAction extends Action {
 			$this->success('Your Order is canceled', '__APP__');
 		}
 	}
+
 	public function comment() {
 		$order_id_list = $this->_get();
 		$order_id = $order_id_list['oid'];
@@ -400,7 +422,7 @@ class PurchaseAction extends Action {
 		}
 	}
 
-	
+
 	public function recommend() {
 		// init
 		$id = $this->_session('uid');
