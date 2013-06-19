@@ -22,6 +22,7 @@ class PurchaseAction extends Action {
 			$goods_type = $this->_get('type');
 		}
 		$keywords = $this->_get('keywords');
+		//set on new search history
 		if($userId = $this->_session('uid')) {
 			$searchHistory = D('SearchHistory');
 			$data = array(
@@ -33,6 +34,7 @@ class PurchaseAction extends Action {
 				$id = $searchHistory->add();
 			}
 		}
+		//to set the correct goods type
 		if($goods_type == 'general-goods') {
 			$goods = D('GeneralGoods');
 		}
@@ -47,65 +49,77 @@ class PurchaseAction extends Action {
 		$count = $goods->getGoodsCountWithPurchaseAction($this);
 		// new a Page class, with total number of goods and goods per page as parameters
 		$Page = new Page($count, CommonValue::getNumberPerPage());
+		//get goods from database
 		$searchResult = $goods->getGoodsWithPurchaseActionAndPage($this, $Page);
+		//format time to readable format
+		//date_time field in hotel room
 		if($goods->getType() == HotelRoomModel::getType()) {
 			for($i = 0; $i < count($searchResult);$i++) {
 				$searchResult[$i][date_time] = TimeFormatter::formatTime($searchResult[$i][date_time]);
 			}
 		}
+		//departure_date_time field and arrival_date_time field in airplane ticket
 		else if($goods->getType() == AirplaneTicketModel::getType()) {
 			for($i = 0; $i < count($searchResult);$i++) {
 				$searchResult[$i][departure_date_time] = TimeFormatter::formatTime($searchResult[$i][departure_date_time]);
 				$searchResult[$i][arrival_date_time] = TimeFormatter::formatTime($searchResult[$i][arrival_date_time]);
 			}
 		}
+		//add prefix image_uri generate vip price and format score
 		for($i = 0; $i < count($searchResult);$i++) {
-			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath().$searchResult[$i][image_uri];
+			$searchResult[$i][image_uri] = CommonValue::getImgUploadPath() . $searchResult[$i][image_uri];
+			$searchResult[$i][vip_price] = $searchResult[$i][price] * CommonValue::getVipDiscount();
 			$searchResult[$i][score] = round($searchResult[$i][score], 2);
 		}
 		// paging
 		$show = $Page->show();
 		$this->assign('page', $show);
-		// search result
 		$this->assign($goods->getDataName(), $searchResult);
+		//set keywords
 		$this->assign('keywords', $keywords);
-		//3 kinds goods' sort option
+		//set 3 kinds goods' sort options
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArrayWithHead());
 		$this->assign('hotel_room_sort_options', AirplaneTicketModel::getSortFieldArrayWithHead());
 		$this->assign('airplane_ticket_sort_options', HotelRoomModel::getSortFieldArrayWithHead());
-		//3 kinds goods' source place option
+		//set 3 kinds goods' source place option
 		$this->assign('general_goods_source_place', GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('hotel_room_source_place', HotelRoomModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_departure_place', AirplaneTicketModel::getSourcePlaceObjectsArrayWithHead());
 		$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArrayWithHead());
-		//hotel suit
+		//set hotel suit options
 		$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArrayWithHead());
-		//airplane carbin
+		//set airplane carbin options
 		$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArrayWithHead());
-		//hotest goods
+		//set hotest goods
 		$hotest = GoodsHelper::getHotestGoods(10);
 		for($i = 0; $i < count($hotest);$i++) {
 			$hotest[$i][image_uri] = CommonValue::getImgUploadPath() . $hotest[$i][image_uri];
 		}
 		$this->assign('hotest_goods', $hotest);
+		//set if the user is a vip
+		$this->assign('is_vip',BuyerHelper::getIsVip($userId));
 		$this->display();
 	}
 
 	public function detail() {
 		$id = $this->_get('id');
+		//if the id is none
 		if(!$id) {
 			$this->error();
 			return;
 		}
 		$good = GoodsHelper::getBasicGoodsInfoOfId($id);
 		$type = GoodsHelper::getGoodsTypeOfId($id);
+		//if the id is wrong, no corresponding goods
 		if(!$good) {
 			$this->error();
 			return;
 		}
 		$userId = $this->_session('uid');
+		//add to shopping cart port request
 		if (IS_POST) {
 			$buyer = M('Buyer');
+			//if not a buyer
 			if (!$userId || !$buyer->where('uid = '.$userId)->find()) {
 				$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
 				return;
@@ -113,19 +127,20 @@ class PurchaseAction extends Action {
 			else {
 				$shoppingCart = D('ShoppingCart');
 				$shoppingCartRecord = $shoppingCart->where('user_id = '.$userId.' AND good_id = '.$id)->find();
-				//exists already
+				//exists already, add the count of goods to buy
 				if($shoppingCartRecord) {
 					$shoppingCart->modifyCount($userId, $id, 'true');
 					$this->ajaxReturn(0, "Add succeeded", 1);
 					return;
 				}
-				//no this goods in shopping cart
+				//no this goods in shopping cart, good_count of 1
 				else {
 					$data = array(
 						'good_id' => $id,
 						'user_id' => $userId,
 						'good_count' => 1,
 					);
+					//create succeed
 					if ($shoppingCart->create($data)){
 						$id = $shoppingCart->add();
 						if($id) {
@@ -137,7 +152,9 @@ class PurchaseAction extends Action {
 				$this->ajaxReturn(0, "Add failed.", 0);
 			}
 		}
+		//show details of good
 		else {
+			//add browse history
 			if($userId) {
 				$browseHistory = D('BrowseHistory');
 				$data = array(
@@ -146,25 +163,30 @@ class PurchaseAction extends Action {
 					'date_time' => time(),
 				);
 				if ($browseHistory->create($data)){
-					$id = $browseHistory->add();
+					$history_id = $browseHistory->add();
 				}
 			}
 			$feedback = D('Feedback');
 			$user = D('User');
+			//find feedbacks
 			$feedbacks = $feedback->where('goods_id=' . $id)->select();
 			$feedbacksFull = array();
+			//find feedbacks' user
 			foreach($feedbacks as $eachFeedback) {
 				$userInfo = $user->where('UID=' . $eachFeedback[user_id])->find();
 				$newFeedback = array_merge($eachFeedback, array(username => $userInfo[USERNAME]));
 				$feedbacksFull = array_merge($feedbacksFull, array($newFeedback));
 			}
+			//special information about hotel room
 			if($type == HotelRoomModel::getType()) {
 				$good[date_time] = TimeFormatter::formatTime($good[date_time]);
 			}
+			//special information about airplane
 			else if($type == AirplaneTicketModel::getType()) {
 				$good[departure_date_time] = TimeFormatter::formatTime($good[departure_date_time]);
 				$good[arrival_date_time] = TimeFormatter::formatTime($good[arrival_date_time]);
 			}
+			//assign all these data to the webpage
 			$this->assign('feedbacks', $feedbacksFull);
 			$good[score] = intval($good[score]);
 			$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
@@ -183,6 +205,7 @@ class PurchaseAction extends Action {
 		$uname = $this->_session('username');
 		$is_vip = BuyerHelper::getIsVip($uid);
 
+		//Check identification
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
@@ -194,9 +217,9 @@ class PurchaseAction extends Action {
 			$this->error('No goods! Please make some purchase.', '__APP__/Purchase/index');
 		}
 		else {
+			//Generate ordercreate interface with group2
 			$commodity_list = $shopping_cart_list['good_pairs'];
 			$list_count = count($commodity_list) / 2;
-			//$total_price = 0;
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
@@ -205,6 +228,22 @@ class PurchaseAction extends Action {
 
 			//Generate imcomplete order and get order_id list (int group 2)
 			$order_list = R('Order/createorder',array($goods_list_int));
+			
+			//Change stock and bought_count
+			if($order_list) {
+				$Goods = D('Goods');
+				for ($i = 0; $i < $list_count; $i++) {
+					$goods_id = $goods_list_int[$i]['goods_id'];
+					$goods_count = $goods_list_int[$i]['goods_count'];
+					if(!$Goods->changeStock($goods_id, -$goods_count)) {
+						$this->error('System error! Stock fail to change','__APP__/Purchase');
+					}
+				}				
+			}
+			else {
+				$this->error('Invalid request!','__APP__/Purchase');
+			}
+
 			$order_count = count($order_list);
 
 			$this->assign('order_list', $order_list);
@@ -224,7 +263,18 @@ class PurchaseAction extends Action {
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
 		}
-
+		
+		//Show and select shipping address
+		$addr = D('Receiveaddress');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//If Buyer has no shipping address
+		if(!$addr_list) {
+			$this->error('Your do not have any shipping address. 
+				Please add one before you place an order', '__APP__/User');
+		}
+		$this->assign('addr_list', $addr_list);
+		
 		//Check valid access
 		$order_info = $this->_post();
 		if(!$order_info) {
@@ -235,7 +285,6 @@ class PurchaseAction extends Action {
 			$OrderGoods = D('OrderGoods');
 			$order_count = $order_info['order_count'];
 			$total_price = 0;
-			//var_dump($order_info);
 
 			//Get order info list
 			for($i = 1; $i <= $order_count; $i++) {
@@ -271,12 +320,6 @@ class PurchaseAction extends Action {
 			$this->assign('total_price', $total_price);
 			$this->assign('order_count', $order_count);
 
-			//Show and select shipping address
-			$addr = D('Receiveaddress');
-			$condition['UID'] = $uid;
-			$addr_list = $addr->where($condition)->select();
-			$this->assign('addr_list', $addr_list);
-
 			$this->display();
 
 		}
@@ -297,13 +340,12 @@ class PurchaseAction extends Action {
 
 		$Order = D('Orders');
 		//generate order
-		if (isset($order_info['generate'])) {
+		if(isset($order_info['generate'])) {
 			for($i = 1; $i <= $order_count; $i++) {
 				$order_id = $order_info['order_id_'.$i];
 				$data['ADDRESSID'] = $order_info['addr_sel'];
 				$result = $Order->where('ID='.$order_id)->save($data);
 			}
-
 			$this->success('Your Order is Generated Successfully!', '__APP__/Order/showorders/');
 		}
 
@@ -319,6 +361,7 @@ class PurchaseAction extends Action {
 			$this->success('Your Order is canceled', '__APP__');
 		}
 	}
+
 	public function comment() {
 		$order_id_list = $this->_get();
 		$order_id = $order_id_list['oid'];
@@ -378,7 +421,7 @@ class PurchaseAction extends Action {
 				//Update Score
 				for ($i = 1; $i <= $goods_count; $i++) {
 					$goods_id = $comment_info['goods_id_'.$i];
-					$Feedback->score_update($goods_id);
+					$Feedback->score_sale_update($goods_id);
 				}
 				$this->success('Score and comment successfully!', '__APP__/Order/showorders');
 			}
@@ -388,7 +431,7 @@ class PurchaseAction extends Action {
 		}
 	}
 
-	
+
 	public function recommend() {
 		// init
 		$id = $this->_session('uid');

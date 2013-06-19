@@ -57,23 +57,29 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 	
 	static protected function generateCondition($purchaseAction) {
 		$condition = parent::generateCondition($purchaseAction);
+		//where cause of departure_place
 		if(($place = $purchaseAction->_get('departure_place')) && $place != "anyplace") {
 			$condition['departure_place'] = $place;
 		}
+		//where cause of arrival_place
 		if(($place = $purchaseAction->_get('arrival_place')) && $place != "anyplace") {
 			$condition['arrival_place'] = $place;
 		}
+		//where cause of departure_place
 		if(($carbin = $purchaseAction->_get('carbin_type')) && $carbin != "anytype") {
 			$condition['carbin_type'] = $carbin;
 		}
-		if(($departurePlace = $purchaseAction->_get('departure_date_time'))) {
-			$startTime = strtotime($departurePlace);
+		//where cause of departure_time
+		if(($departureTime = $purchaseAction->_get('departure_date_time'))) {
+			$startTime = strtotime($departureTime);
 			$condition['departure_date_time'] = array('between',array($startTime, $startTime + 60 * 5));
 		}
-		if(($arrivalPlace = $purchaseAction->_get('arrival_date_time'))) {
-			$startTime = strtotime($arrivalPlace);
+		//where cause of arrival_time
+		if(($arrivalTime = $purchaseAction->_get('arrival_date_time'))) {
+			$startTime = strtotime($arrivalTime);
 			$condition['arrival_date_time'] = array('between',array($startTime, $startTime + 60 * 5));
 		}
+		//where cause of non_stop
 		if((($nonStop = $purchaseAction->_get('non_stop'))&&$nonStop!=-1)||$nonStop==0) {
 			$condition['non_stop'] = $nonStop;
 		}

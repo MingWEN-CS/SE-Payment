@@ -13,7 +13,7 @@ class UserAction extends Action {
             $name = $this->_post('name');
             $pwd = $this->_post('pwd');
             
-            //$type = $this->_post('type');
+            $type = $this->_post('type');
 
             $User = D("User");
             $user = $User->findUserByName($name);
