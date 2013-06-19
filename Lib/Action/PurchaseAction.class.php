@@ -228,7 +228,17 @@ class PurchaseAction extends Action {
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
 		}
-
+		
+		//Show and select shipping address
+		$addr = D('Receiveaddress');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//If Buyer has no shipping address
+		if(!$addr_list) {
+			$this->error('Your do not have any shipping address. 
+				Please add one before you place an order', '__APP__/User');
+		}
+		$this->assign('addr_list', $addr_list);
 		//Check valid access
 		$order_info = $this->_post();
 		if(!$order_info) {
@@ -275,11 +285,6 @@ class PurchaseAction extends Action {
 			$this->assign('total_price', $total_price);
 			$this->assign('order_count', $order_count);
 
-			//Show and select shipping address
-			$addr = D('Receiveaddress');
-			$condition['UID'] = $uid;
-			$addr_list = $addr->where($condition)->select();
-			$this->assign('addr_list', $addr_list);
 
 			$this->display();
 
@@ -392,7 +397,7 @@ class PurchaseAction extends Action {
 		}
 	}
 
-	
+
 	public function recommend() {
 		// init
 		$id = $this->_session('uid');
