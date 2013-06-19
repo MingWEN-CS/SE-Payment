@@ -4,6 +4,7 @@ import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
 import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
+import('@.ORG.Util.Page');
 
 class PurchaseAction extends Action {
 
@@ -17,7 +18,7 @@ class PurchaseAction extends Action {
 
 	public function search(){
 		$goods_type = $this->_get('goods-type');
-		if(!$goods_type) {
+		if (!$goods_type) {
 			$goods_type = $this->_get('type');
 		}
 		$keywords = $this->_get('keywords');
@@ -43,8 +44,13 @@ class PurchaseAction extends Action {
 		else if($goods_type == 'hotel-room') {
 			$goods = D('HotelRoom');
 		}
+		// paging
+		// get total count of goods to be paged
+		$count = $goods->getGoodsCountWithPurchaseAction($this);
+		// new a Page class, with total number of goods and goods per page as parameters
+		$Page = new Page($count, CommonValue::getNumberPerPage());
 		//get goods from database
-		$searchResult = $goods->getGoodsWithPurchaseAction($this);
+		$searchResult = $goods->getGoodsWithPurchaseActionAndPage($this, $Page);
 		//format time to readable format
 		//date_time field in hotel room
 		if($goods->getType() == HotelRoomModel::getType()) {
@@ -65,8 +71,11 @@ class PurchaseAction extends Action {
 			$searchResult[$i][vip_price] = $searchResult[$i][price] * CommonValue::getVipDiscount();
 			$searchResult[$i][score] = round($searchResult[$i][score], 2);
 		}
-		//set keywords
+		// paging
+		$show = $Page->show();
+		$this->assign('page', $show);
 		$this->assign($goods->getDataName(), $searchResult);
+		//set keywords
 		$this->assign('keywords', $keywords);
 		//set 3 kinds goods' sort options
 		$this->assign('general_goods_sort_options', GeneralGoodsModel::getSortFieldArrayWithHead());
