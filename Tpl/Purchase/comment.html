@@ -43,7 +43,7 @@
 						</thead>
 						<volist name="goods_info_list" id="goods_info_vo" empty="No goods in the order!">
 						<tbody>
-							<tr>
+							<tr class="info">
 								<td><img src="{$goods_info_vo.img_uri}" />&nbsp;</td>
 								<td>{$goods_info_vo.name}&nbsp;</td>
 								<td>{$goods_info_vo.count}&nbsp;</td>
@@ -54,7 +54,7 @@
 							</tr>
 							<tr>
 								<td colspan="2">&nbsp;</td>
-								<td colspan="1">why not say<br/> something ^.^</td>
+								<td colspan="1"><i class="icon-comment"></i> why not say<br/> something ^.^</td>
 								<td colspan="2">
 									<textarea name="comment_{$i}"
 									placeholder="Less than 100 words..."></textarea></td>
