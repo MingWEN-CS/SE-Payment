@@ -393,6 +393,76 @@ CREATE TABLE se_shopping_cart(
 	foreign key (user_id) references se_user(UID) on delete cascade
 );
 /* group 4 */
+CREATE TABLE IF NOT EXISTS `se_auditor` (
+  `id` int(10) NOT NULL,
+  `passwd` char(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute(
+	oid INTEGER NOT NULL,
+	buyer_reason varchar(256) NOT NULL,
+	seller_reason varchar(256) DEFAULT NULL,
+	time int(11) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute_result(
+	oid INTEGER NOT NULL,
+	aid INTEGER NOT NULL,
+	time int(11) NOT NULL,
+	result int(1) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade,
+	foreign key(aid) references se_auditor(id) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS se_sysaccount;
+CREATE TABLE se_sysaccount(
+	oid INTEGER NOT NULL ,
+	record numeric(15,2) NOT NULL,
+	time int(11) NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
+);
+
+
+DROP TABLE IF EXISTS se_audit_error;
+CREATE TABLE se_audit_error(
+	oid INTEGER NOT NULL,
+	need_pay numeric(15,2) NOT NULL,
+	actual_pay numeric(15,2) NOT NULL,
+	time DATETIME NOT NULL,
+	iscorrected int(1) DEFAULT'0' NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
+);
+
+DROP TRIGGER IF EXISTS `check_error`;
+DELIMITER //
+CREATE TRIGGER `check_error` AFTER INSERT ON `se_sysaccount`
+ FOR EACH ROW BEGIN
+	DECLARE need_pay DOUBLE;
+	DECLARE actual_pay DOUBLE;
+	DECLARE cc INT;
+	SELECT `totalprice` INTO need_pay FROM `se_orders` WHERE `se_orders`.`id`=new.oid;
+	SELECT SUM(`record`) INTO actual_pay FROM `se_sysaccount` WHERE `se_sysaccount`.`oid`=new.oid AND `se_sysaccount`.`record` > 0;
+	SELECT COUNT(*) INTO cc FROM `se_audit_error` WHERE `oid`=new.oid;
+	IF(cc>0) THEN
+		IF(need_pay!=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `actual_pay`=actual_pay, `time`=UNIX_TIMESTAMP(), `iscorrected`=0 WHERE `oid`=new.oid;
+		ELSEIF(need_pay=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `iscorrected`=1 WHERE `oid`=new.oid;
+		END IF;
+	ELSEIF(need_pay!=actual_pay) THEN
+	INSERT INTO 
+	`se_audit_error` (`oid`, `need_pay`, `actual_pay`, `time`, `iscorrected` ) 
+	VALUES (new.oid, need_pay, actual_pay, UNIX_TIMESTAMP(), 0);
+	END IF;
+    END
+//
+DELIMITER ;
+
+
 
 /* group 5 */
 DROP TABLE IF EXISTS se_admin;
