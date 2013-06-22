@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/index.css"/>
+	<link rel="stylesheet" href="../Public/auditor/bootstrap.css">
+	<link rel="stylesheet" href="../Public/auditor/datetimepicker.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+	<script src="../Public/auditor/navbar.js" type="text/javascript"></script>	
+	<script src="../Public/auditor/bootstrap-datetimepicker.js"></script>
+	<script src="../Public/auditor/bootstrap-datetimepicker.fr.js"></script>
+</head>
+<script>
+function agree($id){
+    $.post("__APP__/Auditor/refundAgree",
+    {
+      id:$id
+    },
+    function(data,status){
+		if(!status) {
+			alert("Error!");
+		}
+		else {
+			$('#'+$id).fadeOut();
+			$('#'+$id+'title').fadeOut();
+		}
+    });		
+}
+function disagree($id){
+    $.post("__APP__/Auditor/refundDisagree",
+    {
+      id:$id
+    },
+    function(data,status){
+		if(!status) {
+			alert("Error!");
+		}
+		else {
+			$('#'+$id).fadeOut();
+			$('#'+$id+'title').fadeOut();
+		}
+    });		
+}
+</script>
+
+<body>
+<include file="auditorheader"/>
+
+<div id = "container" style="margin-top:30px;height:400px;">
+	<volist name="list" id="vo" empyt="No unhandled dispute!">
+	<div id={$vo.OID} class="hero-unit">
+	<table class = "table table-bordered" style="word-break:break-all; word-wrap:break-all;font-size:12px">
+		<thead>
+			<div class="row-fluid">
+				<div class="span3">Order number: {$vo.OID}</div>
+				<div class="span9">Creat date: {$vo.time0|date="y/m/d H:i:s",###}</div>
+			</div>
+			<tr>
+				<th align="center" width = "14%">Goods name</th>
+				<th align="center" width = "8%">Price</th>
+				<th align="center" width = "9%">Amount</th>
+				<th align="center" width = "19%">Order details</th>
+				<th align="center" width = "25%">Buyer id: {$vo.SELLER}</th>
+				<th align="center" width = "25%">Seller id : {$vo.SELLER}</th>
+			</tr>
+		</thead>
+
+		<tbody>				
+			<tr>
+				<td align="center" width = "14%"><a href="__APP__/Purchase/detail?id={$vo.GID}" target="_blank">{$vo.NAME}</a></th>
+				<td align="center" width = "8%">{$vo.PRICE}</td>
+				<td align="center" width = "9%">{$vo.AMOUNT}</td>
+				<td align="center" width = "19%">
+					<if condition="$vo.op0 neq null">
+						<div class="row">
+							<div class="span3 text-left">'{$vo.op0}', {$vo.time0|date="y/m/d H:i:s",###}</div>
+						</div>
+					</if>
+					<if condition="$vo.op1 neq null">
+						<div class="row">
+							<div class="span3 text-left">'{$vo.op1}', {$vo.time1|date="y/m/d H:i:s",###}</div>
+						</div>
+					</if>
+					<if condition="$vo.op2 neq null">
+						<div class="row">
+							<div class="span3 text-left">'{$vo.op2}', {$vo.time2|date="y/m/d H:i:s",###}</div>
+						</div>
+					</if>
+					<if condition="$vo.op3 neq null">
+						<div class="row">
+							<div class="span3 text-left">'{$vo.op3}', {$vo.time3|date="y/m/d H:i:s",###}</div>
+						</div>
+					</if>
+				</td>
+				<td align="center" width = "25%">{$vo.buyer_reason}</td>
+				<td align="center" width = "25%">{$vo.seller_reason}</td>
+			</tr>
+			<tr></tr>
+		</tbody>
+	</table>
+	<div class="span2 offset8" >
+		<button class="btn btn-small btn-success pull-left" onclick="agree({$vo.OID})"><i class="icon-ok"></i></button>		
+		<button class="btn btn-small btn-warning pull-right" onClick="disagree({$vo.OID})"><i class="icon-remove"></i></button>
+	</div>
+	</div>
+
+	</volist>
+</div>
+
+</body>
+</html>
