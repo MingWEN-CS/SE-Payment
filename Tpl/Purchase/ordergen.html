@@ -1,57 +1,11 @@
 <html>
-<head>
-   	<title>Online Payment System</title>
-   	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
-   	<link rel="stylesheet" href="../Public/css/index.css"/>
-   	<link rel="stylesheet" href="../Public/css/sliding.form.css"/>
-	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
-	<script src="../Public/js/sliding.form.js" type="text/javascript"></script>
-</head>
-
-<body>
-<!--
-<div class = "header">
-	<h1>Online Payment System/<span style="font-size:24px;">Login</span></h1>
-</div>
--->
-<include file="../header"/>
-
-
-<div id="container" style="margin-top:40px;width:800px;">
-	<h3>Order Placement</h3><hr/>
-	<div id="CommodityList">
-		<h4>Commodity List</h4>
-		<table class="table table-bordered table-striped table-hovered">
-			<thead>
-				<th>pic</th>
-				<th>name</th>
-				<th>count</th>
-				<th>price</th>
-			</thead>
-			<tbody>
-				<tr>
-					<td><img src=""/></td>
-					<td>hehe</td>
-					<td>25</td>
-					<td>100.00</td>
-				<tr>
-				<tr>
-					<td><img src=""/></td>
-					<td>haha</td>
-					<td>25</td>
-					<td>100.00</td>
-				<tr>
-			</tbody>
-			<tfoot>
-			</tfoot>
-		</table>
-	</div>
-	<div>
-		<h4>Address List</h4>
-	</div>
-</div>
-
-<include file="../footer"/>
-</body>
+	<body onload="document.form1.submit()">
+	<body>
+		<form name="form1" action="__APP__/Purchase/orderinfo" method="post">
+		    <volist name="order_list" id="order_vo">
+			<input type="hidden" name="order_id_{$i}" value="{$order_vo.OID}"/>
+			</volist>
+			<input type="hidden" name="order_count" value="{$order_count}"/>
+		</form>
+	</body>
 </html>
-

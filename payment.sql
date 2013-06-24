@@ -21,11 +21,25 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   `TYPE` tinyint(1) NOT NULL,
   `BALANCE` int(11) DEFAULT '0',
   `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `BLACKLIST` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+/* if you are using sqlite please use following instead */
+/*
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `UID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+  `USERNAME` char(20) NOT NULL UNIQUE,
+  `PASSWD` char(32) NOT NULL,
+  `EMAIL` char(30) NOT NULL,
+  `TYPE` tinyint(1) NOT NULL,
+  `BALANCE` int(11) DEFAULT '0',
+  `PHONE` char(11) DEFAULT NULL
+);
+*/
 
 
 DROP TABLE IF EXISTS se_goods;
@@ -55,6 +69,17 @@ CREATE TABLE IF NOT EXISTS `se_address` (
   PRIMARY KEY (`ADDRESSID`),
   KEY `UID` (`UID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `se_address` (
+  `ADDRESSID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  `UID` int(11) NOT NULL,
+  `PROVINCE` char(50) DEFAULT NULL,
+  `CITY` char(50) DEFAULT NULL,
+  `STRICT` char(50) DEFAULT NULL,
+  `STREET` char(100) DEFAULT NULL
+);
+*/
 
 
 DROP TABLE IF EXISTS se_orders;
@@ -93,6 +118,17 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `buyer` (
+  `UID` int(11) NOT NULL,
+  `PASSWDPAYMENT` char(32) NOT NULL,
+  `CREDIT` int(11) NOT NULL DEFAULT '0',
+  `VIP` tinyint(1) NOT NULL DEFAULT '0',
+  `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`UID`)
+);
+*/
 
 --
 -- Table structure for table 'se_seller'
@@ -110,6 +146,18 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
 -- Table structure for table `se_usercard`
 --
 
+
+CREATE TABLE IF NOT EXISTS `se_seller` (
+  `UID` int(11) NOT NULL,
+  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/* if you are using sqlite please use following instead */
+/*
+CREATE TABLE IF NOT EXISTS `seller` (
+  `UID` int(11) NOT NULL,
+  `PASSWDCONSIGN` char(32) NOT NULL
+);
+*/
 CREATE TABLE IF NOT EXISTS `se_usercard` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `USERID` int(11) DEFAULT NULL,
@@ -198,7 +246,7 @@ CREATE TABLE se_hotel_room(
 	name VARCHAR(256),
 	price numeric(15,2),
 	seller_id INTEGER,
-	bought_count INTEGER,
+	bought_count INTEGER,	
 	score numeric(11,10),
 	score_count INTEGER,
 	place VARCHAR(64),
@@ -232,6 +280,66 @@ CREATE TABLE se_airplane_ticket(
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
 );
+/* if you are using sqlite please use following instead */
+/*
+DROP TABLE IF EXISTS general_goods;
+CREATE TABLE general_goods(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	price numeric(15,2),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	place VARCHAR(64),
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+
+DROP TABLE IF EXISTS hotel_room;
+CREATE TABLE hotel_room(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	price numeric(15,2),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	place VARCHAR(64),
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	date_time BIGINT,
+	suit_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+
+DROP TABLE IF EXISTS airplane_ticket;
+CREATE TABLE airplane_ticket(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name VARCHAR(256),
+	seller_id INTEGER,
+	bought_count INTEGER,
+	score numeric(11,10),
+	score_count INTEGER,
+	image_uri VARCHAR(256),
+	stock INTEGER,
+	description VARCHAR(1024),
+	price numeric(15,2),
+	departure_date_time BIGINT,
+	arrival_date_time BIGINT,
+	departure_place VARCHAR(64),
+	arrival_place VARCHAR(64),
+	non_stop BOOLEAN,
+	carbin_type VARCHAR(32),
+	foreign key (id) references goods(id) on delete cascade,
+	foreign key (seller_id) references user(UID) on delete cascade
+);
+*/
 
 DROP TABLE IF EXISTS se_browse_history;
 CREATE TABLE se_browse_history(
@@ -239,10 +347,10 @@ CREATE TABLE se_browse_history(
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	good_id INTEGER,
-	se_user_id INTEGER,
+	user_id INTEGER,
 	date_time BIGINT,
-	foreign key (good_id) references se_user(UID) on delete cascade,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (good_id) references se_goods(id) on delete cascade,
+	foreign key (user_id) references se_user(UID) on delete cascade
 );
 
 DROP TABLE IF EXISTS se_search_history;
@@ -251,25 +359,27 @@ CREATE TABLE se_search_history(
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
 	search_key VARCHAR(256),
-	se_user_id INTEGER,
+	user_id INTEGER,
 	date_time BIGINT,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade
 );
 
 DROP TABLE IF EXISTS se_feedback;
 CREATE TABLE se_feedback(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
-	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	se_user_id INTEGER,
+	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, */
+	user_id INTEGER,
 	transaction_id INTEGER,
+	goods_id INTEGER,
 	score INTEGER,
 	comment VARCHAR(1024),
-	date_time BIGINT,
-	foreign key (se_user_id) references se_user(UID) on delete cascade,	
-	foreign key (transaction_id) references se_orders(id) on delete cascade
+	date_time DATETIME,
+	foreign key (user_id) references se_user(UID) on delete cascade,
+	foreign key (transaction_id) references se_orders(id) on delete cascade,
+	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
-	/* foreign key (transaction_id) references transactions(id) on delete cascade */
+	/* foreign key (transaction_id) references transactions(id) on delete cascade, */
 );
 
 DROP TABLE IF EXISTS se_shopping_cart;
@@ -277,14 +387,83 @@ CREATE TABLE se_shopping_cart(
 	id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	/* if you are using sqlite please use following instead */
 	/* id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT */
-	se_user_id INTEGER,
+	user_id INTEGER,
 	good_id INTEGER,
 	good_count INTEGER,
 	foreign key (good_id) references se_goods(id) on delete cascade,
-	foreign key (se_user_id) references se_user(UID) on delete cascade
+	foreign key (user_id) references se_user(UID) on delete cascade
+);
+/* group 4 */
+CREATE TABLE IF NOT EXISTS `se_auditor` (
+  `id` int(10) NOT NULL,
+  `passwd` char(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute(
+	oid INTEGER NOT NULL,
+	buyer_reason varchar(256) NOT NULL,
+	seller_reason varchar(256) DEFAULT NULL,
+	time int(11) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute_result(
+	oid INTEGER NOT NULL,
+	aid INTEGER NOT NULL,
+	time int(11) NOT NULL,
+	result int(1) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade,
+	foreign key(aid) references se_auditor(id) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS se_sysaccount;
+CREATE TABLE se_sysaccount(
+	oid INTEGER NOT NULL ,
+	record numeric(15,2) NOT NULL,
+	time int(11) NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
 );
 
-/* group 4 */
+
+DROP TABLE IF EXISTS se_audit_error;
+CREATE TABLE se_audit_error(
+	oid INTEGER NOT NULL,
+	need_pay numeric(15,2) NOT NULL,
+	actual_pay numeric(15,2) NOT NULL,
+	time DATETIME NOT NULL,
+	iscorrected int(1) DEFAULT'0' NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
+);
+
+DROP TRIGGER IF EXISTS `check_error`;
+DELIMITER //
+CREATE TRIGGER `check_error` AFTER INSERT ON `se_sysaccount`
+ FOR EACH ROW BEGIN
+	DECLARE need_pay DOUBLE;
+	DECLARE actual_pay DOUBLE;
+	DECLARE cc INT;
+	SELECT `totalprice` INTO need_pay FROM `se_orders` WHERE `se_orders`.`id`=new.oid;
+	SELECT SUM(`record`) INTO actual_pay FROM `se_sysaccount` WHERE `se_sysaccount`.`oid`=new.oid AND `se_sysaccount`.`record` > 0;
+	SELECT COUNT(*) INTO cc FROM `se_audit_error` WHERE `oid`=new.oid;
+	IF(cc>0) THEN
+		IF(need_pay!=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `actual_pay`=actual_pay, `time`=UNIX_TIMESTAMP(), `iscorrected`=0 WHERE `oid`=new.oid;
+		ELSEIF(need_pay=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `iscorrected`=1 WHERE `oid`=new.oid;
+		END IF;
+	ELSEIF(need_pay!=actual_pay) THEN
+	INSERT INTO 
+	`se_audit_error` (`oid`, `need_pay`, `actual_pay`, `time`, `iscorrected` ) 
+	VALUES (new.oid, need_pay, actual_pay, UNIX_TIMESTAMP(), 0);
+	END IF;
+    END
+//
+DELIMITER ;
+
+
 
 /* group 5 */
 DROP TABLE IF EXISTS se_admin;
@@ -292,11 +471,20 @@ CREATE TABLE se_admin (
   	id int(8) NOT NULL AUTO_INCREMENT,
   	name char(32) CHARACTER SET utf8 NOT NULL,
   	password char(32) CHARACTER SET utf8 NOT NULL,
-  	info char(128) CHARACTER SET utf8,
+  	type tinyint(1) NOT NULL,
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
 );
+<<<<<<< HEAD
+INSERT INTO se_admin VALUES (1, 'root', '123', 0);
+=======
 INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> group3
+>>>>>>> 147ec6775ee5dbeb8c0e6ba35c15e221fbd38d3e
 
 DROP TABLE IF EXISTS se_card;
 CREATE TABLE se_card (

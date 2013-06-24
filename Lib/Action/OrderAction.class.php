@@ -20,13 +20,13 @@ class OrderAction extends Action{
             case 'payed': return 'refund';
             case 'shipping': return 'confirm_receipt';
 
+            case 'finished': return "comment";
             case 'canceled':
             case 'refunding':
             case 'refunded':
             case 'auditing':
             case 'audited':
-            case 'failed':
-            case 'finished': return "comment";
+            case 'failed':return null;
             default: return 'wait';
             }
         } else {	//seller state
@@ -133,7 +133,7 @@ get isBuyer from group 1
         }
         $orderstate=$this->_get('state');
         $keywords=$this->_get('keywords');
-
+        $pagenum=$this->_get('pagenum');
         $condition['keywords']=$keywords;
         /*save the orders id*/
         for($i=0;$i<count($userorders);$i++)
@@ -151,7 +151,45 @@ get isBuyer from group 1
         $searchResult = $this->removeDeletedOrders($searchResult);
 
         $orderresult=null;
-        for($i=0;$i<count($searchResult);$i++)
+        if($pagenum===null)
+            $pagenum=1;
+        $totalpage=count($searchResult)/5+1;
+        if($pagenum>3)
+            $page[0]['num']=$pagenum-3;
+        else
+            $page[0]['num']=0;
+        if($pagenum*1===1)
+            $page[0]['class']="disabled";
+        
+        for($i=1;$i<6;$i++)
+        {
+            $page[$i]['num']=$page[$i-1]['num']+1;
+            $page[$i]['link']='?pagenum='.$page[$i]['num'];
+            if($page[$i]['num']>$totalpage)
+                $page[$i]['class']="disabled";
+            if($page[$i]['num']===$pagenum*1)
+                $page[$i]['class']="active";
+        }
+
+        if($pagenum*1===1)
+        {
+            $page[0]['class']="disabled";
+            $page[0]['link']='?pagenum=1';
+        }
+        else
+        {
+            $page[0]['link']='?pagenum='.($pagenum-1);
+        }
+        if($pagenum*1+1>$totalpage)
+        {
+            $page[6]['class']="disabled";
+            $page[6]['link']="?pagenum=".$totalpage;
+        }
+        else
+        {
+            $page[6]['link']="?pagenum=".($pagenum+1);
+        }
+        for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
@@ -161,8 +199,8 @@ get isBuyer from group 1
 
             $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
             $orderresult[$i]['BUTTONTYPE']=$state;
-            $orderresult[$i]['HREF']='./'.$state.'?oid='.$searchResult[$i]['OID'];
-            $orderresult[$i]['detail']='./detail'.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['HREF']='__APP__/Order/'.$state.'?oid='.$searchResult[$i]['OID'];
+            $orderresult[$i]['detail']='__APP__/Order/detail'.'?oid='.$searchResult[$i]['OID'];
             $orderresult[$i]['createtime']=$createtime;
             if($state===null)
             {
@@ -207,6 +245,7 @@ get isBuyer from group 1
             }
 
         }
+        $this->assign('page',$page);
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
         $this->display();
@@ -411,15 +450,15 @@ get isBuyer from group 1
         $orders->audited($oid);
     }
 
-    public function createorder(){
+    public function createorder($cartinfo){
         /*cartinfo:good id and good amount list*/
-        /*data for test*/
-        $cartinfo[0]['goods_id']='1';
-        $cartinfo[0]['goods_count']=1;
-        $cartinfo[1]['goods_id']='4';
-        $cartinfo[1]['goods_count']=3;
-        $cartinfo[2]['goods_id']='2';
-        $cartinfo[2]['goods_count']=2;
+        /*data for test*/        // 
+        // $cartinfo[0]['goods_id']='1';
+        // $cartinfo[0]['goods_count']=1;
+        // $cartinfo[1]['goods_id']='4';
+        // $cartinfo[1]['goods_count']=3;
+        // $cartinfo[2]['goods_id']='2';
+        // $cartinfo[2]['goods_count']=2;
         for($i=0;$i<count($cartinfo);$i++){
             $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
             $seller_id=$goodinfo['seller_id'];

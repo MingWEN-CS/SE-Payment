@@ -4,21 +4,28 @@
   <a class="brand" href="__APP__/">Online Payment System</a>
     <div class="nav-collapse collapse">
       <ul class="nav">
-      
-        <if condition="!isset($_SESSION[username])">
-
+        <if condition="!isset($_SESSION['uid'])">
           <li class=""><a href="__APP__/User/register"><i class="icon-edit"></i>Register</a></li>
           <li class=""><a href="__APP__/User/login"><i class="icon-user"></i>Login</a></li>
-
         <else />
-          <li class=""><a href="__APP__/User/" style="font-weight:800"><i class="icon-user"></i>{$_SESSION[username]}</a></li>
+          <li class=""><a href="__APP__/User/" style="font-weight:800"><i class="icon-user"></i>{$_SESSION['username']}</a></li>
           <li class=""><a href="__APP__/User/logout"><i class="icon-off"></i>Logout</a></li>
           <li class=""><a href="__APP__/Order/showorders">My Orders</a><li>
         </if>
-
-        <li class="">
-          <a href="__APP__/Purchase/index">Purchase</a>
-        </li>
+		<if condition="isset($_SESSION['type']) AND $_SESSION['type'] eq 1">
+		  <li class="">
+		    <a href="__APP__/Sell/index">Sell</a>
+		  </li>
+		<else />
+		  <li class="">
+		  <a href="__APP__/Purchase/index"><i class="icon-gift"></i>Purchase</a>
+		  </li>
+		  <if condition="isset($_SESSION['uid'])">
+		    <li class="">
+			<a href="__APP__/ShoppingCart/index"><i class="icon-shopping-cart"></i>Shopping Cart</a>
+		    </li>
+		  </if>
+		</if>
       </ul>
     </div>
   </div>

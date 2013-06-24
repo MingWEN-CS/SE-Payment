@@ -18,8 +18,8 @@ SET time_zone = "+00:00";
 --
 
 INSERT IGNORE INTO `se_user` (`UID`, `USERNAME`, `PASSWD`, `EMAIL`, `TYPE`, `BALANCE`, `PHONE`) VALUES
-(1, '123', '202cb962ac59075b964b07152d234b70', 'a@a.com', 1, 0, NULL),
-(2, '1234', '202cb962ac59075b964b07152d234b70', 'a@b.com', 0, 0, NULL);
+(1, 'Seller1', '202cb962ac59075b964b07152d234b70', 'a@a.com', 1, 0, NULL),
+(2, 'Buyer1', '202cb962ac59075b964b07152d234b70', 'a@b.com', 0, 0, NULL);
 
 --
 -- 转存表中的数据 `se_buyer`
@@ -32,8 +32,8 @@ INSERT IGNORE INTO `se_buyer` (`UID`, `PASSWDPAYMENT`, `CREDIT`, `VIP`, `AUTHENT
 -- 转存表中的数据 `se_seller`
 --
 
-INSERT IGNORE INTO `se_seller` (`ID`, `USERID`, `CARDID`) VALUES
-(1, NULL, '');
+INSERT IGNORE INTO `se_seller` (`UID`, `PASSWDCONSIGN`) VALUES
+(1, 'a');
 
 --
 -- 转存表中的数据 `se_goods`
@@ -76,3 +76,16 @@ INSERT IGNORE INTO `se_hotel_room` (`id`, `name`, `price`, `seller_id`, `bought_
 (2, '阿溴的房间[>.<]efghi', 0.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'luxury'),
 (5, '阿溴的后宫[>.<]efghi', 5.30, 1, 0, 4.0000000000, 1, '浙江', 'www.baidu.com', 20, '很好', 1370208720000, 'Bussiness'),
 (8, '阿溴的小房间[>.<]efghi', 3.30, 1, 0, 4.0000000000, 1, '上海', 'www.baidu.com', 20, '很好', 1370208720000, 'Single');
+
+
+INSERT IGNORE INTO se_shopping_cart values(1,1,1,1);
+INSERT IGNORE INTO se_shopping_cart values(2,1,2,2);
+
+-- INSERT IGNORE INTO `se_orders` (`id`, `buyer`, `seller`, `totalprice`, `isdelete`, `state`) VALUES
+-- ('1', '123', '1234', '12', b'0', '1'),
+-- ('2', '123', '1234', '12', b'0', '1'),
+-- ('3', '123', '1234', '12', b'0', '1');
+
+INSERT INTO `se_feedback` (`id`, `user_id`, `goods_id`, `transaction_id`, `score`, `comment`, `date_time`) VALUES
+('1', '2', '1', '1', '5', 'haha..', '1371287349'),
+('2', '2', '1', '2', '5', 'hei..hei', '1371287349');

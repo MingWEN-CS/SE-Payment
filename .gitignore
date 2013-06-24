@@ -1,2 +1,4 @@
 Runtime/
 Conf/config.php
+*/.DS_Store
+Upload/

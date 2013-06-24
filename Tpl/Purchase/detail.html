@@ -1,0 +1,124 @@
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+   	<link rel="stylesheet" href="../Public/css/index.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/jquery.extend.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#add-to-shopping-cart-btn').click(function() {
+			$.post(location, function(json){
+				if (!json.status){
+					$('#addShoppingInfo').text(json.info).addClass('alert-error').slideDown();
+					setTimeout(function(){
+						$('#addShoppingInfo').slideUp();
+					},1500);
+				}
+				else {
+					$('#addShoppingInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();				
+					setTimeout(function(){
+						$('#addShoppingInfo').slideUp();
+					},1500);
+				}
+			},'json');	
+		});
+		$('#buy-btn').click(function() {
+			var args = {};
+		    var match = null;
+		    var detail = decodeURIComponent(location.search.substring(1));
+		    var reg = /(?:([^&;]+)=([^&;]+))/g;
+		    while((match = reg.exec(detail))!==null){
+		        args[match[1]] = match[2];
+		    }
+			$.form('__APP__/Purchase/ordergen', {good_pairs: [{good_id:args['id'], good_count:"1"}]}, 'POST').submit();
+		});
+	});
+	</script>
+</head>
+
+<body>
+	
+<include file="../header"/>
+
+<div id="container" style="margin-top:100px;height:auto;">
+	<h3 class="text-center">{$goods_info[name]}</h3>
+	<div class="row-fluid">
+		<div class="span3">
+			<img src='{$goods_info.image_uri}' alt="{$goods_info.name}" width='100px'/>
+		</div>
+		<div class="span7">
+			<div class="row">
+				<dl class="dl-horizontal">
+					<dt>stock</dt>
+					<dd>{$goods_info[stock]}</dd>
+					<dt>price</dt>
+					<dd>
+					<if condition='$is_vip eq 1'>
+						<s>{$goods_info[price]}￥</s>
+						<span>   </span>
+						VIP price:{$goods_info[vip_price]}￥
+					<else />
+						{$goods_info[price]}￥
+					</if>
+					</dd>
+					<if condition='$goods_type neq $airplane_ticket_type'>
+						<dt>place</dt>
+						<dd>{$goods_info[place]}</dd>
+						<if condition='$goods_type neq $general_goods_type'>
+							<dt>date and time</dt>
+							<dd>{$goods_info[date_time]}</dd>
+							<dt>stars</dt>
+							<dd>{$goods_info[stars]}</dd>
+						</if>
+					<else />
+						<dt>departure place</dt>
+						<dd>{$goods_info[departure_place]}</dd>
+						<dt>departure date time</dt>
+						<dd>{$goods_info[departure_date_time]}</dd>
+						<dt>arrival place</dt>
+						<dd>{$goods_info[arrival_place]}</dd>
+						<dt>arrival date time</dt>
+						<dd>{$goods_info[arrival_date_time]}</dd>
+					</if>
+					<dt>score</dt>
+					<dd>{$goods_info[score]}</dd>
+					<dt>bought</dt>
+					<dd>{$goods_info[bought_count]}</dd>
+					<dt><button class="btn btn-danger" id="buy-btn">BUY NOW!</button></dt>
+  					<dd><button class="btn btn-warning" id="add-to-shopping-cart-btn">ADD TO SHOP CART</button></dd>
+					<dt></dt>
+					<dd><div id="addShoppingInfo" class="alert hide" style="width:230px"></div></dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<h5>Description:</h5>
+	<p class="lead">{$goods_info[description]}</p>
+	<div>
+		<h5>Feedbacks:</h5>
+		<table class="table table-striped">
+			<volist name="feedbacks" id="feedback">
+				<tr><td>
+					<div class="row-fluid">
+					    <div class="span2">
+							{$feedback[username]}
+					    </div>
+						<div class="span10">
+						    <div class="row">
+								{$feedback[score]}
+							</div>
+						    <div class="row">
+								{$feedback[comment]}
+							</div>
+						</div>
+					</div>
+				</td></tr>
+			</volist>
+		<table>
+	</div>
+</div>
+
+<include file="../footer"/>
+</body>
+</html>
