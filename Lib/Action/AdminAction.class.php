@@ -45,7 +45,7 @@ class AdminAction extends Action {
     //     // $DB->where($condition)->delete();
     // }
 
-    Public function postAdd() {
+    Public function postAdminAdd() {
         $data['name'] = $this->_post('name');
         $data['password'] = $this->_post('password');
         $data['info'] = $this->_post('info');
@@ -111,7 +111,7 @@ class AdminAction extends Action {
     }
 
     Public function postSetVIP() {
-        if ($this->_post('name'))
+        if ($this->_post('name')) {
             $condition['USERNAME'] = $this->_post('name');
             $status = D('User')->where($condition.'AND VIP = 0')->save('VIP = 1');
             if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
@@ -126,7 +126,7 @@ class AdminAction extends Action {
     }
 
     Public function postSetBL() {
-        if ($this->_post('name'))
+        if ($this->_post('name')) {
             $condition['USERNAME'] = $this->_post('name');
             $status = D('User')->where($condition.'AND BLACKLIST = 0')->save('BLACKLIST = 1');
             if ($status) $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
