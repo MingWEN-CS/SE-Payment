@@ -475,19 +475,7 @@ CREATE TABLE se_admin (
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
 );
-<<<<<<< HEAD
 INSERT INTO se_admin VALUES (1, 'root', '123', 0);
-=======
-INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> group3
-<<<<<<< HEAD
->>>>>>> 147ec6775ee5dbeb8c0e6ba35c15e221fbd38d3e
-=======
->>>>>>> 147ec6775ee5dbeb8c0e6ba35c15e221fbd38d3e
 
 DROP TABLE IF EXISTS se_card;
 CREATE TABLE se_card (
