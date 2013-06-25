@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/index.css"/>
+	<link rel="stylesheet" href="../Public/auditor/bootstrap.css">
+	<link rel="stylesheet" href="../Public/auditor/datetimepicker.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+	<script src="../Public/auditor/navbar.js" type="text/javascript"></script>	
+	<script src="../Public/auditor/bootstrap-datetimepicker.js"></script>
+	<script src="../Public/auditor/bootstrap-datetimepicker.fr.js"></script>
+</head>
+
+<body>
+<include file="auditorheader"/>
+
+<div id = "container" style="margin-top:30px;height:400px;">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#reconciliation" data-toggle="tab">Reconciliation</a></li>
+		<li><a href="#disputes" data-toggle="tab">Dispute</a></li>
+		<li><a href="#errors" data-toggle="tab">Error</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="reconciliation">
+			<table class = "table table-hover" style="word-break:break-all; word-wrap:break-all;">
+			<if condition="$rec_list neq null">
+				<caption><br></br><FONT SIZE=+2><B>Reconciliation Data List</B></FONT>&nbsp&nbsp&nbsp&nbsp&nbsp {$data}<a class="btn btn-info btn-small pull-right" href = "__APP__/Auditor/exportList?data={$data}">Export</a><br></br></caption>			
+				<thead>
+					<tr>
+						<th align="center" width = "17%">Order number</th>
+						<th align="center" width = "17%">Buyer ID</th>
+						<th align="center" width = "17%">Seller ID</th>
+						<th align="center" width = "15%">Total amount</th>
+						<th align="center" width = "17%">Order status</th>
+						<th align="center" width = "17%">Trade time</th>
+					</tr>
+				</thead>
+			</if>
+
+				<tbody>
+					<volist name="rec_list" id="vo" empty="No order record!">		
+					<tr class="info">
+						<td width = "17%">{$vo.id}</td>
+						<td width = "17%">{$vo.buyer}</td>
+						<td width = "17%">{$vo.seller}</td>
+						<td width = "15%">{$vo.totalprice}</td>
+						<td width = "17%">{$vo.state}</td>
+						<td width = "17%">{$vo.time|date="y/m/d H:i:s",###}</td>
+					</tr>		
+					</volist>
+				</tbody>
+			</table>
+			<div class="result page pull-right">{$rec_page}</div>		  
+		</div>
+
+
+
+		<div class="tab-pane" id="disputes">
+			<table class = "table table-hover" style="word-break:break-all; word-wrap:break-all;">
+			<if condition="$dis_list neq null">
+				<caption><br></br><FONT SIZE=+2><B>Reconciliation Data List</B></FONT>&nbsp&nbsp&nbsp&nbsp&nbsp {$data}, items count: {$dis_count}<br></br></caption>			
+				<thead>
+					<tr>
+						<th align="center" width = "13%">Order number</th>
+						<th align="center" width = "10%">Good id</th>
+						<th align="center" width = "7%">Price</th>
+						<th align="center" width = "8%">Amount</th>
+						<th align="center" width = "13%">Buyer id</th>
+						<th align="center" width = "12%">Seller id</th>
+						<th align="center" width = "8%">Auditor</th>
+						<th align="center" width = "15%">Date</th>
+						<th align="center" width = "14%">Result</th>
+					</tr>
+				</thead>
+			</if>
+
+				<tbody>
+					<volist name="dis_list" id="vo" empty="No dispute record!">
+					<if condition="$vo.result eq 1">
+					<tr class="success">
+						<td width = "13%">{$vo.oid}</td>
+						<td width = "10%">{$vo.GID}</td>
+						<td width = "7%">{$vo.PRICE}</td>
+						<td width = "8%">{$vo.AMOUNT}</td>
+						<td width = "13%">{$vo.BUYER}</td>
+						<td width = "12%">{$vo.SELLER}</td>
+						<td width = "8%">{$vo.aid}</td>
+						<td width = "15%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "14%">Refund</td>
+					</tr>
+					</if>
+					<if condition="$vo.result eq 0">
+					<tr class="warning">
+						<td width = "13%">{$vo.oid}</td>
+						<td width = "10%">{$vo.GID}</td>
+						<td width = "7%">{$vo.PRICE}</td>
+						<td width = "8%">{$vo.AMOUNT}</td>
+						<td width = "13%">{$vo.BUYER}</td>
+						<td width = "12%">{$vo.SELLER}</td>
+						<td width = "8%">{$vo.aid}</td>
+						<td width = "15%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "14%">No refund</td>
+					</tr>
+					</if>
+					</volist>
+				</tbody>
+			</table>		
+		</div>
+		
+		<div class="tab-pane" id="errors">
+			<table class = "table table-hover" style="word-break:break-all; word-wrap:break-all;">
+			<if condition="$err_list neq null">
+				<caption><br></br><FONT SIZE=+2><B>Error List</B></FONT>&nbsp&nbsp&nbsp&nbsp&nbsp {$data}, items count: {$err_count}<br></br></caption>			
+				<thead>
+					<tr>
+						<th align="center" width = "20%">Order number</th>
+						<th align="center" width = "20%">Need pay</th>
+						<th align="center" width = "20%">Actual pay</th>
+						<th align="center" width = "20%">Date</th>
+						<th align="center" width = "20%">Corrected</th>
+					</tr>
+				</thead>
+			</if>
+
+				<tbody>
+					<volist name="err_list" id="vo" empty="No error record!">
+					<if condition="$vo.iscorrected eq 1">
+					<tr class="info">
+						<td width = "20%">{$vo.oid}</td>
+						<td width = "20%">{$vo.need_pay}</td>
+						<td width = "20%">{$vo.actual_pay}</td>
+						<td width = "20%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "20%">Yes</td>						
+					</tr>
+					</if>
+					<if condition="$vo.iscorrected eq 0">
+					<tr class="error">
+						<td width = "20%">{$vo.oid}</td>
+						<td width = "20%">{$vo.need_pay}</td>
+						<td width = "20%">{$vo.actual_pay}</td>
+						<td width = "20%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "20%">No</td>						
+					</tr>
+					</if>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

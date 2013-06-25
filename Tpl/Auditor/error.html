@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+   	<title>Online Payment System</title>
+   	<link rel="stylesheet" href="../Public/css/index.css"/>
+	<link rel="stylesheet" href="../Public/auditor/bootstrap.css">
+	<link rel="stylesheet" href="../Public/auditor/datetimepicker.css"/>
+	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../Public/js/bootstrap.js" type="text/javascript"></script>
+	<script src="../Public/auditor/navbar.js" type="text/javascript"></script>	
+	<script src="../Public/auditor/bootstrap-datetimepicker.js"></script>
+	<script src="../Public/auditor/bootstrap-datetimepicker.fr.js"></script>
+</head>
+
+<script>
+function correct($id){
+    $.post("__APP__/Auditor/errorCorrect",
+    {
+      id:$id
+    },
+    function(data,status){
+		if(!status) {
+			alert("Error!");
+		}
+		else $('tr#'+$id).fadeOut();
+    });		
+}
+</script>
+
+<body>
+<include file="auditorheader"/>
+<div id = "container" style="margin-top:20px;height:400px;">
+	<if condition="$list neq null">
+	<center><p><h2>New errors</h2></center>
+	<table class = "table table-hover" style="word-break:break-all; word-wrap:break-all;">
+	<thead>
+		<tr>
+			<th align="center" width = "15%">Order ID</th>
+			<th align="center" width = "20%">Need Pay</th>
+			<th align="center" width = "20%">Actual Pay</th>
+			<th align="center" width = "25%">Time</th>
+			<th align="center" width = "20%">Correct</th>
+		</tr>
+	</thead>
+	</if>
+	<tbody>
+		<volist name="list" id="vo" empyt="No new errors!">		
+		<tr id={$vo.oid} class="error">
+			<td width = "15%">{$vo.oid}</td>
+			<td width = "20%">{$vo.need_pay}</td>
+			<td width = "20%">{$vo.actual_pay}</td>
+			<td width = "25%">{$vo.time|date="y/m/d H:i:s",###}</td>
+			<td width = "20%">
+				<center>
+					<button class="btn btn-small btn-primary pull-left" onclick="correct({$vo.oid})"><i class="icon-wrench"></i></button>
+				</center>				
+			</td>
+		</tr>
+		</volist>
+	</tbody>
+	</table>
+</div>
+
+</body>
+</html>

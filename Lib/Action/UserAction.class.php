@@ -16,7 +16,7 @@ class UserAction extends Action {
             $name = $this->_post('name');
             $pwd = $this->_post('pwd');
             
-            //$type = $this->_post('type');
+            $type = $this->_post('type');
 
             $User = D("User");
             
@@ -37,6 +37,7 @@ class UserAction extends Action {
             //login successful and create session    
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
+				session('type',$user[TYPE]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
             }
         }   
@@ -123,7 +124,7 @@ class UserAction extends Action {
                     }
                 }
                 else {
-                    $this->ajaxReturn('',$User->getError(),0);
+                    $this->ajaxReturn(0,'Register a Failed!',0);
                 }
             }
         }

@@ -1,0 +1,132 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container" style="font-family:Georgia, serif;font-weight: bold">
+			<ul id="userNavbar" class="nav pull-left">
+				<li><a class="brand">Audit center</a></li>
+				<li class="divider-vertical"></li>
+				<li><a href="__APP__/Auditor/home">Home</a></li>
+				<li><a href="__APP__/Auditor/dispute">Dispute</a></li>
+				<li><a href="__APP__/Auditor/error">Error</a></li>
+				<li class="divider-vertical"></li>
+				<li>
+					<form class="navbar-form" action="__APP__/Auditor/showList">
+						<div class="controls input-append date form_datetime" data-date-format="yyyy-mm-dd">
+							<input type="text" style="width:90px;font-family:Cursive;font-style:italic;" value="" name = "data" readonly placeholder="select a date">
+							<span class="add-on"><i class="icon-remove"></i></span>
+							<span class="add-on"><i class="icon-th"></i></span>
+							<button class="btn" type="submit" data-toggle="tooltip" data-placement="bottom" title="select a date, then click here!">Show</button>
+						</div>
+					</form>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<form class="navbar-search" action="__APP__/Auditor/search">
+						<input type="text" style="width:120px;font-family:Cursive;font-style:italic;" name = "id" class="search-query" placeholder="Search order">
+					</form>
+				<li>
+			</ul>
+			<ul class="nav pull-right">
+			<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {$_SESSION['name']} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a data-toggle="modal" data-target="#myModal1">My info</a></li>
+				<li><a data-toggle="modal" data-target="#myModal2">Change password</a></li>
+              </ul>
+            </li>
+			<li class="divider-vertical"></li>
+ 			<a class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Log out!"  href = "__APP__/Auditor/logout"><i class="icon-off"></i></a>
+          </ul>
+		</div>
+	</div>
+</div>
+
+<div id="myModal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Auditor info</h3>
+	</div>
+	<div class="modal-body">
+		<p>Id: {$_SESSION['id']}</p>
+		<p>Name: {$_SESSION['name']}</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>	
+
+<div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Change Password</h3>
+	</div>
+	<div class="modal-body">
+		<div class="control-group">
+			<label class="control-label" for="inputOldPassword">Old password</label>
+			<div class="controls">
+				<input type="password" id="inputOldPassword" placeholder="old password">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputNewPassword">New password</label>
+			<div class="controls">
+				<input type="password" id="inputNewPassword" placeholder="new password">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputConfirmNewPassword">Confirm new password</label>
+			<div class="controls">
+				<input type="password" id="inputConfirmNewPassword" placeholder="cofirm new Password">
+				<div id="wrong" class="alert hide"></div>
+			</div>
+		</div>
+    </div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button class="btn btn-primary" onclick = "changePasswd()">Save changes</button>
+	</div>
+</div>	
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+		minView: 2,
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+<script>
+function changePasswd(){
+	var old_pwd = $('#inputOldPassword').val();
+	var new_pwd = $('#inputNewPassword').val();
+	var confirm_pwd = $('#inputConfirmNewPassword').val();
+
+	if (old_pwd == '' || new_pwd == '' || confirm_pwd == ''){
+		$('#wrong').text('All items should be filled').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (new_pwd != confirm_pwd)
+	{
+		$('#wrong').text('New password inconsistent').addClass('alert-error').slideDown();
+		return false;
+	}
+	else {
+		$.post('__APP__/Auditor/changePasswd',{'old_pwd':old_pwd, 'new_pwd':new_pwd},function(json){
+			if (!json.status){
+				$('#wrong').text(json.info).addClass('alert-error').slideDown();
+				return false;
+			}
+			else {
+				$('#wrong').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
+				setTimeout(function(){
+					$('#myModal2').modal('hide');
+				},1000);
+			}
+		},'json');
+	}
+}
+</script>
+

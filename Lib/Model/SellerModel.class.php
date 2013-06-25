@@ -11,5 +11,6 @@ class SellerModel extends Model{
 	protected $_auto = array(
 		array('PASSWDCONSIGN','md5',3,'function'),
 	);
+
 }
 ?>
