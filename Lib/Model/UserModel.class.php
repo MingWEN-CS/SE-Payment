@@ -78,6 +78,14 @@ class UserModel extends Model{
 			else return 1;
 		}
 	}
+
+	public function authenticate($id,$name,$iden){
+		$this->where('UID ='.$id)->setField('AUTHENTICATED',1);
+		$this->where('UID ='.$id)->setField('REALNAME',$name);
+		$this->where('UID ='.$id)->setField('IDENTITY',$iden);
+		return true;
+	}
+
     public function moneyTransfer($payerid,$receiver,$money){
         $payercondition['UID']=$payerid;
         $receivercondition['UID']=$receiver;

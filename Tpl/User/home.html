@@ -44,9 +44,9 @@ $(function(){
 					</if>
 					</span>
 				</h4></p>
-				<p>{$email}</p>
-			<if condition="$type == 0">
+				<if condition="$type == 0">
 				<p><span class="label label-info" style="margin-right:10px">Credit:</span>{$credit}</p>
+				</if>
 				<p>
 					<if condition="$isAuth == 1">
 					<span class="label label-success">Authenticated</span>
@@ -54,7 +54,7 @@ $(function(){
 					<button class="btn btn-danger" data-toggle="modal" data-target="#authentication">Authenticate</button>
 					</if>
 				</p>
-			</if>
+			
 			</div>		
 		</div>
 		
@@ -81,12 +81,17 @@ $(function(){
 		<div id="otherInfo" style="margin-top:100px;">
 			<div class="span9">
 				<h4>Other Information:</h4>
+				<p>Email:{$email}</p>
+				<p>Real Name:{$realName}</p>
+				<p>ID Number:{$idNumber}</p>
+				<button class="btn btn-small btn-warning" data-toggle="modal" data-target="#modifyOtherInfo">Modify</button>
+				<p> </p>
 				<if condition = "$phone == ''">
 				<a>Phone Number:<span>Not Set</span><button class="btn btn-mini btn-warning" style="margin-left:5px;" 
 					data-toggle="modal" data-target="#setPhone">Set</button></a>
 				
 				<else />
-				<a>Phone Number:<span>{$phone}</span><button class="btn btn-mini btn-warning" style="margin-left:5px;"
+				<a>CellPhone Number:<span>{$phone}</span><button class="btn btn-mini btn-warning" style="margin-left:5px;"
 					data-toggle="modal" data-target="#modifyPhone">Modify</button></a>
 				</if>
 
@@ -187,7 +192,7 @@ All the modals for infirmation change
 	</div>
 	<div class="modal-body">
 		<p>
-			<label>Your Phone Number<span style="color:#ff0000; font-family:song">*</span>:</label>
+			<label>Your CellPhone Number<span style="color:#ff0000; font-family:song">*</span>:</label>
 			<input type="text" id="setPhoneNumber" placeholder="Phone Number" AUTOCOMPLETE=OFF>
 		</p>
 	</div>
@@ -237,6 +242,35 @@ All the modals for infirmation change
   	<div class="modal-footer">
     	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
     	<a href="#" class="btn btn-warning" onclick = "authenticate()">Authenticate</a>
+  	</div>
+</div>
+
+
+<div id="modifyOtherInfo" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Modify your Information</h3>
+	</div>
+	<div class="modal-body">
+		<fieldset class="step">
+			<p>
+				<label>Your Email:<span style="color:#ff0000; font-family:song"></span>:</label>
+				<input type="text" id="modifyNewEmail" placeholder="Real Name" AUTOCOMPLETE=OFF>
+			</p>
+			<p>
+				<label>Your Real Name:<span style="color:#ff0000; font-family:song"></span>:</label>
+				<input type="text" id="modifyRealName" placeholder="Real Name" AUTOCOMPLETE=OFF>
+			</p>
+			<p>	
+				<label>Your Id Number:<span style="color:#ff0000; font-family:song"></span>:</label>
+				<input type="text" id="modifyIdNumber" placeholder="Id Number" AUTOCOMPLETE=OFF>
+			</p>
+		</fieldset>
+	</div>
+	<div id="modifyInfo" class="alert hide" style="width:230px; margin-left:16px"></div>
+  	<div class="modal-footer">
+    	<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-success">Close</a>
+    	<a href="#" class="btn btn-warning" onclick = "modifyOther()">Authenticate</a>
   	</div>
 </div>
 

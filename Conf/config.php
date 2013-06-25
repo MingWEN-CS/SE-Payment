@@ -5,7 +5,7 @@ return array(
 	'DB_HOST'   => '127.0.0.1', // 服务器地址
 	'DB_NAME'   => 'payment', // 数据库名
 	'DB_USER'   => 'root', // 用户名
-	'DB_PWD'    => '310018', // 密码
+	'DB_PWD'    => 'civi', // 密码
 	// 'DB_USER'   => 'laolao', // 用户名
 	// 'DB_PWD'    => 'laolao', // 密码
 	'DB_PORT'   => 3306, // 端口

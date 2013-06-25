@@ -481,7 +481,7 @@ get isBuyer from group 1
             return;
             }}
 
-                $goods=D('OrderGoods');
+            $goods=D('OrderGoods');
             $goodsresult=$goods->searchbyid($oid);
             $linecount=count($goodsresult);
             $time=$operation->getoptime($oid);
@@ -494,7 +494,6 @@ get isBuyer from group 1
                 $style="width:100%";
 
             $orderstate=$orderresult['STATE'];
-
             $receiveaddress=D('receiveaddress');
             $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
             $addressinfo=$receiveaddress->where($addresscondition)->find();

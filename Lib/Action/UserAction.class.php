@@ -7,7 +7,10 @@ class UserAction extends Action {
         else redirect(U('/User/login'));
     }
 
-
+    /*
+    Deal with login
+    Get the post name and post email
+    */
     public function login(){
     	if (IS_POST){
             $name = $this->_post('name');
@@ -16,14 +19,22 @@ class UserAction extends Action {
             //$type = $this->_post('type');
 
             $User = D("User");
+            
+            //find the user by name
             $user = $User->findUserByName($name);
             if (!$user){
                 $this->ajaxReturn('','User do not exsit!',0);
             }
+            /*
+            validate the password of the user
+            if they do not mathc, login failed
+            return error info
+            */
             else if (md5($pwd) != $user[PASSWD]){
                 $this->ajaxReturn('','Password incorrect',0);
             }
             else {
+            //login successful and create session    
                 session('uid',$user[UID]);
                 session('username',$user[USERNAME]);
                 $this->ajaxReturn('', 'Login successfully!' ,1);
@@ -34,9 +45,12 @@ class UserAction extends Action {
         }
     }
 
-
+    /*
+        Register 
+    */
     public function register(){
         if (IS_POST){
+            //get all the register information
             $pwd =  $this->_post('pwd');
             $name = $this->_post('name');
             $email = $this->_post('email');
@@ -44,6 +58,8 @@ class UserAction extends Action {
             $phone = $this->_post('phone');
             $type = $this->_post('type');
             //$data = {'name':$name,'pwd':$pwd,'email':$email};
+            //create the array data
+
             $data = array(
                 'name' => $name,
                 'pwd'  => $pwd,
@@ -52,9 +68,13 @@ class UserAction extends Action {
                 'phone' => $phone,
             );
 
+            /*
+             
+            */
 
             $User = D("User");
             $checkData = $User->checkEmail($email, $type);
+            
             if ($checkData != NULL){
                 $this->ajaxReturn(0, $checkData, 0);
             }
@@ -140,7 +160,8 @@ class UserAction extends Action {
         $this->email = $user['EMAIL'];
         $type = $user['TYPE'];
         $this->type = $type;
-
+        $this->realName = $user['REALNAME'];
+        $this->idNumber = $user['IDENTITY'];
         /*
         the user is classified to buyer and seller.
         Their home page is slightly different
@@ -150,10 +171,11 @@ class UserAction extends Action {
             $Buyer = D('Buyer');
             $buyer = $Buyer->where('UID = '.$id)->find();
             $this->credit = $buyer['CREDIT'];
-            $this->isAuth = $buyer['AUTHENTICATED'];
         }
 
+        $this->isAuth = $user['AUTHENTICATED'];
         $Address = D('Address');
+        
         $address = $Address->findAddressById($id);
         $this->address = $address;
 
@@ -163,7 +185,7 @@ class UserAction extends Action {
     }
 
     public function account(){
-        if (isset($_SESSION)){
+        if (isset($_SESSION[uid])){
         $id = $_SESSION[uid];
         $name = $_SESSION[username];
 
@@ -181,9 +203,28 @@ class UserAction extends Action {
         else redirect(U('/User/login'));
     }
 
+
     public function record(){
-        $this->display();
+        if (isset($_SESSION[uid])){
+            $id = $_SESSION[uid];
+            $year = $this->_get("year");
+            $month = $this->_get("month");
+            $Order = D('Orders');
+            
+            /*
+            Get the record from group 2
+
+            $payments = $Order->searchPaymentRecord($id,$year,$month);
+            
+            */
+
+            $this->payments = $payments;
+            $this->display();
+        }
+        else redirect(U('/User/login'));
     }
+
+
     
     public function setPhone(){
         if (isset($_SESSION[uid])){    
@@ -241,6 +282,11 @@ class UserAction extends Action {
         else redirect(U('/User/login'));
     }
 
+
+    /*
+        Change the  Login password of
+        the user
+    */
     public function changeLoginPwd(){
         if (isset($_SESSION[uid])){
             $id = $_SESSION[uid];
@@ -261,6 +307,10 @@ class UserAction extends Action {
         else redirect(U('/User/login'));
     }
 
+    /*
+        Change the payment password of 
+        the user.
+    */
     public function changePaymentPwd(){
         if (isset($_SESSION[uid])){
             $id = $_SESSION[uid];
@@ -316,8 +366,13 @@ class UserAction extends Action {
         }
         else {
             $User = D('User');
-            if($User->where('UID = '.$id)->setInc('BALANCE',$money))
-                $this->ajaxReturn(1,'Charge Successfully!',1);
+            $user = $User->where('UID = '.$id)->find();
+            $before = $user['BALANCE'];
+            if ($before + $money > 999999999.99){
+                $this->ajaxReturn(0,'Our system can not support that much money!',0);
+            }
+            else if($User->where('UID = '.$id)->setInc('BALANCE',$money))
+                 $this->ajaxReturn(1,'Charge Successfully!',1);
             else $this->ajaxReturn(0,$User->getError(),0);
         }
     } 
@@ -325,6 +380,9 @@ class UserAction extends Action {
     
     }
 
+    /*
+     Add the address of the user
+    */
     public function addAddress(){
     if (isset($_SESSION[uid])){    
         $uid = $_SESSION[uid];
@@ -363,6 +421,7 @@ class UserAction extends Action {
         $cardPwd = $this->_post('cardPwd');
 
         $flag = true;
+        
         /*
         Using the interface by Gourp5
         $Admin = D('Admin');
@@ -397,6 +456,68 @@ class UserAction extends Action {
     else redirect(U('User/login'));
     }
 
+    public function modifyOther(){
+    if (isset($_SESSION[uid])){
+
+        $id = $_SESSION[uid];
+        $email = $this->_post('email');
+        $realName = $this->_post('realName');
+        $idNumber = $this->_post('idNumber');
+        /*
+        if ($email == NULL || $realName == NULL || $idNumber == NULL){
+            $this->ajaxReturn(0,'informaton is not complete!',0);
+        }
+        */
+        $flag = true;
+        $msg = "";
+        $User = D('User');
+        $user = $User->where('UID ='.$id)->find();
+        $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+        if ($email != NULL){
+            if (preg_match($pattern,$email)){
+            if (!$User->where('UID ='.$id)->setField('EMAIL',$email)){
+                $flag = false;
+                $msg = "email modify failed!";
+            }
+            else $msg = $msg .'Email Modify Successfully!';
+            }
+            else {
+                $flag = false;
+                $msg = "Email format error!";
+            }
+        }
+
+        if ($realName != NULL && $idNumber != NULL){
+            $realNameAuth =true;
+            /*
+            Using the interface by group 5
+            $Authenticate = D('Authenticate');
+            $flag = $Authenticate->Auth($realName,$idNumber);
+            */
+            if ($realNameAuth){
+                if ($User->authenticate($id,$realName,$idNumber)){
+                    $msg = $msg .' Real Name informaton modify Successfully!';
+                }
+                else{
+                       $flag = false;
+                       $msg = $msg .'Real Name informaton modify Failed!'; 
+                }
+                
+            }
+            else {
+                $this->ajaxReturn('','Authenticate Failed!',0);
+            }
+        }
+
+        if ($flag){
+            $this->ajaxReturn(1,$msg,1);
+
+        }else $this->ajaxReturn(0,$msg,0);
+    }
+    else redirect(U('/User/login'));
+        
+    }
+
     public function authenticate(){
     if (isset($_SESSION[uid])){
         $id = $_SESSION[uid];
@@ -410,8 +531,9 @@ class UserAction extends Action {
         $flag = $Authenticate->Auth($realName,$idNumber);
         */
         if ($flag){
-            $Buyer = D('Buyer');
-            if ($Buyer->authenticate($id)) 
+            $User = D('User');
+            if ($User->authenticate($id,$realName,$idNumber))
+
                 $this->ajaxReturn(1,'Authenticate successfully!',1);
             else $this->ajaxReturn('','Authenticate Failed',0);
 

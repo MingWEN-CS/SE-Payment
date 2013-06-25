@@ -17,7 +17,7 @@ class AddressModel extends Model{
 	);
 
 	public function findAddressById($id){
-		return $this->where('ADDRESSID != 1')->select();
+		return $this->where('UID ='.$id)->select();
 	}
 }
 

@@ -10,8 +10,27 @@ function postRegister(){
 	var type;
 	if (tmp == 'Buyer') type = 0;
 	else type = 1;
+	var reg = /^\w+$/;
+	var emailReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+	if (!name.match(reg)){
+		$('#registerInfo').text('Make sure that your money only contains characters,digits or underline!').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (email.length > 40){
+		$('#registerInfo').text('Your email is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
+		return false;
 
-	if (repwd == '' || pwd == '' || email == '' || name == '' ||
+	}
+	else if (name.length < 6 || name.length > 20){
+		$('#registerInfo').text('Name is too short or too long!').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (!email.match(emailReg)){
+		$('#registerInfo').text('Your email format is wrong!').addClass('alert-error').slideDown();
+		return false;
+	
+	}
+	else if (repwd == '' || pwd == '' || email == '' || name == '' ||
 		pwd2 == '' || repwd2 == ''){
 		$('#registerInfo').text('Information is not complete.').addClass('alert-error').slideDown();
 		return false;
@@ -22,6 +41,12 @@ function postRegister(){
 	}
 	else if (repwd2 != pwd2){
 		$('#registerInfo').text('Your passwords for payment or consignment do not match').addClass('alert-error').slideDown();
+	}
+	else if (pwd.length > 40 || pwd2.length > 40)
+	{
+		$('#registerInfo').text('Your passwords is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
+		return false;
+
 	}
 	else {
 		$.post(ROOT + '/User/register',{'name': name, 'pwd':pwd, 'email':email,'type':type,'pwd2':pwd2,'phone':phone}, function(json){	
@@ -85,6 +110,10 @@ function changeLoginPwd(){
 		$('#changeLoginPwdInfo').text('New passwords do not match!').addClass('alert-error').slideDown();
 		return false;
 	}
+	else if (newLoginPwd.length > 40){
+		$('#changeLoginPwdInfo').text('Your email is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
+		return false;
+	}
 	else{
 		$.post(ROOT + '/User/changeLoginPwd',{'pwd':newLoginRepwd,'oldpwd':oldLoginPwd},function(json){
 			if (!json.status){
@@ -95,6 +124,9 @@ function changeLoginPwd(){
 				$('#changeLoginPwdInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
 				setTimeout(function(){
 					$("#loginPassword").modal('hide');
+					$('#loginPassword input').each(function() {
+						$(this).val('');
+					});
 				},800)
 			}
 		},'json');		
@@ -114,6 +146,10 @@ function changePaymentPwd(){
 		$('#changePaymentPwdInfo').text('New passwords do not match!').addClass('alert-error').slideDown();
 		return false;
 	}
+	else if (newLoginPwd.length > 40){
+		$('#changePaymentPwdInfo').text('Your email is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
+		return false;
+	}
 	else{
 		$.post(ROOT + '/User/changePaymentPwd',{'pwd':newLoginRepwd,'oldpwd':oldLoginPwd},function(json){
 			if (!json.status){
@@ -124,6 +160,9 @@ function changePaymentPwd(){
 				$('#changePaymentPwdInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
 				setTimeout(function(){
 					$("#paymentPassword").modal('hide');
+					$('#paymentPassword input').each(function() {
+						$(this).val('');
+					});
 				},800)
 			}
 		},'json');		
@@ -160,12 +199,13 @@ function setPhone(){
 
 function modifyPhone(){
 	var phone = $('#modifyPhoneNumber').val();
-
+	var cellPhone = /^1[3|4|5|8][0-9]\d{4,8}$/;
+	var fixedPhone = /^0(([1-9]d)|([3-9]d{2}))d{8}$/;
 	if (phone == ''){
 		$('#modifyPhoneInfo').text('Information is not complete').addClass('alert-error').slideDown();
 		return false;
 	}
-	else if (/*test for phone number or not*/ false){
+	else if (!(phone.match(cellPhone))){
 		$('#modifyPhoneInfo').text('The number you filled is not a phone number').addClass('alert-error').slideDown();
 		return false;
 	}
@@ -190,7 +230,13 @@ function addAddress(){
 	var city = $('#addrCity').val();
 	var district = $('#addrDistrict').val();
 	var street = $('#addrStreet').val();
-	$.post(ROOT + '/User/addAddress',
+	if (province.length > 20 || city.length > 20 || district.length > 20 || district.length > 40 ){
+		$('#addAddressInfo').text('Your Information is too long!').addClass('alert-error').slideDown();
+		return false;
+	}
+	else 
+	{
+		$.post(ROOT + '/User/addAddress',
 			{'province':province,'city':city,'district':district,'street':street},
 			function(json){
 				if (!json.status){
@@ -204,6 +250,7 @@ function addAddress(){
 					},1000)
 				}
 			},'json')
+	}
 }
 
 function authenticate(){
@@ -230,18 +277,54 @@ function authenticate(){
 	}
 }
 
+
+function modifyOther(){
+	var newEmail = $('#modifyNewEmail').val();
+	var realName = $('#modifyRealName').val();
+	var idNumber = $('#modifyIdNumber').val();
+	var emailReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+	if (!newEmail.match(emailReg)){
+		$('#modifyInfo').text('Your email format is wrong').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (newEmail.length > 40){
+		$('#modifyInfo').text('Your email is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
+		return false;
+
+	}
+	else {
+		$.post(ROOT+'/User/modifyOther',{'email':newEmail,'realName':realName, 'idNumber':idNumber},function(json){
+			if (!json.status){
+				$('#modifyInfo').text(json.info).addClass('alert-error').slideDown();
+				return false;
+			}
+			else {
+				$('#modifyInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
+				setTimeout(function(){
+					location.href = ROOT + '/User/home';
+				},1000)
+			}
+		},'json')
+	}
+}
+
+
 function chargeMoney(){
 	var cardId = $('#chargeCardId').val();
 	var money = $('#chargeAmount').val();
 	var cardPwd = $('#chargeCardPwd').val();
-	if (cardId == '' || cardPwd == '' || money == ''){
+	if (cardId == null){
+		$('#chargeMoneyInfo').text('You do not have a card!').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (cardId == '' || cardPwd == '' || money == ''){
 		$('#chargeMoneyInfo').text('Information is not complete').addClass('alert-error').slideDown();
 		return false;
 	}
 	else{
-		var reg = /^\d+$/;
+		var reg = /^\d+(\.\d+)?$/;
 		if (!money.match(reg)){
-			$('#chargeMoneyInfo').text('The money you fill is not a valid number').addClass('alert-error').slideDown();
+			$('#chargeMoneyInfo').text('Please make sure that the number you input is >= 0').addClass('alert-error').slideDown();
 			return false;
 		}
 		else if (parseFloat(money) < 0){
