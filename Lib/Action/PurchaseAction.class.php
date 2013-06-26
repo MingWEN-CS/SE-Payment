@@ -4,7 +4,7 @@ import("@.Util.Goods.GoodsHelper");
 import("@.Util.Goods.TimeFormatter");
 import("@.Util.User.BuyerHelper");
 import("@.Util.CommonValue");
-import('@.ORG.Util.Page');
+import('@.Org.Util.Page');
 
 class PurchaseAction extends Action {
 

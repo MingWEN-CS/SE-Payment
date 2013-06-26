@@ -153,7 +153,7 @@ get isBuyer from group 1
         $orderresult=null;
         if($pagenum===null)
             $pagenum=1;
-        $totalpage=count($searchResult)/5+1;
+        $totalpage=count($searchResult)/5;
         if($pagenum>3)
             $page[0]['num']=$pagenum-3;
         else
@@ -194,6 +194,12 @@ get isBuyer from group 1
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
             $createtime=$operation->getcreatetime($orderresult[$i]['ID']);
+            for($j=0;$j<count($goodsresult);$j++){
+                if($orderresult[$i]['STATE']=="payed")
+                {  $goodsresult[$j]['service']="refund";
+                    $goodsresult[$j]['goodhref']='__APP__/Order/refundgood?oid='.$orderresult[$i]['ID'].'?gid='.$goodsresult[$j]['GID'];
+                }
+            }
             $orderresult[$i]['GOODS']=$goodsresult;
             $orderresult[$i]['SIZE']=count($goodsresult);
 
