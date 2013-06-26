@@ -122,6 +122,12 @@
                                 {$each_good['NAME']}</td>
                             <td>{$each_good['PRICE']}</td>
                             <td>{$each_good['AMOUNT']}</td>
+                             <td>
+                                <if condition="$each_good['service'] neq null">
+                                <a class="btn btn-small btn-success" style="width:80px" href="{$each_good['goodhref']}">{$each_good['service']}</a>
+                                <else/>&nbsp;</if>
+                            </td>
+
                         </tr>
                         </volist>
                         <else/>
