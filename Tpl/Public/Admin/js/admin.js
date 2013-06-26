@@ -19,7 +19,10 @@ $(function () {
 				else {
 					$('#loginInfo').text(data.info).removeClass('alert-error').addClass('alert-success').slideDown();
 					setTimeout(function(){
-						location.href = ROOT + '/index';
+						if( data.status == 1 )
+							location.href = ROOT + '/index';
+						else
+							;
 					},1000);
 				}
 			},'json');
