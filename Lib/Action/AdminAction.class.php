@@ -12,11 +12,15 @@ class AdminAction extends Action {
             if (!$admin){
                 $this->ajaxReturn('', 'Admin Does Not Exsit', 0);
             }
-            else if ($password != $admin[password]){
+            else if ($password != $admin['password']){
                 $this->ajaxReturn('', 'Wrong Password', 0);
             }
             else {
-                $this->ajaxReturn('', 'Login Successfully', 1);
+                session('isLogin', 1);
+                if ($admin['type'] == 0)
+                    $this->ajaxReturn('', 'Loading Admin System', 1);
+                else
+                    $this->ajaxReturn('', 'Loading Audit System', 2);
             }
         }
         else {
@@ -25,7 +29,12 @@ class AdminAction extends Action {
     }
 
     Public function index() {
-        $this->display();
+        if(session('isLogin') == 1) {
+            session('isLogin', 0);
+            $this->display();
+        }
+        else
+            $this->redirect('login');
     }
 
     // Public function test() {
@@ -48,8 +57,8 @@ class AdminAction extends Action {
     Public function postAdminAdd() {
         $data['name'] = $this->_post('name');
         $data['password'] = $this->_post('password');
-        $data['info'] = $this->_post('info');
-        $status = $D('Admin')->add($data);
+        $data['type'] = $this->_post('type');
+        $status = D('Admin')->add($data);
         if ($status) $this->ajaxReturn('', 'Add Successfully', 1);
         else $this->ajaxReturn('', 'Add Failed', 0);
     }
@@ -155,13 +164,13 @@ class AdminAction extends Action {
     }
 
     Public function autoSetVIP() {
-        $DB = D('User');
-        $DB->where('BALANCE > 500 AND VIP = 0')->update('VIP = 1');
+        D('User')->where('BALANCE > 500 AND VIP = 0')->update('VIP = 1');
         $data = $DB->where('VIP = 1')->select();
         return $this->ajaxReturn($data, "Complete", 1);
     }
 
     Public function autoSetBL() {
+        $Model = new Model();
         $Model->table('se_order, se_user')->where('se_orders.STATE = "payed" AND se_orders.ISAUDIT = "YES" 
             AND se_order.BUYER = se_user.UID AND se_user.BLACKLIST = 0')->save('se_user.BLACKLIST = 1');
         $data = D('User')->where('blacklist = 1')->select();
