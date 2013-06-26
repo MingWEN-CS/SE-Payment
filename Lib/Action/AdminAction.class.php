@@ -10,13 +10,17 @@ class AdminAction extends Action {
             $se_admin = D("Admin");
             $admin = $se_admin->where($condition)->find();
             if (!$admin){
-                $this->ajaxReturn('', 'Admin Does Not Exsit', 0);
+                 $this->ajaxReturn('', 'Admin Does Not Exsit', 0);
             }
-            else if ($password != $admin[password]){
-                $this->ajaxReturn('', 'Wrong Password', 0);
+            else if ($password != $admin['password']){
+                 $this->ajaxReturn('', 'Wrong Password', 0);
             }
             else {
-                $this->ajaxReturn('', 'Login Successfully', 1);
+                session('isLogin', 1);
+                if ($admin['type'] == 0)
+                    $this->ajaxReturn('', 'Loading Admin System', 1);
+                else
+                    $this->ajaxReturn('', 'Loading Audit System', 2);
             }
         }
         else {
@@ -24,8 +28,13 @@ class AdminAction extends Action {
         }
     }
 
-    Public function index() {
-        $this->display();
+    Public function index() {      
+        if(session('isLogin')) {
+            session('isLogin', 0);
+            $this->display();
+        }
+        else
+            $this->redirect('login');
     }
 
     Public function postAdminAdd() {
