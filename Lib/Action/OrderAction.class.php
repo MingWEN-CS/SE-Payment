@@ -104,6 +104,14 @@ class OrderAction extends Action{
         }
         return $content;
     }
+    private function comparetime($a,$b){
+    for($i=0;$i<10&&$a[$i]==$b[$i];$i++);
+    if($i==10)
+        return 0;
+    if($a[$i]>$b[$i])return 1;
+    else return -1; 
+        
+    }
     public function index() {
         $this->display('showorders');
     }
@@ -134,12 +142,27 @@ get isBuyer from group 1
         $orderstate=$this->_get('state');
         $keywords=$this->_get('keywords');
         $pagenum=$this->_get('pagenum');
+        $timefrom=$this->_get('timefrom');
+        $timeto=$this->_get('timeto');
         $condition['keywords']=$keywords;
         /*save the orders id*/
         for($i=0;$i<count($userorders);$i++)
         {
-            if($orderstate===null||$orderstate!=null&&$orderstate==$userorders[$i]['STATE'])
+            $isshow=1;
+            $createtime=$operation->getcreatetime($userorders[$i]['ID']);//查找订单的创建时间
+            if(($orderstate!=null&&$orderstate!=$userorders[$i]['STATE']))
+               $isshow=0;
+            if($timefrom!=null&&$this->comparetime($createtime,$timefrom)==-1)
+                $isshow=0;
+            if($timeto!=null&&$this->comparetime($createtime,$timeto)==1)
+                $isshow=0;
+            if($isshow==1)
                 $useroid[$i]=$userorders[$i]['ID'];
+
+           // var_dump($createtime);
+           // var_dump($timefrom);
+           // if($timefrom!=null)
+            
         }
 
         $condition['userorders']=$useroid;
@@ -151,7 +174,7 @@ get isBuyer from group 1
         $searchResult = $this->removeDeletedOrders($searchResult);
 
         $orderresult=null;
-        if($pagenum===null)
+        if($pagenum===null)//排页
             $pagenum=1;
         $totalpage=count($searchResult)/5;
         if($pagenum>3)
@@ -189,11 +212,12 @@ get isBuyer from group 1
         {
             $page[6]['link']="?pagenum=".($pagenum+1);
         }
+        //开始查找当前页面的订单
         for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
-            $createtime=$operation->getcreatetime($orderresult[$i]['ID']);
+            $createtime=$operation->getcreatetime($orderresult[$i]['ID']);//查找订单的创建时间
             for($j=0;$j<count($goodsresult);$j++){
                 if($orderresult[$i]['STATE']=="payed")
                 {  $goodsresult[$j]['service']="refund";
@@ -254,6 +278,8 @@ get isBuyer from group 1
         $this->assign('page',$page);
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
+        $this->assign('timefrom',$timefrom);
+        $this->assign('timeto',$timeto);
         $this->display();
     }
 
