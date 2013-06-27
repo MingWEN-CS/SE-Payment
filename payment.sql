@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS `user`;
@@ -52,7 +52,7 @@ CREATE TABLE se_goods(
 		2: hotel room
 		3: airplane ticket
 	It is better to use get funcions in GeneralGoodsModel and other models*/
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE se_orders(
 	foreign key (BUYER) references `se_user`(`UID`) on delete cascade,
 	foreign key (SELLER) references `se_user`(`UID`) on delete cascade,
    	 foreign key (ADDRESSID) references `se_address`(`ADDRESSID`) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 CREATE TABLE IF NOT EXISTS `buyer` (
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
    KEY `se_seller_ibfk_1` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 CREATE TABLE IF NOT EXISTS `seller` (
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `se_usercard` (
   `CARDID` char(50) NOT NULL,
    PRIMARY KEY (`ID`),
    KEY `se_user_id` (`USERID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -209,7 +209,7 @@ CREATE TABLE se_order_goods(
 	PRIMARY KEY(oid,gid),
 	foreign key (OID) references se_orders(ID) on delete cascade,
 	foreign key (GID) references se_goods(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS se_order_operation;
 CREATE TABLE se_order_operation(
     	`OID` INTEGER NOT NULL,
@@ -218,7 +218,7 @@ CREATE TABLE se_order_operation(
 	`OPERATOR` INTEGER NOT NULL DEFAULT 0,
 	primary key(`OID`,`TIME`),
 	foreign key (`OID`) references `se_orders`(`ID`) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /* group 3 */
 
@@ -238,7 +238,7 @@ CREATE TABLE se_general_goods(
 	description VARCHAR(1024),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_hotel_room;
 CREATE TABLE se_hotel_room(
@@ -257,7 +257,7 @@ CREATE TABLE se_hotel_room(
 	suit_type VARCHAR(32),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_airplane_ticket;
 CREATE TABLE se_airplane_ticket(
@@ -279,7 +279,7 @@ CREATE TABLE se_airplane_ticket(
 	carbin_type VARCHAR(32),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS general_goods;
@@ -351,7 +351,7 @@ CREATE TABLE se_browse_history(
 	date_time BIGINT,
 	foreign key (good_id) references se_goods(id) on delete cascade,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_search_history;
 CREATE TABLE se_search_history(
@@ -362,7 +362,7 @@ CREATE TABLE se_search_history(
 	user_id INTEGER,
 	date_time BIGINT,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_feedback;
 CREATE TABLE se_feedback(
@@ -380,7 +380,7 @@ CREATE TABLE se_feedback(
 	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
 	/* foreign key (transaction_id) references transactions(id) on delete cascade, */
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_shopping_cart;
 CREATE TABLE se_shopping_cart(
@@ -392,7 +392,7 @@ CREATE TABLE se_shopping_cart(
 	good_count INTEGER,
 	foreign key (good_id) references se_goods(id) on delete cascade,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* group 4 */
 CREATE TABLE IF NOT EXISTS `se_auditor` (
   `id` int(10) NOT NULL,
@@ -425,7 +425,7 @@ CREATE TABLE se_sysaccount(
 	record numeric(15,2) NOT NULL,
 	time int(11) NOT NULL,
 	foreign key (oid) references se_orders(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS se_audit_error;
@@ -436,7 +436,7 @@ CREATE TABLE se_audit_error(
 	time DATETIME NOT NULL,
 	iscorrected int(1) DEFAULT'0' NOT NULL,
 	foreign key (oid) references se_orders(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TRIGGER IF EXISTS `check_error`;
 DELIMITER //
@@ -474,7 +474,7 @@ CREATE TABLE se_admin (
   	type tinyint(1) NOT NULL,
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 INSERT INTO se_admin VALUES (1, 'root', '123', 0);
 
 DROP TABLE IF EXISTS se_card;
