@@ -46,6 +46,7 @@ public function insertneworder($order){
     $this->create($order);
     return $this->add();
 }
+
 }
 
 ?>

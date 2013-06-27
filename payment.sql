@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   `TYPE` tinyint(1) NOT NULL,
   `BALANCE` int(11) DEFAULT '0',
   `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `BLACKLIST` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
@@ -393,6 +394,76 @@ CREATE TABLE se_shopping_cart(
 	foreign key (user_id) references se_user(UID) on delete cascade
 );
 /* group 4 */
+CREATE TABLE IF NOT EXISTS `se_auditor` (
+  `id` int(10) NOT NULL,
+  `passwd` char(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute(
+	oid INTEGER NOT NULL,
+	buyer_reason varchar(256) NOT NULL,
+	seller_reason varchar(256) DEFAULT NULL,
+	time int(11) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE se_dispute_result(
+	oid INTEGER NOT NULL,
+	aid INTEGER NOT NULL,
+	time int(11) NOT NULL,
+	result int(1) NOT NULL,
+	PRIMARY KEY(oid),
+	foreign key(oid) references se_orders(ID) on delete cascade,
+	foreign key(aid) references se_auditor(id) on delete cascade
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS se_sysaccount;
+CREATE TABLE se_sysaccount(
+	oid INTEGER NOT NULL ,
+	record numeric(15,2) NOT NULL,
+	time int(11) NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
+);
+
+
+DROP TABLE IF EXISTS se_audit_error;
+CREATE TABLE se_audit_error(
+	oid INTEGER NOT NULL,
+	need_pay numeric(15,2) NOT NULL,
+	actual_pay numeric(15,2) NOT NULL,
+	time DATETIME NOT NULL,
+	iscorrected int(1) DEFAULT'0' NOT NULL,
+	foreign key (oid) references se_orders(ID) on delete cascade
+);
+
+DROP TRIGGER IF EXISTS `check_error`;
+DELIMITER //
+CREATE TRIGGER `check_error` AFTER INSERT ON `se_sysaccount`
+ FOR EACH ROW BEGIN
+	DECLARE need_pay DOUBLE;
+	DECLARE actual_pay DOUBLE;
+	DECLARE cc INT;
+	SELECT `totalprice` INTO need_pay FROM `se_orders` WHERE `se_orders`.`id`=new.oid;
+	SELECT SUM(`record`) INTO actual_pay FROM `se_sysaccount` WHERE `se_sysaccount`.`oid`=new.oid AND `se_sysaccount`.`record` > 0;
+	SELECT COUNT(*) INTO cc FROM `se_audit_error` WHERE `oid`=new.oid;
+	IF(cc>0) THEN
+		IF(need_pay!=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `actual_pay`=actual_pay, `time`=UNIX_TIMESTAMP(), `iscorrected`=0 WHERE `oid`=new.oid;
+		ELSEIF(need_pay=actual_pay) THEN
+		UPDATE 	`se_audit_error` SET `iscorrected`=1 WHERE `oid`=new.oid;
+		END IF;
+	ELSEIF(need_pay!=actual_pay) THEN
+	INSERT INTO 
+	`se_audit_error` (`oid`, `need_pay`, `actual_pay`, `time`, `iscorrected` ) 
+	VALUES (new.oid, need_pay, actual_pay, UNIX_TIMESTAMP(), 0);
+	END IF;
+    END
+//
+DELIMITER ;
+
+
 
 /* group 5 */
 DROP TABLE IF EXISTS se_admin;
@@ -400,7 +471,7 @@ CREATE TABLE se_admin (
   	id int(8) NOT NULL AUTO_INCREMENT,
   	name char(32) CHARACTER SET utf8 NOT NULL,
   	password char(32) CHARACTER SET utf8 NOT NULL,
-  	info char(128) CHARACTER SET utf8,
+  	type tinyint(1) NOT NULL,
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
 );
@@ -409,63 +480,32 @@ INSERT INTO se_admin VALUES (1, 'root', '123', 'this is root administrator');
 
 DROP TABLE IF EXISTS se_card;
 CREATE TABLE se_card (
-	id char(32) NOT NULL PRIMARY KEY,
-	name char(32) CHARACTER SET utf8 NOT NULL
+	`ID` char(32) NOT NULL PRIMARY KEY,
+	`PASSWD` char(32) CHARACTER SET utf8 NOT NULL,
 );
-INSERT INTO se_card VALUES ('3500456655263302', '潘开迎');
-INSERT INTO se_card VALUES ('3503656656782542', '王问峦');
-INSERT INTO se_card VALUES ('3545842856277646', '梁家霞');
-INSERT INTO se_card VALUES ('3558835208007483', '斯巴达');
-INSERT INTO se_card VALUES ('36008670281287', '区向培');
-INSERT INTO se_card VALUES ('36140705258707', '辛楚京');
-INSERT INTO se_card VALUES ('40106654787826', '符穗泳');
-INSERT INTO se_card VALUES ('4013073022054211', '邢鸣木');
-INSERT INTO se_card VALUES ('4013153160103002', '彭振俊');
-INSERT INTO se_card VALUES ('4013277073065063', '元镜察');
-INSERT INTO se_card VALUES ('4013371650118864', '赖窍涛');
-INSERT INTO se_card VALUES ('4013475714876225', '王结达');
-INSERT INTO se_card VALUES ('4013518832253478', '吕友映');
-INSERT INTO se_card VALUES ('4013717753525332', '欧馨友');
-INSERT INTO se_card VALUES ('4013726753848065', '连瓢韦');
-INSERT INTO se_card VALUES ('4013733076775470', '史卿秀');
-INSERT INTO se_card VALUES ('4013811357884763', '庄霞涣');
-INSERT INTO se_card VALUES ('4013823267318162', '廉勉晨');
-INSERT INTO se_card VALUES ('4048058037486606', '方玲儿');
-INSERT INTO se_card VALUES ('4048424664373717', '梁炼菲');
-INSERT INTO se_card VALUES ('4048532365655248', '王士男');
-INSERT INTO se_card VALUES ('4048555225314003', '丘腾曼');
-INSERT INTO se_card VALUES ('4048740765267148', '路丽秋');
-INSERT INTO se_card VALUES ('41483585856064', '卢睿政');
-INSERT INTO se_card VALUES ('41718335046882', '时润菘');
-INSERT INTO se_card VALUES ('42413746232326', '吴乐曼');
-INSERT INTO se_card VALUES ('43085442243838', '江翰竹');
-INSERT INTO se_card VALUES ('43138751844314', '王澜');
-INSERT INTO se_card VALUES ('43553278442212', '褚荣思');
-INSERT INTO se_card VALUES ('44142237537236', '区习慈');
-INSERT INTO se_card VALUES ('44240428716104', '于治诚');
-INSERT INTO se_card VALUES ('44325305548660', '梁传建');
-INSERT INTO se_card VALUES ('4503060253630188', '王肯兵');
-INSERT INTO se_card VALUES ('4503167553580847', '任和歆');
-INSERT INTO se_card VALUES ('4503170242663008', '康亮贯');
-INSERT INTO se_card VALUES ('4503306108065686', '蔡谷冠');
-INSERT INTO se_card VALUES ('4503414278727406', '伍來艾');
-INSERT INTO se_card VALUES ('4503457374527725', '龚仲');
-INSERT INTO se_card VALUES ('4503662584211214', '王觉钧');
-INSERT INTO se_card VALUES ('45364080375303', '连凌功');
-INSERT INTO se_card VALUES ('45738524522887', '欧水娟');
-INSERT INTO se_card VALUES ('4722161736150813', '鲁明康');
-INSERT INTO se_card VALUES ('4722670175338374', '王遍盛');
-INSERT INTO se_card VALUES ('48001235576636', '翁京耿');
-INSERT INTO se_card VALUES ('48237488180805', '翁贤超');
-INSERT INTO se_card VALUES ('4833446167732585', '王问峦');
-INSERT INTO se_card VALUES ('4833478777440200', '司徒宇森');
-INSERT INTO se_card VALUES ('4833621212508285', '汤尘菲');
-INSERT INTO se_card VALUES ('48847483602577', '胡芬');
+INSERT INTO se_card VALUES ('3500456655263302', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('3503656656782542', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('3545842856277646', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('3558835208007483', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('36008670281287', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('36140705258707', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('40106654787826', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013073022054211', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013153160103002', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013277073065063', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013371650118864', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013475714876225', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013518832253478', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013717753525332', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013726753848065', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013733076775470', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013811357884763', '202cb962ac59075b964b07152d234b70');
+INSERT INTO se_card VALUES ('4013823267318162', '202cb962ac59075b964b07152d234b70');
 
 DROP TABLE IF EXISTS se_realname;
 CREATE TABLE se_realname (
-	id char(32) NOT NULL PRIMARY KEY,
-	name char(32) CHARACTER SET utf8 NOT NULL
+	`ID` char(32) NOT NULL PRIMARY KEY,
+	`NAME` char(32) CHARACTER SET utf8 NOT NULL
 );
 INSERT INTO se_realname VALUES ('110105197804041313', '江翰竹');
 INSERT INTO se_realname VALUES ('110105197804041372', '王澜');
