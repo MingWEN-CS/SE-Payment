@@ -5,9 +5,10 @@
    	<link rel="stylesheet" href="../Public/css/index.css"/>
 	<script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../Public/js/jquery.extend.js" type="text/javascript"></script>
+	<script src="../Public/js/jquery.raty.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$('#add-to-shopping-cart-btn').click(function() {
+		$('#add-to-shopping-cart-btn').click(function() {			
 			$.post(location, function(json){
 				if (!json.status){
 					$('#addShoppingInfo').text(json.info).addClass('alert-error').slideDown();
@@ -31,8 +32,41 @@
 		    while((match = reg.exec(detail))!==null){
 		        args[match[1]] = match[2];
 		    }
-			$.form('__APP__/Purchase/ordergen', {good_pairs: [{good_id:args['id'], good_count:"1"}]}, 'POST').submit();
+			$.post('__APP__/Purchase/stockNum', {good_id: args['id']}, function(json) {
+				if (json.status == 1) {
+					if(parseInt(json.info) > 0) {
+						$.form('__APP__/Purchase/ordergen', {good_pairs: [{good_id:args['id'], good_count:"1"}]}, 'POST').submit();
+					}
+					else {
+						$('#buyInfo').text('Sold out!').addClass('alert-error').slideDown();				
+						setTimeout(function(){
+							$('#buyInfo').slideUp();
+						},1500);
+					}
+				} else {
+				}
+			});
 		});
+		$('.star').raty({
+			readOnly: true,
+			score: function() {
+			    return $(this).attr('score');
+			},
+			path:'/SE-Payment/Tpl/Public/img',
+			size: 20
+		});
+		// for(var i=1; i <= $('.star').length; i++) {
+		// 	$('#star_'+i).raty({
+		// 		hints: ['Bad', 'Poor', 'Regular', 'Good', 'Gorgeous'],
+		// 		path:'/SE-Payment/Tpl/Public/img',
+		// 		target: '#star_result_'+i,
+		// 		targetType: 'number',
+		// 		targetKeep: true,
+		// 		starOff: 'star-off-taobao.png',
+		// 		starOn: 'star-on-taobao.png',
+		// 		
+		// 	});
+		// }
 	});
 	</script>
 </head>
@@ -55,11 +89,11 @@
 					<dt>price</dt>
 					<dd>
 					<if condition='$is_vip eq 1'>
-						<s>{$goods_info[price]}￥</s>
+						<s>￥{$goods_info[price]}</s>
 						<span>   </span>
-						VIP price:{$goods_info[vip_price]}￥
+						￥VIP price:{$goods_info[vip_price]}
 					<else />
-						{$goods_info[price]}￥
+						￥{$goods_info[price]}
 					</if>
 					</dd>
 					<if condition='$goods_type neq $airplane_ticket_type'>
@@ -69,7 +103,7 @@
 							<dt>date and time</dt>
 							<dd>{$goods_info[date_time]}</dd>
 							<dt>stars</dt>
-							<dd>{$goods_info[stars]}</dd>
+							<dd><div class="star" score="{$goods_info[stars]}"></div></dd>
 						</if>
 					<else />
 						<dt>departure place</dt>
@@ -82,12 +116,12 @@
 						<dd>{$goods_info[arrival_date_time]}</dd>
 					</if>
 					<dt>score</dt>
-					<dd>{$goods_info[score]}</dd>
+					<dd><div class="star" score="{$goods_info[score]}"></div></dd>
 					<dt>bought</dt>
 					<dd>{$goods_info[bought_count]}</dd>
 					<dt><button class="btn btn-danger" id="buy-btn">BUY NOW!</button></dt>
   					<dd><button class="btn btn-warning" id="add-to-shopping-cart-btn">ADD TO SHOP CART</button></dd>
-					<dt></dt>
+					<dt><div id="buyInfo" class="alert hide" style="width:130px"></div></dt>
 					<dd><div id="addShoppingInfo" class="alert hide" style="width:230px"></div></dd>
 				</dl>
 			</div>
@@ -105,11 +139,12 @@
 							{$feedback[username]}
 					    </div>
 						<div class="span10">
-						    <div class="row">
-								{$feedback[score]}
+						    <div class="row" style="width:10px">
+								<div class="star" score="{$feedback[score]}"></div>
 							</div>
+							<br>
 						    <div class="row">
-								{$feedback[comment]}
+								<pre>{$feedback[comment]}</pre>
 							</div>
 						</div>
 					</div>

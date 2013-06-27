@@ -146,7 +146,9 @@ class SellAction extends Action {
 		foreach ($_POST['good_ids'] as $good_id) {
 			$ret &= $goods->where('id = '.$good_id)->delete();
 		}
-		$this->index($ret ? 'Deletion succeeded!' : 'Deletion failed!', $_POST['good_type']);
+
+		$this->redirect('Sell/index');
+		// $this->index($ret ? 'Deletion succeeded!' : 'Deletion failed!', $_POST['good_type']);
 	}
 	
 }

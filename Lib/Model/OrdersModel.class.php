@@ -18,6 +18,14 @@ class OrdersModel extends Model{
     public function changeState($oid, $newState) {
         $condition['ID'] = $oid;
         $data['STATE'] = $newState;
+		//>>modify the stock and brought count of goods. by group3
+		if($newState == 'canceled') {
+			$deleteGoods = D('OrderGoods')->searchbyid($oid);
+			foreach($deleteGoods as $good) {
+				D('Goods')->changeStock($good['GID'], $good['AMOUNT']);
+			}
+		}
+		//<<
         return $this->where($condition)->save($data);
     }
 
