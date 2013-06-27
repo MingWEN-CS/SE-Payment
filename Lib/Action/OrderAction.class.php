@@ -473,6 +473,7 @@ get isBuyer from group 1
         $orderdb=D('Orders');
         $operation=D('OrderOperation');
         $ordergoodsdb=D('OrderGoods');
+		$i = 0;
         foreach($classifiedinfo as $orderinfo){
             $neworder['SELLER']=$orderinfo['SELLER'];
             $neworder['BUYER']=$this->getUserID();
@@ -480,7 +481,6 @@ get isBuyer from group 1
             foreach($orderinfo['goods'] as $eachgood){
                 $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
             }
-
             $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
             $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
             $newoid[$i]['result']='success';
@@ -490,8 +490,9 @@ get isBuyer from group 1
                 $ogid=$ordergoodsdb->insertnewgood($newordergood);
                 if($ogid===false)
                     $newoid[$i]['result']='fail';
-                var_dump($newoid);
+                // var_dump($newoid);
             }
+			$i++;
         }
         return $newoid;
     }

@@ -33,6 +33,8 @@ class ShoppingCartAction extends Action {
 				// reduce price by VIP discount
 				$newGoods[price] = CommonValue::getVipDiscount() * $newGoods[price];
 			}
+			// print_r($item);
+			// print_r($newGoods);
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
 			// update static info
 			$static['price'] += $newGoods[price] * $item[good_count];
@@ -56,7 +58,8 @@ class ShoppingCartAction extends Action {
 			$ret &= $cart->where('user_id = '.$this->_session('uid').' AND good_id = '.$good_id)->delete();
 		}
 		// return hint, show index page
-		$this->index($ret ? 'Deletion succeeded!' : 'Deletion failed!');
+		// echo 1;
+		$this->redirect('ShoppingCart/index');
 	}
 	
 	// modification will be POSTed here
@@ -65,9 +68,7 @@ class ShoppingCartAction extends Action {
 		$cart = D('ShoppingCart');
 		// call a method in shopping cart model
 		// decide by return value to give different hint
-		echo $_POST;
 		if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['good_count'], $_POST['add'])) {
-		// if ($cart->modifyCount($this->_session('uid'), $_POST['good_id'], $_POST['good_count'], $_POST['add'])) {
 			$this->success('Modification succeeded!');
 		} else {
 			$this->error('Modification failed!');

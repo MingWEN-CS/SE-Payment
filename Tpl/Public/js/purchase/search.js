@@ -50,4 +50,13 @@ $(function() {
 		forceParse: 0,
         showMeridian: 1
     });
+
+	$('.star').raty({
+		readOnly: true,
+		score: function() {
+		    return $(this).attr('score');
+		},
+		path:'/SE-Payment/Tpl/Public/img',
+		size: 30,
+	});
 });
