@@ -11,7 +11,7 @@ class OrderGoodsModel extends Model{
             $condition['OID']=array('IN',$constraint['userorders']);
             
             if($constraint!=null)
-            $selectCause=$this->where($condition)->group('OID');
+            $selectCause=$this->order('OID DESC')->where($condition)->group('OID');
 			$result=$selectCause->select();
 			return $result;
         }
