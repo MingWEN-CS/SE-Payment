@@ -5,7 +5,7 @@ import("@.Util.Goods.SourcePlace");
 class UserAction extends Action {
     
     public function index(){
-        if (isset($_SESSION[username])) $this->display("home");
+        if (isset($_SESSION[username])) redirect(U('/User/home'));
         else redirect(U('/User/login'));
     }
 
@@ -34,6 +34,10 @@ class UserAction extends Action {
             */
             else if (md5($pwd) != $user[PASSWD]){
                 $this->ajaxReturn('','Password incorrect',0);
+            }
+            else if ($user['BLACKLIST'] == 1){
+                $this->ajaxReturn('','You are in the black list',2);
+               // $this->redirect('/Admin/appeal');
             }
             else {
             //login successful and create session    
@@ -215,39 +219,143 @@ class UserAction extends Action {
     public function record(){
         if (isset($_SESSION[uid])){
             $id = $_SESSION[uid];
+                    /*
+            Create a user model
+            */
+            $User = D('User');
+
+            /*
+            Get all the informaton that need
+            to be displayed on the homepage of the user
+            */
+            $user = $User->where('UID ='.$id)->find();
+
+            $type = $user['TYPE'];
+
             $year = $this->_get("year");
             $month = $this->_get("month");
             $model = new Model();
-            $record = $model->table('se_orders,se_order_operation')->where(
+            /*
+                the situation of income and outcome 
+                is reversed
+
+                we should do the operation individually
+
+            */
+            if ($type == 0){
+                $t_income = $model->table('se_orders,se_order_operation')->where(
                 'se_orders.ID = se_order_operation.OID and 
-                 se_order_operation.OPERATION = "created" and se_orders.BUYER = '.$id)->select();
+                 se_orders.STATE = "refunded" and 
+                 se_order_operation.OPERATION = "refund" and se_orders.BUYER = '.$id)->select();
+
+                $t_outcome = $model->table('se_orders,se_order_operation')->where(
+                'se_orders.ID = se_order_operation.OID and 
+                 se_orders.STATE = "payed" and 
+                 se_order_operation.OPERATION = "pay" and se_orders.BUYER = '.$id)->select();
+
+
+                $income = array();
+                $outcome = array();
+
+                foreach ($t_income as $value){
+
+                    $time = $value['TIME'];
+                    $yyear = (int)substr($time,0,4);
+                    $mmongth = (int)substr($time,6,2);
+
+                    $User = D('USER');
+                    $user = $User->where('UID ='.$value['SELLER'])->find();
+
+                    if ($year == $yyear && $month == $mmongth){
+                        $payment = array(
+                        'payto' => $user['USERNAME'],
+                        'money'  => $value['TOTALPRICE'],
+                        'time' => $time,
+                        );
+                        array_push($income,$payment);
+                    }
+                }
+
+                foreach ($t_outcome as $value) {
+                    # code...
+                    $time = $value['TIME'];
+                    $yyear = (int)substr($time,0,4);
+                    $mmongth = (int)substr($time,6,2);
+
+                    $User = D('USER');
+                    $user = $User->where('UID ='.$value['SELLER'])->find();
+
+                    if ($year == $yyear && $month == $mmongth){
+                        $payment = array(
+                        'payto' => $user['USERNAME'],
+                        'money'  => $value['TOTALPRICE'],
+                        'time' => $time,
+                        );
+                        array_push($outcome,$payment);
+                    }
+                }
+
+            }else if ($type == 1){
+                $t_income = $model->table('se_orders,se_order_operation')->where(
+                'se_orders.ID = se_order_operation.OID and 
+                 se_orders.STATE = "payed" and 
+                 se_order_operation.OPERATION = "pay" and se_orders.SELLER = '.$id)->select();
+
+                $t_outcome = $model->table('se_orders,se_order_operation')->where(
+                'se_orders.ID = se_order_operation.OID and 
+                 se_orders.STATE = "refunded" and
+                 se_order_operation.OPERATION = "refund" and se_orders.SELLER = '.$id)->select();
             
-            $payments = array();
-            $i = 0;
-            foreach ($record as $value){
-                      
-                $time = $value['TIME'];
-                $yyear = (int)substr($time,0,4);
-                $mmongth = (int)substr($time,6,2);
+                $income = array();
+                $outcome = array();
 
-                $User = D('USER');
-                $user = $User->where('UID ='.$value['SELLER'])->find();
+                foreach ($t_income as $value){
 
-                if ($year == $yyear && $month == $mmongth){
-                    $payment = array(
-                    'payto' => $user['USERNAME'],
-                    'money'  => $value['TOTALPRICE'],
-                    'time' => $time,
-                    );
-                    array_push($payments,$payment);
+                    $time = $value['TIME'];
+                    $yyear = (int)substr($time,0,4);
+                    $mmongth = (int)substr($time,6,2);
+
+                    $User = D('USER');
+                    $user = $User->where('UID ='.$value['BUYER'])->find();
+
+                    if ($year == $yyear && $month == $mmongth){
+                        $payment = array(
+                        'payto' => $user['USERNAME'],
+                        'money'  => $value['TOTALPRICE'],
+                        'time' => $time,
+                        );
+                        array_push($income,$payment);
+                    }
+                }
+
+                foreach ($t_outcome as $value) {
+                    # code...
+                    $time = $value['TIME'];
+                    $yyear = (int)substr($time,0,4);
+                    $mmongth = (int)substr($time,6,2);
+
+                    $User = D('USER');
+                    $user = $User->where('UID ='.$value['BUYER'])->find();
+
+                    if ($year == $yyear && $month == $mmongth){
+                        $payment = array(
+                        'payto' => $user['USERNAME'],
+                        'money'  => $value['TOTALPRICE'],
+                        'time' => $time,
+                        );
+                        array_push($outcome,$payment);
+                    }
                 }
             }
-            //print_r($record);
+            
             /*
-            Get the record from group 2
-            $payments = $Order->searchPaymentRecord($id,$year,$month);
+            $income = $model->table('se_orders,se_order_operation')->where(
+                'se_orders.ID = se_order_operation.OID and 
+                 se_order_operation.OPERATION = "created" and se_orders.BUYER = '.$id)->select();
             */
-            $this->payments = $payments;
+            
+            $this->income = $income;
+            $this->outcome = $outcome;
             $this->display();
         }
         else redirect(U('/User/login'));
