@@ -55,9 +55,13 @@ class GeneralGoodsModel extends Model{
 		//like cause with split words
 		$keywordArray = split(" +", $keywords);
 		for($i = 0; $i < count($keywordArray); $i++) {
-			$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
+			if($keywordArray[$i]!='')
+				$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
 		}
 		$condition['name'] = array('like', $keywordArray, 'OR');
+		if($keywords == '') {
+			$condition['name'] = array('like', '%%');
+		}
 		//where cause of price range
 		$priceLowerBound = $purchaseAction->_get('price-lower-bound');
 		$priceUpperBound = $purchaseAction->_get('price-upper-bound');

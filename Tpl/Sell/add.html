@@ -35,8 +35,7 @@
 				autoclose: 1,
 				todayHighlight: 1,
 				startView: 2,
-				forceParse: 0,
-		        showMeridian: 1
+				forceParse: 0
 		    });
 		});
 	</script>
@@ -128,6 +127,19 @@
 							<option value='{$suit_type->value}'>{$suit_type->display}</option>
 						</neq>
 					</volist>
+				</select>
+			</p>
+			<p>
+				<label for='suit_type'>Stars:</label>
+				<select class="span2" name="stars">
+					<!-- <volist name="hotel_room_suit" id="suit_type">
+						<eq name='good.suit_type' value='$suit_type:value'>
+							<option value='{$suit_type->value}' selected='selected'>{$suit_type->display}</option>
+						</eq>
+						<neq name='good.suit_type' value='$suit_type:value'>
+							<option value='{$suit_type->value}'>{$suit_type->display}</option>
+						</neq>
+					</volist> -->
 				</select>
 			</p>
 		</case>

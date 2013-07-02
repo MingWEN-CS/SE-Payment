@@ -38,6 +38,7 @@ class GoodsHelper {
 			$result = array_merge($result, $eachKind->order('bought_count desc')->limit($topNum)->select());
 		}
 		uasort($result, "boughtCountCompare");
+		$result = array_slice($result, 0, $topNum);
 		return $result;
 	}
 	

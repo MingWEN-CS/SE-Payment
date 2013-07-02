@@ -71,13 +71,13 @@ class AirplaneTicketModel extends GeneralGoodsModel{
 		}
 		//where cause of departure_time
 		if(($departureTime = $purchaseAction->_get('departure_date_time'))) {
-			$startTime = strtotime($departureTime. " +0000");
-			$condition['departure_date_time'] = array('between',array($startTime -60, $startTime + 60 * 5));
+			$startTime = strtotime($departureTime);
+			$condition['departure_date_time'] = array('between',array($startTime - 5, $startTime + 60 * 60));
 		}
 		//where cause of arrival_time
 		if(($arrivalTime = $purchaseAction->_get('arrival_date_time'))) {
-			$startTime = strtotime($arrivalTime. " +0000");
-			$condition['arrival_date_time'] = array('between',array($startTime- 60, $startTime + 60 * 5));
+			$startTime = strtotime($arrivalTime);
+			$condition['arrival_date_time'] = array('between',array($startTime - 5, $startTime + 60 * 60));
 		}
 		//where cause of non_stop
 		if((($nonStop = $purchaseAction->_get('non_stop'))&&$nonStop!=-1)||$nonStop==0) {
