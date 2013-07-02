@@ -239,7 +239,14 @@ class PurchaseAction extends Action {
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
-				$goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
+				$good = GoodsHelper::getBasicGoodsInfoOfId($goods_list_int[$i]['goods_id']);
+				if($is_vip) {
+					$goods_list_int[$i]['goods_price'] = CommonValue::getVipDiscount() * $good['price'];
+				}
+				else {
+					$goods_list_int[$i]['goods_price'] = $good['price'];
+				}
+				// $goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
 			}
 
 			//Generate imcomplete order and get order_id list (int group 2)
@@ -326,6 +333,9 @@ class PurchaseAction extends Action {
 					$goods_id = $goods_list[$j]['GID'];
 					$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 					$order_list[$i]['GOODS'][$j]['PRICE'] = $goods_list[$j]['PRICE'];
+					if(BuyerHelper::getIsVip($uid)) {
+						$order_list[$i]['GOODS'][$j]['PRICE'] = $order_list[$i]['GOODS'][$j]['PRICE'] * CommonValue::getVipDiscount();
+					}
 					$order_list[$i]['GOODS'][$j]['COUNT'] = $goods_list[$j]['AMOUNT'];
 					$order_list[$i]['GOODS'][$j]['URI'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 					$order_list[$i]['GOODS'][$j]['NAME'] = $goods_item['name'];
