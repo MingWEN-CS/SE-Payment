@@ -532,6 +532,10 @@ get isBuyer from group 1
             if($transferresult==1) { 
                 $operations->addOperation($oid, "confirm_receipt", $userID);
                 $orders->changeState($oid, 'finished');
+                
+                $Buyer = D('Buyer');
+                $Buyer->modifyCredit($userID,$orderinfo['TOTALPRICE']);
+                //var_dump($userID);
                 $this->success('确认成功', U('Order/showorders'));
             }
             else

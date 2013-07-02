@@ -227,6 +227,22 @@ class PurchaseAction extends Action {
 			$this->error('Please login as a buyer first!','__APP__/User/login');
 		}
 
+		//Check address
+		$addr = D('Address');
+		$condition['UID'] = $uid;
+		$addr_list = $addr->where($condition)->select();
+		//If Buyer has no shipping address
+		if(!$addr_list) {
+			$this->error('Your do not have any shipping address. 
+				Please add one before you place an order', '__APP__/User');
+			return;
+		}
+		if(!D('User')->isAuthenticated($uid)) {
+			$this->error('You are no authenticated.
+				Please authenticate before purchase.', '__APP__/User');
+			return;
+		}
+
 		//Show shopping list
 		$shopping_cart_list = $this->_post();
 		if(!$shopping_cart_list) {
@@ -279,7 +295,6 @@ class PurchaseAction extends Action {
 		//Session info
 		$uid = $this->_session('uid');
 		$uname = $this->_session('username');
-
 		//Check identification
 		$User = D('Buyer');
 		if(!$uid || !$User->where('UID='.$uid)->select()) {
@@ -296,7 +311,7 @@ class PurchaseAction extends Action {
 				Please add one before you place an order', '__APP__/User');
 			return;
 		}
-		if(!D('User')->isAuthenticated()) {
+		if(!D('User')->isAuthenticated($uid)) {
 			$this->error('You are no authenticated.
 				Please authenticate before purchase.', '__APP__/User');
 			return;
