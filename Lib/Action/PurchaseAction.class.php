@@ -98,6 +98,8 @@ class PurchaseAction extends Action {
 		$this->assign('hotest_goods', $hotest);
 		//set if the user is a vip
 		$this->assign('is_vip',BuyerHelper::getIsVip($userId));
+		
+		$this->assign('goods_type', $goods->getType());
 		$this->display();
 	}
 
@@ -124,7 +126,11 @@ class PurchaseAction extends Action {
 				$this->ajaxReturn(0, 'To use shopping cart, you must login as a buyer!', 0);
 				return;
 			}
-			else {
+			else if(!(D("goods")->getStockById($id) > 0)){
+				$this->ajaxReturn(0, 'Sold out!', 0);
+				return;
+			}
+			else{
 				$shoppingCart = D('ShoppingCart');
 				$shoppingCartRecord = $shoppingCart->where('user_id = '.$userId.' AND good_id = '.$id)->find();
 				//exists already, add the count of goods to buy
@@ -188,14 +194,24 @@ class PurchaseAction extends Action {
 			}
 			//assign all these data to the webpage
 			$this->assign('feedbacks', $feedbacksFull);
-			$good[score] = intval($good[score]);
+			$good[score] = round($good[score], 2);
 			$good[image_uri] = CommonValue::getImgUploadPath() . $good[image_uri];
+			$good[vip_price] = $good[price] * CommonValue::getVipDiscount();
+			//set if the user is a vip
+			$this->assign('is_vip',BuyerHelper::getIsVip($userId));
 			$this->assign('goods_info', $good);
 			$this->assign('goods_type', $type);
 			$this->assign('general_goods_type', GeneralGoodsModel::getType());
 			$this->assign('hotel_room_type', HotelRoomModel::getType());
 			$this->assign('airplane_ticket_type', AirplaneTicketModel::getType());
 			$this->display();
+		}
+	}
+	
+	public function stockNum() {
+		if(IS_POST) {
+			$good_id = $this->_post('good_id');
+			$this->ajaxReturn(0, D("goods")->getStockById($good_id), 1);
 		}
 	}
 
@@ -223,12 +239,18 @@ class PurchaseAction extends Action {
 			for($i = 0; $i < $list_count; $i++) {
 				$goods_list_int[$i]['goods_id'] = $commodity_list[2*$i]['good_id'];
 				$goods_list_int[$i]['goods_count'] = $commodity_list[2*$i+1]['good_count'];
-				$goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
+				$good = GoodsHelper::getBasicGoodsInfoOfId($goods_list_int[$i]['goods_id']);
+				if($is_vip) {
+					$goods_list_int[$i]['goods_price'] = CommonValue::getVipDiscount() * $good['price'];
+				}
+				else {
+					$goods_list_int[$i]['goods_price'] = $good['price'];
+				}
+				// $goods_list_int[$i]['goods_discount'] = CommonValue::getVipDiscount();
 			}
 
 			//Generate imcomplete order and get order_id list (int group 2)
 			$order_list = R('Order/createorder',array($goods_list_int));
-			
 			//Change stock and bought_count
 			if($order_list) {
 				$Goods = D('Goods');
@@ -265,7 +287,7 @@ class PurchaseAction extends Action {
 		}
 		
 		//Show and select shipping address
-		$addr = D('Receiveaddress');
+		$addr = D('Address');
 		$condition['UID'] = $uid;
 		$addr_list = $addr->where($condition)->select();
 		//If Buyer has no shipping address
@@ -311,6 +333,9 @@ class PurchaseAction extends Action {
 					$goods_id = $goods_list[$j]['GID'];
 					$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 					$order_list[$i]['GOODS'][$j]['PRICE'] = $goods_list[$j]['PRICE'];
+					if(BuyerHelper::getIsVip($uid)) {
+						$order_list[$i]['GOODS'][$j]['PRICE'] = $order_list[$i]['GOODS'][$j]['PRICE'] * CommonValue::getVipDiscount();
+					}
 					$order_list[$i]['GOODS'][$j]['COUNT'] = $goods_list[$j]['AMOUNT'];
 					$order_list[$i]['GOODS'][$j]['URI'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 					$order_list[$i]['GOODS'][$j]['NAME'] = $goods_item['name'];
@@ -339,7 +364,7 @@ class PurchaseAction extends Action {
 		$order_count = $order_info['order_count'];
 
 		$Order = D('Orders');
-		//generate order
+		// generate order
 		if(isset($order_info['generate'])) {
 			for($i = 1; $i <= $order_count; $i++) {
 				$order_id = $order_info['order_id_'.$i];
@@ -355,8 +380,13 @@ class PurchaseAction extends Action {
 			for($i = 1; $i <= $order_count; $i++) {
 				$order_id = $order_info['order_id_'.$i];
 				$condition = array('OID'=> $order_id);
-				$OrderGoods->where($condition)->delete();
-				$Order->delete($order_id);
+				// $OrderGoods->where($condition)->delete();
+				// $Order->delete($order_id);
+		        $operations = D('OrderOperation');
+		        $operations->addOperation($order_id, "cancel", $uid);
+
+		        $orders=D('Orders');
+		        $orders->changeState($order_id, 'canceled');
 			}
 			$this->success('Your Order is canceled', '__APP__');
 		}
@@ -378,6 +408,7 @@ class PurchaseAction extends Action {
 				$goods_item = GoodsHelper::getBasicGoodsInfoOfId($goods_id);	 
 				$goods_info_list[$i] = $goods_item; 
 				$goods_info_list[$i]['count'] = $goods_list[$i]['AMOUNT'];
+				$goods_info_list[$i]['img_uri'] = CommonValue::getImgUploadPath() . $goods_item['image_uri'];
 			}
 
 			$this->assign('order_id', $order_id);

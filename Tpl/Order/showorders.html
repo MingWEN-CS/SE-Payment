@@ -23,6 +23,7 @@
                         </div>
                         <div>&nbsp;</div>
                         <div>
+                            <div class="span1"><h5>time:</h5></div>
                         <div class="controls input-prepend input-append date form_datetime"  date-date="2013-06-18" date-date-format="yyyy-mm-dd" data-link-field="departure_date_time">
                             <span class="add-on">from</span>
                             <input name="timefrom" class="span2" size="16" type="text" value="{$timefrom}">
@@ -68,12 +69,11 @@
                             <th>payed</th>
                             <th>
                                 <div class="btn-group">
-                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                       state  <span class="caret"></span>  
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">state<span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li><a href="?state=created">created</li>
-                                        <li><a href="?state=payed">payed</li>
+                                            <li><a href="?state=payed">payed</li>
                                         <li><a href="?state=shipping">shipping</li>
                                         <li><a href="?state=finished">finished</li>
                                         <li><a href="?state=canceled">canceled</li>
@@ -97,14 +97,20 @@
                         </tr>
                         <tr>
                             <td>
-                                <a href="{$each_orders['detail']}"><img src="{$each_orders['GOODS'][0]['IMGURL']}"></img></a>
+                                <a href="{$each_orders['detail']}"><img width="80px" src="/SE-Payment/Upload/{$each_orders['GOODS'][0]['IMGURL']}"></img></a>
                                 {$each_orders['GOODS'][0]['NAME']}
                             </td>
                             <td>{$each_orders['GOODS'][0]['PRICE']}</td>
                             <td>{$each_orders['GOODS'][0]['AMOUNT']}</td>
                             <td>
-                                <if condition="$each_orders['GOODS'][0]['service'] neq null">
+                                <if condition="$each_orders['GOODS'][0]['service'] eq 'refund'">
                                 <a class="btn btn-small btn-success" style="width:80px" href="{$each_orders['GOODS']['0']['goodhref']}">{$each_orders['GOODS'][0]['service']}</a>
+                                <else/></if>
+                                <if condition="$each_orders['GOODS'][0]['service'] eq 'confirm_refund'">
+                                <a class="btn btn-small btn-success" style="width:80px" href="{$each_orders['GOODS']['0']['goodhref']}">{$each_orders['GOODS'][0]['service']}</a>
+                                <else/></if>
+                                <if condition="$each_orders['GOODS'][0]['service'] neq 'refund' && $each_orders['GOODS'][0]['service'] neq 'confirm_refund'">
+                                <p>{$each_orders['GOODS'][0]['service']}</p>
                                 <else/>&nbsp;</if>
                             </td>
                             <td rowspan="{$each_orders['SIZE']}">{$each_orders['TOTALPRICE']}</td>
@@ -129,13 +135,19 @@
                         <tr>
 
                             <td>
-                                <a href="{$each_orders['detail']}"><img src="{$each_good['IMGURL']}"></img></a>
+                                <a href="{$each_orders['detail']}"><img width="80px" src="/SE-Payment/Upload/{$each_good['IMGURL']}"></img></a>
                                 {$each_good['NAME']}</td>
                             <td>{$each_good['PRICE']}</td>
                             <td>{$each_good['AMOUNT']}</td>
-                             <td>
-                                <if condition="$each_good['service'] neq null">
+                            <td>
+                                <if condition="$each_good['service'] eq 'refund'">
                                 <a class="btn btn-small btn-success" style="width:80px" href="{$each_good['goodhref']}">{$each_good['service']}</a>
+                                <else/></if>
+                                <if condition="$each_good['service'] eq 'confirm_refund'">
+                                <a class="btn btn-small btn-success" style="width:80px" href="{$each_good['goodhref']}">{$each_good['service']}</a>
+                                <else/></if>
+                                <if condition="$each_good['service'] neq 'refund' && $each_good['service'] neq 'confirm_refund'">
+                                <p>{$each_good['service']}</p>
                                 <else/>&nbsp;</if>
                             </td>
 
@@ -148,18 +160,18 @@
                 </table>
 
             </div>
-            </div>
         </div>
-        <include file="../footer"/>
-    </body>
-    <script type="text/javascript">
-        $(".form_datetime").datetimepicker({
-            format: "yyyy-mm-dd",
-            todayBtn: 1,
-            todayHighlight: 1,
-            minView: "2",
-            autoclose: "true"
+    </div>
+    <include file="../footer"/>
+</body>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+format: "yyyy-mm-dd",
+todayBtn: 1,
+todayHighlight: 1,
+minView: "2",
+autoclose: "true"
 
-        });
-    </script>
+});
+</script>
 </html>

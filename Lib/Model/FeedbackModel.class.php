@@ -20,9 +20,9 @@ class FeedbackModel extends Model{
 			$GoodsAllKinds = D('AirplaneTicket');
 		}
 		$data['score'] = $score_avg;
-		$data['bought_count'] = $goodsResult['bought_count'] + 1;
 		return $GoodsAllKinds->where('id='.$goods_id)->save($data);
 	}
+	
 	protected $_auto = array(
 		array('id'),
 	);

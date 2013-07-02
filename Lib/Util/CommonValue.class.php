@@ -7,7 +7,7 @@ class CommonValue {
 		return 0.8;
 	}
 	static public function getNumberPerPage(){
-		return 1;
+		return 10;
 	}
 }
 ?>
