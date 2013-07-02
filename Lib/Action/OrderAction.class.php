@@ -224,6 +224,7 @@ get isBuyer from group 1
         {
             $page[6]['link']="?pagenum=".($pagenum+1);
         }
+        //var_dump($searchResult);
         //开始查找当前页面的订单
         for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
@@ -548,6 +549,10 @@ get isBuyer from group 1
             if($transferresult==1) { 
                 $operations->addOperation($oid, "confirm_receipt", $userID);
                 $orders->changeState($oid, 'finished');
+                
+                $Buyer = D('Buyer');
+                $Buyer->modifyCredit($userID,$orderinfo['TOTALPRICE']);
+                //var_dump($userID);
                 $this->success('确认成功', U('Order/showorders'));
             }
             else
@@ -765,7 +770,6 @@ get isBuyer from group 1
                 $ogid=$ordergoodsdb->insertnewgood($newordergood);
                 if($ogid===false)
                     $newoid[$i]['result']='fail';
-                // var_dump($newoid);
             }
             $i++;
         }
