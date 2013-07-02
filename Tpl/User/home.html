@@ -283,8 +283,17 @@ All the modals for infirmation change
 	<div class="modal-body">
 		<fieldset class="step">
 			<p>
+				
+				<label>Province<span style="color:#ff0000; font-family:song">*</span>:</label>
+				<select class="span4" id = "addrProvince" name="place">
+					<volist name="province" id="province">
+						<option value='{$province->value}'>{$province->display}</option>
+					</volist>
+				</select>
+				<!--
 				<label>Province<span style="color:#ff0000; font-family:song">*</span>:</label>
 				<input type="text" id="addrProvince" placeholder="Province" AUTOCOMPLETE=OFF>
+				-->
 			</p>
 			<p>	
 				<label>City<span style="color:#ff0000; font-family:song">*</span>:</label>
