@@ -228,498 +228,562 @@ get isBuyer from group 1
         //开始查找当前页面的订单
         for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
-            $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
-            $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
+            $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);//根据ordergoods里的订单ID查找订单
+            $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);//根据订单ID查找该订单的所有商品
 		//	if($orderresult[$i]['STATE'] != "refunded") $goodsresult = $this->removeRufundedGoods($goodsresult);
             $createtime=$operation->getcreatetime($orderresult[$i]['ID']);//查找订单的创建时间
-            for($j=0;$j<count($goodsresult);$j++){
+          
+            for($j=0;$j<count($goodsresult);$j++){//对于每个订单中的商品
                 if($orderresult[$i]['STATE']=="payed"){
-					if($isBuyer){
+					if($isBuyer){//如果是买家
+                        if($orderresult[$i]['ISAUDIT']=='NO'){
 						switch ($goodsresult[$j]['STATE']){
-							case 'created':{
+							case 'payed':{
+                                if(count($goodsresult)!=1)
 								$goodsresult[$j]['service']="refund";
 								$goodsresult[$j]['goodhref']='__APP__/Order/refundgood?oid='.$orderresult[$i]['ID'].'&gid='.$goodsresult[$j]['GID'];
 								break;
 								}
-                            case 'refunding':{
-                                $goodsresult[$j]['service']="refunding";
-                                break;
-                            }
-                            case 'refunded':{
-                                $goodsresult[$j]['service']="refunded";
-                                break;
-                            }
 							default:{
-								$goodsresult[$j]['service'] = NULL;
-								$goodsresult[$j]['goodhref']=NULL;
-							}
-						}
-					} else {
-						switch ($goodsresult[$j]['STATE']){
-							case 'refunding':{
-								$goodsresult[$j]['service']="confirm_refund";
-								$goodsresult[$j]['goodhref']='__APP__/Order/confirm_refundgood?oid='.$orderresult[$i]['ID'].'&gid='.$goodsresult[$j]['GID'];
-								
-								$orderresult[$i]['OTHER'] = 'refuse_refund';
-								$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
-								break;
-								}
-                            case 'refunded':{
-                                $goodsresult[$j]['service']="refunded";
-                                break;
+                                $goodsreuslt[$j]['service']=$goodsresult[$j]['STATE'];
+                                $goodsresult[$j]['goodhref']=NULL;
                             }
-							default:{
-								$goodsresult[$j]['service'] = NULL;
-								$goodsresult[$j]['goodhref']=NULL;
-							}
-						}
-					}
-                }
-                else
-                {
-						switch ($goodsresult[$j]['STATE']){
-                             case 'refunded':{
-                                $goodsresult[$j]['service']="refunded";
-                                break;
-                            }
-                             case 'refund refused':{
-                                $goodsresult[$j]['service']="refund refused";
-                                break;
-                             }
-
                         }
+                    }
+                    else{//如果订单已经被审计过了
+                        $goodsresult[$j]['service']=$goodsresult[$j]['STATE'];
+                    }
+                } else {//如果是卖家
+                    switch ($goodsresult[$j]['STATE']){
+                    case 'refunding':{
+                        $goodsresult[$j]['service']="confirm_refund";
+                        $goodsresult[$j]['goodhref']='__APP__/Order/confirm_refundgood?oid='.$orderresult[$i]['ID'].'&gid='.$goodsresult[$j]['GID'];
+
+                        $orderresult[$i]['OTHER'] = 'refuse_refund';
+                        $orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
+                        break;
+                    }
+                    case 'refunded':{
+                        $goodsresult[$j]['service']="refunded";
+                        break;
+                    }
+                    default:{
+                        $goodsresult[$j]['service'] = $goodsresult[$j]['STATE'];
+                        $goodsresult[$j]['goodhref']=NULL;
+                    }
+                    }
                 }
             }
-            $orderresult[$i]['GOODS']=$goodsresult;
-            $orderresult[$i]['SIZE']=count($goodsresult);
+          else//如果当前订单状态不是payed
+          {
+              switch ($goodsresult[$j]['STATE']){
+              default:{
+                  $goodsresult[$j]['service']=$goodsresult[$j]['STATE'];
+                  break;
+              }
 
-            $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
-            $orderresult[$i]['BUTTONTYPE']=$state;
-            $orderresult[$i]['HREF']='__APP__/Order/'.$state.'?oid='.$searchResult[$i]['OID'];
-            $orderresult[$i]['detail']='__APP__/Order/detail'.'?oid='.$searchResult[$i]['OID'];
-            $orderresult[$i]['createtime']=$createtime;
-            if($state===null)
-            {
-                $orderresult[$i]['HREF']='./back';	
-            }
-            if($state==="comment")
-            {
-                $orderresult[$i]['HREF']='__APP__/Purchase/comment?oid='.$searchResult[$i]['OID'];
-            }
+              }
+          }
+        }
+        $orderresult[$i]['GOODS']=$goodsresult;
+        $orderresult[$i]['SIZE']=count($goodsresult);
 
-            switch($orderresult[$i]['STATE']){
-            case 'created':{
-                $orderresult[$i]['OTHER'] = 'cancel';
-                $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+        $state=$this->generatebtntype($isBuyer, $orderresult[$i]['STATE']);
+        $orderresult[$i]['BUTTONTYPE']=$state;
+        $orderresult[$i]['HREF']='__APP__/Order/'.$state.'?oid='.$searchResult[$i]['OID'];
+        $orderresult[$i]['detail']='__APP__/Order/detail'.'?oid='.$searchResult[$i]['OID'];
+        $orderresult[$i]['createtime']=$createtime;
+        if($state===null)
+        {
+            $orderresult[$i]['HREF']='./back';	
+        }
+        if($state==="comment")
+        {
+            $orderresult[$i]['HREF']='__APP__/Purchase/comment?oid='.$searchResult[$i]['OID'];
+        }
+
+        switch($orderresult[$i]['STATE']){
+        case 'created':{
+            $orderresult[$i]['OTHER'] = 'cancel';
+            $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+            break;
+        }
+
+        case 'payed' :{
+            if($isBuyer&&$orderresult[$i]['ISAUDIT']=='YES')
+                $orderresult[$i]['BUTTONTYPE']=null;
+            if((!$isBuyer) && ($orderresult[$i]['OTHER'] == 'refuse_refund'))
                 break;
-            }
+        }
+        case 'shipping':
+        case 'auditing':
+        case 'wait': {
+            $orderresult[$i]['OTHER'] = null;
+            $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
+            break;
+        }
 
-            case 'payed' :{
-				if((!$isBuyer) && ($orderresult[$i]['OTHER'] == 'refuse_refund'))
-					break;
-			}
-            case 'shipping':
-            case 'auditing':
-            case 'wait': {
+        case 'refunding':{
+            if($isBuyer){
                 $orderresult[$i]['OTHER'] = null;
                 $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-                break;
+            } else{
+                $orderresult[$i]['OTHER'] = 'refuse_refund';
+                $orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
             }
-
-            case 'refunding':{
-                if($isBuyer){
-                    $orderresult[$i]['OTHER'] = null;
-                    $orderresult[$i]['OTHER_HREF'] = './cancel'.'?oid='.$searchResult[$i]['OID'];
-                } else{
-                    $orderresult[$i]['OTHER'] = 'refuse_refund';
-                    $orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
-                }
-                break;
-            }
-
-            default:{
-                $orderresult[$i]['OTHER'] = 'delete';
-                $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
-            }
-            }
-
+            break;
         }
-        $this->assign('page',$page);
-        $this->assign('myorders',$orderresult);
-        $this->assign('keywords',$keywords);
-        $this->assign('timefrom',$timefrom);
-        $this->assign('timeto',$timeto);
-        $this->display();
+
+        default:{
+            $orderresult[$i]['OTHER'] = 'delete';
+            $orderresult[$i]['OTHER_HREF'] = './delete'.'?oid='.$searchResult[$i]['OID'];
+        }
+        }
+
+    }
+    $this->assign('page',$page);
+    $this->assign('myorders',$orderresult);
+    $this->assign('keywords',$keywords);
+    $this->assign('timefrom',$timefrom);
+    $this->assign('timeto',$timeto);
+    $this->display();
+}
+
+
+// buyer operation
+
+public function cancel(){
+    $oid = $this->_get('oid');
+    $userID = $this->getUserID();
+
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "cancel", $userID);
+
+    $orders=D('Orders');
+    $orders->changeState($oid, 'canceled');
+    $this->success('成功取消', U('Order/showorders'));
+}
+
+public function pay(){
+    $oid = $this->_get('oid');
+
+    $this->assign('oid', $oid);
+    $this->display();
+}
+
+public function pay_authentication() {
+    $default_system_id=1;
+    $oid = $this->_post('oid');
+    $psw = $this->_post('password');
+    $userID = $this->getUserID();
+
+    /*get authentication from group 1*/
+    $usertype=$this->getusertype($userID);
+    $authen=0;
+    if(!$usertype)
+    {
+        $buyerdb=D('Buyer');
+        $buyercondition['UID']=$userID;
+        $buyerinfo=$buyerdb->where($buyercondition)->find();
+        if(md5($psw)===$buyerinfo['PASSWDPAYMENT'])
+            $authen=1;
+    }
+    else{
+        $sellerdb=D('Seller');
+        $sellercondition['UID']=$userID;
+        $buyerinfo=$sellerdb->where($sellercondition)->find();
+        if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+            $authen=1;
     }
 
-
-    // buyer operation
-
-    public function cancel(){
-        $oid = $this->_get('oid');
-        $userID = $this->getUserID();
-
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "cancel", $userID);
+    if($authen==1){
 
         $orders=D('Orders');
-        $orders->changeState($oid, 'canceled');
-        $this->success('成功取消', U('Order/showorders'));
-    }
+        $userdb=D('User');
+        $ordergoods=D('OrderGoods');
 
-    public function pay(){
-        $oid = $this->_get('oid');
+        $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+        $transferresult=$userdb->moneyTransfer($orderinfo['BUYER'],$default_system_id,$orderinfo['TOTALPRICE']);/*transfer the money*/
 
-        $this->assign('oid', $oid);
-        $this->display();
-    }
-
-    public function pay_authentication() {
-        $default_system_id=1;
-        $oid = $this->_post('oid');
-        $psw = $this->_post('password');
-        $userID = $this->getUserID();
-
-        /*get authentication from group 1*/
-        $usertype=$this->getusertype($userID);
-        $authen=0;
-        if(!$usertype)
+        if($transferresult==1)
         {
-            $buyerdb=D('Buyer');
-            $buyercondition['UID']=$userID;
-            $buyerinfo=$buyerdb->where($buyercondition)->find();
-            if(md5($psw)===$buyerinfo['PASSWDPAYMENT'])
-                $authen=1;
+            $orders->changeState($oid, 'payed');
+            $operations = D('OrderOperation');/*change operation*/
+            $operations->addOperation($oid, "pay", $userID);
+            $ordergoods->changestate($oid,'payed');
+            $this->success('付款成功', U('Order/showorders'));
         }
-        else{
-            $sellerdb=D('Seller');
-            $sellercondition['UID']=$userID;
-            $buyerinfo=$sellerdb->where($sellercondition)->find();
-            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
-                $authen=1;
-        }
+        else
+            $this->error('账户余额不足', U('Order/showorders'));
 
-        if($authen==1){
-
-            $orders=D('Orders');
-            $userdb=D('User');
-
-            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-            $transferresult=$userdb->moneyTransfer($orderinfo['BUYER'],$default_system_id,$orderinfo['TOTALPRICE']);/*transfer the money*/
-            if($transferresult==1)
-            {
-                $orders->changeState($oid, 'payed');
-                $operations = D('OrderOperation');/*change operation*/
-                $operations->addOperation($oid, "pay", $userID);
-                $this->success('付款成功', U('Order/showorders'));
-            }
-            else
-                $this->error('账户余额不足', U('Order/showorders'));
-
-        } else{
-            $this->error('付款失败，密码错误', U('Order/showorders'));
-        }
+    } else{
+        $this->error('付款失败，密码错误', U('Order/showorders'));
     }
-    public function refundall(){
-        /*check if the asking order is the user's order*/
-        $userid=$this->getUserID();
-        if($userid===null)
-        {
-            $this->display("showorders");   
-            return;
-        }
-        $oid=$this->_get('oid');
+}
+public function refundall(){
+    /*check if the asking order is the user's order*/
+    $userid=$this->getUserID();
+    if($userid===null)
+    {
+        $this->display("showorders");   
+        return;
+    }
+    $oid=$this->_get('oid');
 
 
-        $Orders=D('Orders');
-        $goods=D('OrderGoods');
+    $Orders=D('Orders');
+    $goods=D('OrderGoods');
 
-        //change all the goods state
-        $goodsresult=$goods->searchbyid($oid);
-        $orderresult=$Orders->findorderbyid($oid);
+    //change all the goods state
+    $goodsresult=$goods->searchbyid($oid);
+    $orderresult=$Orders->findorderbyid($oid);
 
-        $this->assign('goods',$goodsresult);
-        $this->assign('order',$orderresult);
-        $this->assign('goodsize',count($goodsresult));
-        $this->display();
+    $this->assign('goods',$goodsresult);
+    $this->assign('order',$orderresult);
+    $this->assign('goodsize',count($goodsresult));
+    $this->assign('type',1);
+    $this->display();
+
+}
+public function refundcomplete(){
+    $oid = $this->_post('oid');//获取订单ID
+    $reason=$this->_post('refund_reason');//获取退款理由
+    $refundtype=$this->_post('refundtype');//获取退款类型，全部退款/单个商品退款
+    $userID = $this->getUserID();//获取用户ID
+
+    $goods=D('OrderGoods');
+
+    if($refundtype==0){
+        /*退款一件商品*/
+        $gid=$this->_post('gid');//获取退款商品GID
+        $goodscon['OID']=$oid;
+        $goodscon['GID']=$gid;
+        $goodsnewdata['STATE']='refunding';
+        $goods->where($goodscon)->save($goodsnewdata);
 
     }
-    public function refundcomplete(){
-        $oid = $this->_post('oid');
-        $reason=$this->_post('refund_reason');
-        $userID = $this->getUserID();
-
+    else{
+        /*全部退款*/
         $operations = D('OrderOperation');//change order state
         $operations->addOperation($oid, "refund", $userID);
 
-        $dispute=D('Dispute');
-        $refunddata['oid']=$oid;
-        $refunddata['buyer_reason']=$reason;
-        $refunddata['time']=time();
-        $dispute->add($refunddata);
-
-        $orders=D('Orders');
-        $orders->changeState($oid, 'refunding');
-
-
-        $goods=D('OrderGoods');
         $goodscon['OID']=$oid;
         $goodsnewdata['STATE']='refunding';
-        $goods->where($goods)->save($goodsnewdata);
+        $goods->where($goodscon)->save($goodsnewdata);
 
-        $this->success('请等待退款', U('Order/showorders'));
     }
 
-    public function refundgood() {
-        $oid = $this->_get('oid');
-        $gid = $this->_get('gid');
-        $userID = $this->getUserID();
 
+
+    $dispute=D('Dispute');
+    $refunddata['oid']=$oid;
+    $refunddata['buyer_reason']=$reason;
+    $refunddata['time']=time();
+    $dispute->add($refunddata);
+
+    $orders=D('Orders');
+    $orders->changeState($oid, 'refunding');
+
+
+
+    $this->success('请等待退款', U('Order/showorders'));
+}
+
+public function refundgood() {
+    $oid = $this->_get('oid');
+    $gid = $this->_get('gid');
+    $userID = $this->getUserID();
+
+    $Orders=D('Orders');
+    $goods=D('OrderGoods');
+
+    //change all the goods state
+    $goodsresult=$goods->searchbyid($oid);
+    $orderresult=$Orders->findorderbyid($oid);
+
+    $this->assign('goods',$goodsresult);
+    $this->assign('order',$orderresult);
+    $this->assign('goodsize',count($goodsresult));
+    $this->assign('type',0);
+    $this->assign('gid',$gid);
+    $this->display('refundall');      
+
+
+
+
+}
+
+public function confirm_receipt(){
+    $oid = $this->_get('oid');
+    $this->assign('oid', $oid);
+    $this->display();
+}
+
+public function confirm_authentication() {
+    $default_system_id=1;
+    $oid = $this->_post('oid');
+    $psw = $this->_post('password');
+    $userID = $this->getUserID();
+
+    /*get authentication from group 1*/
+
+    $usertype=$this->getusertype($userID);
+    $authen=0;
+    if(!$usertype)
+    {
+        $buyerdb=D('Buyer');
+        $buyercondition['UID']=$userID;
+        $buyerinfo=$buyerdb->where($buyercondition)->find();
+        if(md5($psw)==$buyerinfo['PASSWDPAYMENT'])
+            $authen=1;
+    }
+    else{
+        $sellerdb=D('Seller');
+        $sellercondition['UID']=$userID;
+        $buyerinfo=$sellerdb->where($sellercondition)->find();
+        if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
+            $authen=1;
+    }
+    if($authen){
         $operations = D('OrderOperation');
-        $operations->addOperation($oid, "refund_good ".$gid, $userID);
-
-        $condition['OID'] = $oid;
-        $condition['GID'] = $gid;
-
-        $data['STATE'] = 'refunding';
-
-        $ordergoods=D('OrderGoods');
-        $ordergoods->where($condition)->save($data);
-        
         $orders=D('Orders');
-        $orders->changeState($oid,'refunding');
-            
+        $userdb=D('User');
 
+        $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+        $transferresult=$userdb->moneyTransfer($default_system_id,$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);/*transfer the money*/           
+        if($transferresult==1) { 
+            $operations->addOperation($oid, "confirm_receipt", $userID);
+            $orders->changeState($oid, 'finished');
 
-
-
-        $this->success('请等待退款', U('Order/showorders'));
-    }
-
-    public function confirm_receipt(){
-        $oid = $this->_get('oid');
-        $this->assign('oid', $oid);
-        $this->display();
-    }
-
-    public function confirm_authentication() {
-        $default_system_id=1;
-        $oid = $this->_post('oid');
-        $psw = $this->_post('password');
-        $userID = $this->getUserID();
-
-        /*get authentication from group 1*/
-
-        $usertype=$this->getusertype($userID);
-        $authen=0;
-        if(!$usertype)
+            $Buyer = D('Buyer');
+            $Buyer->modifyCredit($userID,$orderinfo['TOTALPRICE']);
+            //var_dump($userID);
+            $this->success('确认成功', U('Order/showorders'));
+        }
+        else
         {
-            $buyerdb=D('Buyer');
-            $buyercondition['UID']=$userID;
-            $buyerinfo=$buyerdb->where($buyercondition)->find();
-            if(md5($psw)==$buyerinfo['PASSWDPAYMENT'])
-                $authen=1;
+            $this->error('系统出错，请联系管理员', U('Order/showorders'));
         }
-        else{
-            $sellerdb=D('Seller');
-            $sellercondition['UID']=$userID;
-            $buyerinfo=$sellerdb->where($sellercondition)->find();
-            if(md5($psw)==$sellerinfo['PASSWDCONSIGN'])
-                $authen=1;
-        }
-        if($authen){
-            $operations = D('OrderOperation');
-            $orders=D('Orders');
-            $userdb=D('User');
-
-            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-            $transferresult=$userdb->moneyTransfer($default_system_id,$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);/*transfer the money*/           
-            if($transferresult==1) { 
-                $operations->addOperation($oid, "confirm_receipt", $userID);
-                $orders->changeState($oid, 'finished');
-                
-                $Buyer = D('Buyer');
-                $Buyer->modifyCredit($userID,$orderinfo['TOTALPRICE']);
-                //var_dump($userID);
-                $this->success('确认成功', U('Order/showorders'));
-            }
-            else
-            {
-                $this->error('系统出错，请联系管理员', U('Order/showorders'));
-            }
-        } else{
-            $this->error('确认失败，密码错误', U('Order/showorders'));
-        }
+    } else{
+        $this->error('确认失败，密码错误', U('Order/showorders'));
     }
+}
 
 
-    // seller operation
-    public function confirm_refund(){
-        $oid = $this->_get('oid');
-        $userID = $this->getUserID();
+// seller operation
+public function confirm_refund(){
+    $default_system_id=1;
+    $oid = $this->_get('oid');
+    $userID = $this->getUserID();
 
-        $userdb=D('User');
-        $orders=D('Orders');
-        $operations = D('OrderOperation');
+    $userdb=D('User');
+    $orders=D('Orders');
+    $operations = D('OrderOperation');
+    $ordergoods=D('OrderGoods');
 
-        $operations->addOperation($oid, "confirm_refund", $userID);
-        $orders->changeState($oid, 'refunded');
-
-        $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-        $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
-
-        $this->success('确认退款', U('Order/showorders'));
-    }
-
-    public function confirm_refundgood() {
-        $oid = $this->_get('oid');
-        $gid = $this->_get('gid');
-        $userID = $this->getUserID();
-
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "confirm_refundgood ".$gid, $userID);
-
-        $condition['OID'] = $oid;
-        $condition['GID'] = $gid;
-
-        $data['STATE'] = 'refunded';
-
-        $ordergoods=D('OrderGoods');
-        $ordergoods->where($condition)->save($data);
-        $goodsinfo=$ordergoods->where($condition)->select();/*get one order goods information*/
-
-        $orders=D('Orders');
-        $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-        $totalpricestr = $orderinfo['TOTALPRICE'];
-        $totalprice =  floatval($totalpricestr);
-        $price =  floatval($goodsinfo[0]['PRICE']);
-        $amount =  floatval($goodsinfo[0]['AMOUNT']);
-        $totalprice = $totalprice - $price*$amount;
-        $condition_['ID'] = $oid;
-        $data_['TOTALPRICE'] = $totalprice;
-        $orders->where($condition_)->save($data_);
-
-
-        //refund operation with other group        
-        $userdb=D('User');
-        $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$price*$amount);/*transfer the money*/
-
-        $goodsresult=$ordergoods->searchbyid($oid);
-        $judge = true;
-        for($i = 0; $i < count($goodsresult); ++$i){
-            if($goodsresult[$i]['STATE'] != 'refunded'){
-                $judge = false;
-                break;
-            }
+    $condition['OID']=$oid;
+    /*根据订单的ID来遍历订单内所有的商品*/
+    $goodlist=$ordergoods->where($condition)->select();
+    $allflag=1;
+    $refundmoney=0;
+    for($i=0;$i<count($goodlist);$i++)//计算出需要退款的金额度，以及是否是全部退款
+    {
+        if($goodlist[$i]['STATE']=='refunding') 
+        {
+            $refundmoney+=$goodlist[$i]['PRICE']*$goodlist[$i]['AMOUNT'];
         }
-        if($judge){
+        else
+            $allflag=0;
+    }
+    $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+    $totalpricestr = $orderinfo['TOTALPRICE'];
+    $totalprice =  floatval($totalpricestr);
+    $totalprice = $totalprice - $refundmoney;
+    $condition_['ID'] = $oid;
+    $data_['TOTALPRICE'] = $totalprice;
+
+    $transferresult=$userdb->moneyTransfer($default_system_id,$orderinfo['BUYER'],$refundmoney);/*transfer the money*/
+    if($transferresult==1)
+    {
+
+        if($allflag==1){
+            $operations->addOperation($oid, "confirm_refund", $userID);
             $orders->changeState($oid, 'refunded');
         }
+        else{
+            $operations->addOperation($oid, "confirm_refund", $userID);
+            $orders->changeState($oid, 'payed');
+            $orders->where($condition_)->save($data_);//改变订单总价
+
+        }
+        for($i=0;$i<count($goodlist);$i++)//对订单中的每个商品，设置refunding->refunded
+        {
+            if($goodlist[$i]['STATE']=='refunding') 
+            {
+                $goodcon['OID']=$oid;
+                $goodcon['GID']=$goodlist[$i]['GID'];
+                $newdata['STATE']='refunded';
+                $ordergoods->where($goodcon)->save($newdata);
+            }
+        }
+
 
         $this->success('确认退款', U('Order/showorders'));
     }
+    else{
+        $this->error('退款失败，金额不足', U('Order/showorders'));
+    }
+}
 
-    public function refuse_refund()
+public function confirm_refundgood() {
+    $oid = $this->_get('oid');
+    $gid = $this->_get('gid');
+    $userID = $this->getUserID();
+
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "confirm_refundgood ".$gid, $userID);
+
+    $condition['OID'] = $oid;
+    $condition['GID'] = $gid;
+
+    $data['STATE'] = 'refunded';
+
+    $ordergoods=D('OrderGoods');
+    $ordergoods->where($condition)->save($data);
+    $goodsinfo=$ordergoods->where($condition)->select();/*get one order goods information*/
+
+    $orders=D('Orders');
+    $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+    $totalpricestr = $orderinfo['TOTALPRICE'];
+    $totalprice =  floatval($totalpricestr);
+    $price =  floatval($goodsinfo[0]['PRICE']);
+    $amount =  floatval($goodsinfo[0]['AMOUNT']);
+    $totalprice = $totalprice - $price*$amount;
+    $condition_['ID'] = $oid;
+    $data_['TOTALPRICE'] = $totalprice;
+    $orders->where($condition_)->save($data_);
+
+
+    //refund operation with other group        
+    $userdb=D('User');
+    $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$price*$amount);/*transfer the money*/
+
+    $goodsresult=$ordergoods->searchbyid($oid);
+    $judge = true;
+    for($i = 0; $i < count($goodsresult); ++$i){
+        if($goodsresult[$i]['STATE'] != 'refunded'){
+            $judge = false;
+            break;
+        }
+    }
+    if($judge){
+        $orders->changeState($oid, 'refunded');
+    }
+
+    $this->success('确认退款', U('Order/showorders'));
+}
+
+public function refuse_refund()
+{
+    /*check if the asking order is the user's order*/
+    $userid=$this->getUserID();
+    if($userid===null)
     {
-        /*check if the asking order is the user's order*/
-        $userid=$this->getUserID();
-        if($userid===null)
-        {
-            $this->display("showorders");   
-            return;
+        $this->display("showorders");   
+        return;
+    }
+    $oid=$this->_get('oid');
+    $Orders=D('Orders');
+    $goods=D('OrderGoods');
+
+    $goodsresult=$goods->searchbyid($oid);
+    $orderresult=$Orders->findorderbyid($oid);
+
+    $this->assign('goods',$goodsresult);
+    $this->assign('order',$orderresult);
+    $this->assign('goodsize',count($goodsresult));
+    $this->display();
+
+}
+public function refuse_refund_complete() {
+    $oid = $this->_post('oid');
+    $reason=$this->_post('refuse_reason');
+    $userID = $this->getUserID();
+
+
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "refuse_refund", $userID);
+
+    $orders=D('Orders');
+    $orders->changeState($oid, 'auditing');
+
+    $ordergoods=D('OrderGoods');
+
+    $goodsresult=$ordergoods->searchbyid($oid);
+
+    for($i = 0; $i < count($goodsresult); ++$i){//将订单中所有refunding状态的商品状态设为refund refused
+        if($goodsresult[$i]['STATE'] == 'refunding'){
+            $condition['OID'] = $oid;
+            $condition['GID'] = $goodsresult[$i]['GID'];
+
+            $data['STATE'] = 'refund refused';
+
+            $ordergoods->where($condition)->save($data);
+
         }
-        $oid=$this->_get('oid');
-        $Orders=D('Orders');
-        $goods=D('OrderGoods');
-
-        $goodsresult=$goods->searchbyid($oid);
-        $orderresult=$Orders->findorderbyid($oid);
-
-        $this->assign('goods',$goodsresult);
-        $this->assign('order',$orderresult);
-        $this->assign('goodsize',count($goodsresult));
-        $this->display();
-
     }
-    public function refuse_refund_complete() {
-        $oid = $this->_post('oid');
-        $reason=$this->_post('refuse_reason');
-        $userID = $this->getUserID();
+    $dispute=D('Dispute');
+    $discon['oid']=$oid;
+    $disdata['seller_reason']=$reason;
+    $dispute->where($discon)->save($disdata);
+    $this->success('等待审计', U('Order/showorders'));
+}
 
 
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "refuse_refund", $userID);
+public function shipping(){
+    $oid = $this->_get('oid');
+    $userID = $this->getUserID();
 
-        $orders=D('Orders');
-        $orders->changeState($oid, 'auditing');
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "shipping", $userID);
 
-        $ordergoods=D('OrderGoods');
+    $orders=D('Orders');
+    $orders->changeState($oid, 'shipping');
 
-        $goodsresult=$ordergoods->searchbyid($oid);
-
-        for($i = 0; $i < count($goodsresult); ++$i){
-            if($goodsresult[$i]['STATE'] == 'refunding'){
-                $condition['OID'] = $oid;
-                $condition['GID'] = $goodsresult[$i]['GID'];
-
-                $data['STATE'] = 'refund refused';
-
-                $ordergoods->where($condition)->save($data);
-
-            }
-        }
-        $dispute=D('Dispute');
-        $discon['oid']=$oid;
-        $disdata['seller_reason']=$reason;
-        $dispute->where($discon)->save($disdata);
-        $this->success('等待审计', U('Order/showorders'));
-    }
-
-
-    public function shipping(){
-        $oid = $this->_get('oid');
-        $userID = $this->getUserID();
-
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "shipping", $userID);
-
-        $orders=D('Orders');
-        $orders->changeState($oid, 'shipping');
-
-        $this->success('确认送货', U('Order/showorders'));
-    }
+    $this->success('确认送货', U('Order/showorders'));
+}
 
 
 
-    //user operation
-    public function delete() {
-        $oid = $this->_get('oid');
-        $userID = $this->getUserID();
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "delete", $userID);
-        $orders=D('Orders');
-        $orders->delete($oid);
-        $this->success('成功删除', U('Order/showorders'));
-    }
+//user operation
+public function delete() {
+    $oid = $this->_get('oid');
+    $userID = $this->getUserID();
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "delete", $userID);
+    $orders=D('Orders');
+    $orders->delete($oid);
+    $this->success('成功删除', U('Order/showorders'));
+}
 
-    public function back(){
-        redirect(U('Order/showorders'));
-    }
+public function back(){
+    redirect(U('Order/showorders'));
+}
 
-    public function audited($oid, $auditorID) {
-        // with Audit group
-        $userID = $auditorID;
+public function audited($oid, $auditorID) {
+    // with Audit group
+    $userID = $auditorID;
 
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "audit", $userID);
+    $operations = D('OrderOperation');
+    $operations->addOperation($oid, "audit", $userID);
 
-        $orders=D('Orders');
-        $orders->changeState($oid, 'audited');
-        $orders->audited($oid);
-    }
+    $orders=D('Orders');
+    $orders->changeState($oid, 'audited');
+    $orders->audited($oid);
+}
 
-    public function createorder($cartinfo){
-        /*cartinfo:good id and good amount list*/
+public function createorder($cartinfo){
+    /*cartinfo:good id and good amount list*/
         /*data for test*/        // 
             // $cartinfo[0]['goods_id']='1';
             // $cartinfo[0]['goods_count']=1;
@@ -762,65 +826,65 @@ get isBuyer from group 1
             $i++;
         }
         return $newoid;
+}
+public function detail(){
+    /*check if the asking order is the user's order*/
+    $userid=$this->getUserID();
+    if($userid===null)
+    {
+        $this->display("showorders");   
+        return;
     }
-    public function detail(){
-        /*check if the asking order is the user's order*/
-        $userid=$this->getUserID();
-        if($userid===null)
-        {
-            $this->display("showorders");   
-            return;
-        }
 
-        $isbuyer=!$this->getusertype($userid);
-        $oid=$this->_get('oid');
-        $Orders=D('Orders');
-        $operation=D('OrderOperation');
-        $orderresult=$Orders->findorderbyid($oid);
-        if($isbuyer)
-        {   if($orderresult['BUYER']!=$userid)
-        {  $this->display("showorders");
+    $isbuyer=!$this->getusertype($userid);
+    $oid=$this->_get('oid');
+    $Orders=D('Orders');
+    $operation=D('OrderOperation');
+    $orderresult=$Orders->findorderbyid($oid);
+    if($isbuyer)
+    {   if($orderresult['BUYER']!=$userid)
+    {  $this->display("showorders");
+    return;
+    }}
+    else{
+        if($orderresult['SELLER']!=$userid)
+        {     $this->display("showorders");
         return;
         }}
-        else{
-            if($orderresult['SELLER']!=$userid)
-            {     $this->display("showorders");
-            return;
-            }}
 
-                $goods=D('OrderGoods');
-            $goodsresult=$goods->searchbyid($oid);
-            $linecount=count($goodsresult);
-            $time=$operation->getoptime($oid);
-            $style="width:25%";
-            if($time['pay']!=null)
-                $style="width:50%";
-            if($time['ship']!=null)
-                $style="width:75%";
-            if($time['confirm']!=null)
-                $style="width:100%";
+            $goods=D('OrderGoods');
+        $goodsresult=$goods->searchbyid($oid);
+        $linecount=count($goodsresult);
+        $time=$operation->getoptime($oid);
+        $style="width:25%";
+        if($time['pay']!=null)
+            $style="width:50%";
+        if($time['ship']!=null)
+            $style="width:75%";
+        if($time['confirm']!=null)
+            $style="width:100%";
 
-            $orderstate=$orderresult['STATE'];
+        $orderstate=$orderresult['STATE'];
 
-            //if the order have refund information
-            $dispute=D('Dispute');
-            $discon['oid']=$oid;
-            $refundinfo=$dispute->where($discon)->find();
+        //if the order have refund information
+        $dispute=D('Dispute');
+        $discon['oid']=$oid;
+        $refundinfo=$dispute->where($discon)->find();
 
 
-            $receiveaddress=D('receiveaddress');
-            $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
-            $addressinfo=$receiveaddress->where($addresscondition)->find();
+        $receiveaddress=D('receiveaddress');
+        $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
+        $addressinfo=$receiveaddress->where($addresscondition)->find();
 
-            $content=$this->getshowcontent($orderstate,$isbuyer);
-            $this->assign('refundinfo',$refundinfo);
-            $this->assign('prostyle',$style);
-            $this->assign('optime',$time);
-            $this->assign('goods',$goodsresult);
-            $this->assign('goodsize',$linecount);
-            $this->assign('order',$orderresult);
-            $this->assign('addressinfo',$addressinfo);
-            $this->assign('content',$content);
-            $this->display();
-    }
+        $content=$this->getshowcontent($orderstate,$isbuyer);
+        $this->assign('refundinfo',$refundinfo);
+        $this->assign('prostyle',$style);
+        $this->assign('optime',$time);
+        $this->assign('goods',$goodsresult);
+        $this->assign('goodsize',$linecount);
+        $this->assign('order',$orderresult);
+        $this->assign('addressinfo',$addressinfo);
+        $this->assign('content',$content);
+        $this->display();
+}
 }

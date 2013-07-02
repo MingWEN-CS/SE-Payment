@@ -33,4 +33,10 @@ class OrderGoodsModel extends Model{
             $this->create($good);
             return $this->add();
         }
+        public function changestate($oid,$newstate){
+            $condition['OID']=$oid;
+            $data['STATE']=$newstate;
+            return $this->where($condition)->save($data);
+            
+        }
 }
