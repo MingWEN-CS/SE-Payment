@@ -2,7 +2,7 @@
 import("@.Util.Goods.GoodsHelper");
 class OrderAction extends Action{
 
-    int defalut_system_id=1;
+    public $defalut_system_id=1;
     private function getUserID(){
 
         $userid=$_SESSION['uid'];
@@ -374,6 +374,7 @@ get isBuyer from group 1
     }
 
     public function pay_authentication() {
+        $default_system_id=1;
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
         $userID = $this->getUserID();
@@ -403,7 +404,7 @@ get isBuyer from group 1
             $userdb=D('User');
 
             $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-            $transferresult=$userdb->moneyTransfer($orderinfo['BUYER'],$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
+            $transferresult=$userdb->moneyTransfer($orderinfo['BUYER'],$default_system_id,$orderinfo['TOTALPRICE']);/*transfer the money*/
             if($transferresult==1)
             {
                 $orders->changeState($oid, 'payed');
@@ -496,6 +497,7 @@ get isBuyer from group 1
     }
 
     public function confirm_authentication() {
+        $default_system_id=1;
         $oid = $this->_post('oid');
         $psw = $this->_post('password');
         $userID = $this->getUserID();
@@ -521,16 +523,20 @@ get isBuyer from group 1
         }
         if($authen){
             $operations = D('OrderOperation');
-            $operations->addOperation($oid, "confirm_receipt", $userID);
-
             $orders=D('Orders');
-            $orders->changeState($oid, 'finished');
+            $userdb=D('User');
 
-            // $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-            // $userdb=D('User');
-            // $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
-
-            $this->success('确认成功', U('Order/showorders'));
+            $orderinfo=$orders->findorderbyid($oid);/*get order information*/
+            $transferresult=$userdb->moneyTransfer($default_system_id,$orderinfo['SELLER'],$orderinfo['TOTALPRICE']);/*transfer the money*/           
+            if($transferresult==1) { 
+                $operations->addOperation($oid, "confirm_receipt", $userID);
+                $orders->changeState($oid, 'finished');
+                $this->success('确认成功', U('Order/showorders'));
+            }
+            else
+            {
+                $this->error('系统出错，请联系管理员', U('Order/showorders'));
+            }
         } else{
             $this->error('确认失败，密码错误', U('Order/showorders'));
         }
