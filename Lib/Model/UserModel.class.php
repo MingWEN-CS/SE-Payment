@@ -32,6 +32,14 @@ class UserModel extends Model{
 		return $this->select();
 	}
 
+
+	public function isAuthenticated($uid){
+		$condition['UID'] = $uid;
+		$user = $this->where($condition)->find();
+		if ($user['AUTHENTICATED'] == 1) return 1;
+		else return 0;
+	}
+
 	public function findUserByName($name){
 		return $this->where('USERNAME ="' . $name .'"')->find();
 	}
