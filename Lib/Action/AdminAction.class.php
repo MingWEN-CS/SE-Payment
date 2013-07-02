@@ -17,12 +17,15 @@ class AdminAction extends Action {
                  $this->ajaxReturn('', 'Wrong Password', 0);
             }
             else {
-                //set session to prevent from directly access admin or audit html
-                session('isLogin', 1);
-                if ($admin['type'] == 0) // if the user is admin jump to admin html
+                if ($admin['type'] == 0) { // if the user is admin jump to admin html
+                    //set session to prevent from directly access admin or audit html
+                    session('isLogin', 1);
                     $this->ajaxReturn('', 'Loading Admin System', 1);
-                else//if the user is auditor jump to audit html
+                }
+                else {//if the user is auditor jump to audit html
+                    session('?name', $admin['name']);
                     $this->ajaxReturn('', 'Loading Audit System', 2);
+                }
             }
         }
         else {
