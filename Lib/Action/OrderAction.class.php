@@ -412,19 +412,46 @@ get isBuyer from group 1
             $this->error('付款失败，密码错误', U('Order/showorders'));
         }
     }
+    public function refundall(){
+        /*check if the asking order is the user's order*/
+      $userid=$this->getUserID();
+        if($userid===null)
+        {
+            $this->display("showorders");   
+            return;
+        }
+        $oid=$this->_get('oid');
+        $Orders=D('Orders');
+        $goods=D('OrderGoods');
 
-    public function refund(){
-        $oid = $this->_get('oid');
+        $goodsresult=$goods->searchbyid($oid);
+        $orderresult=$Orders->findorderbyid($oid);
+
+        $this->assign('goods',$goodsresult);
+        $this->assign('order',$orderresult);
+        $this->assign('goodsize',count($goodsresult));
+        $this->display();
+        
+    }
+    public function refundcomplete(){
+        $oid = $this->_post('oid');
+        $reason=$this->_post('refund_reason');
         $userID = $this->getUserID();
 
-        $operations = D('OrderOperation');
+        $operations = D('OrderOperation');//change order state
         $operations->addOperation($oid, "refund", $userID);
 
+        $dispute=D('Dispute');
+        $refunddata['oid']=$oid;
+        $refunddata['buyer_reason']=$reason;
+        $refunddata['time']=time();
+        $dispute->add($refunddata);
+        
         $orders=D('Orders');
         $orders->changeState($oid, 'refunding');
 
         $this->success('请等待退款', U('Order/showorders'));
-    }
+   }
 	
 	public function refundgood() {
 		$oid = $this->_get('oid');
@@ -560,11 +587,34 @@ get isBuyer from group 1
         $this->success('确认退款', U('Order/showorders'));
 	}
 
+    public function refuse_refund()
+    {
+            /*check if the asking order is the user's order*/
+      $userid=$this->getUserID();
+        if($userid===null)
+        {
+            $this->display("showorders");   
+            return;
+        }
+        $oid=$this->_get('oid');
+        $Orders=D('Orders');
+        $goods=D('OrderGoods');
 
-    public function refuse_refund() {
-        $oid = $this->_get('oid');
+        $goodsresult=$goods->searchbyid($oid);
+        $orderresult=$Orders->findorderbyid($oid);
+
+        $this->assign('goods',$goodsresult);
+        $this->assign('order',$orderresult);
+        $this->assign('goodsize',count($goodsresult));
+        $this->display();
+        
+    }
+    public function refuse_refund_complete() {
+        $oid = $this->_post('oid');
+        $reason=$this->_post('refuse_reason');
         $userID = $this->getUserID();
 
+        
         $operations = D('OrderOperation');
         $operations->addOperation($oid, "refuse_refund", $userID);
 
@@ -586,7 +636,10 @@ get isBuyer from group 1
 
             }
         }
-
+        $dispute=D('Dispute');
+        $discon['oid']=$oid;
+        $disdata['seller_reason']=$reason;
+        $dispute->where($discon)->save($disdata);
         $this->success('等待审计', U('Order/showorders'));
     }
 
@@ -642,11 +695,11 @@ get isBuyer from group 1
             // $cartinfo[1]['goods_count']=3;
             // $cartinfo[2]['goods_id']='2';
             // $cartinfo[2]['goods_count']=2;
-            for($i=0;$i<count($cartinfo);$i++){
+            for($i=0;$i<count($cartinfo);$i++){//提取订单信息
                 $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
                 $seller_id=$goodinfo['seller_id'];
                 $goodlist['GID']=$cartinfo[$i]['goods_id'];
-                $goodlist['PRICE']=$goodinfo['price'];
+                $goodlist['PRICE']=$cartinfo[$i]['goods_price'];
                 $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
                 $goodlist['NAME']=$goodinfo['name'];
                 $goodlist['IMGURL']=$goodinfo['image_uri'];
@@ -657,7 +710,7 @@ get isBuyer from group 1
         $operation=D('OrderOperation');
         $ordergoodsdb=D('OrderGoods');
         $i = 0;
-        foreach($classifiedinfo as $orderinfo){
+        foreach($classifiedinfo as $orderinfo){//根据每个卖家的ID各生成一个订单
             $neworder['SELLER']=$orderinfo['SELLER'];
             $neworder['BUYER']=$this->getUserID();
             $neworder['TOTALPRICE']=0.00;
@@ -717,11 +770,19 @@ get isBuyer from group 1
                 $style="width:100%";
 
             $orderstate=$orderresult['STATE'];
+
+            //if the order have refund information
+            $dispute=D('Dispute');
+            $discon['oid']=$oid;
+            $refundinfo=$dispute->where($discon)->find();
+                
+
             $receiveaddress=D('receiveaddress');
             $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
             $addressinfo=$receiveaddress->where($addresscondition)->find();
 
             $content=$this->getshowcontent($orderstate,$isbuyer);
+            $this->assign('refundinfo',$refundinfo);
             $this->assign('prostyle',$style);
             $this->assign('optime',$time);
             $this->assign('goods',$goodsresult);
