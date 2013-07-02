@@ -3,14 +3,14 @@ class OrderGoodsModel extends Model{
 
         public function searchbyname($constraint){
             $keywordArray = split(" +", $constraint['keywords']);
-
+            
 			for($i = 0; $i < count($keywordArray); $i++) {
+                if(count($keywordArray)==1||$keywordArray[$i]!='')
 				$keywordArray[$i] = '%' . $keywordArray[$i] . '%';
 			}
-            $condition['NAME'] = array('LIKE', $keywordArray, 'OR');
             $condition['OID']=array('IN',$constraint['userorders']);
             
-            if($constraint!=null)
+            $condition['NAME'] = array('LIKE', $keywordArray, 'OR');
             $selectCause=$this->order('OID DESC')->where($condition)->group('OID');
 			$result=$selectCause->select();
 			return $result;

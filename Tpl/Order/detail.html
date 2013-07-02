@@ -67,8 +67,17 @@
                                         <p class="text-center">
                                         {$content}
                                         </p></h3>
-                                    </td>
-                                </tr>
+                                     <div>
+                                         <if condition="$refundinfo neq null">
+                                         <p class="text-center">buyer reason:{$refundinfo['buyer_reason']}</p>
+                                         <p class="text-center">seller reason:{$refundinfo['seller_reason']}</p>
+                                         <else/></if>
+
+
+                                     </div>
+                                 </div>
+                             </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

@@ -770,11 +770,19 @@ get isBuyer from group 1
                 $style="width:100%";
 
             $orderstate=$orderresult['STATE'];
+
+            //if the order have refund information
+            $dispute=D('Dispute');
+            $discon['oid']=$oid;
+            $refundinfo=$dispute->where($discon)->find();
+                
+
             $receiveaddress=D('receiveaddress');
             $addresscondition['ADDRESSID']=$orderresult['ADDRESSID'];
             $addressinfo=$receiveaddress->where($addresscondition)->find();
 
             $content=$this->getshowcontent($orderstate,$isbuyer);
+            $this->assign('refundinfo',$refundinfo);
             $this->assign('prostyle',$style);
             $this->assign('optime',$time);
             $this->assign('goods',$goodsresult);
