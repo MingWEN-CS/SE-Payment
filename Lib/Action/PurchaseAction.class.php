@@ -294,6 +294,12 @@ class PurchaseAction extends Action {
 		if(!$addr_list) {
 			$this->error('Your do not have any shipping address. 
 				Please add one before you place an order', '__APP__/User');
+			return;
+		}
+		if(!D('User')->isAuthenticated()) {
+			$this->error('You are no authenticated.
+				Please authenticate before purchase.', '__APP__/User');
+			return;
 		}
 		$this->assign('addr_list', $addr_list);
 		
