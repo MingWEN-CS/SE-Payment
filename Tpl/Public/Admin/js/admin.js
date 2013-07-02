@@ -60,7 +60,7 @@ $(function() {
 						if( data.status == 1 )
 							location.href = ROOT + '/index';
 						else if ( data.status == 2 ) 
-							;
+							location.href = '/SE-Payment/index.php/Auditor/home';
 					},1000);
 				}
 			},'json');

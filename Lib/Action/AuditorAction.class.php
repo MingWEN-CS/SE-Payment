@@ -20,7 +20,7 @@ class AuditorAction extends Action {
 		if(!session('?name'))
 			$this->redirect('Index/index');
 		session(null);
-		$this->redirect('Auditor/login');
+		$this->redirect('Admin/login');
 	}
 	
 	//change auditor's password
