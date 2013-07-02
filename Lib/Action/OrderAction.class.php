@@ -587,11 +587,34 @@ get isBuyer from group 1
         $this->success('确认退款', U('Order/showorders'));
 	}
 
+    public function refuse_refund()
+    {
+            /*check if the asking order is the user's order*/
+      $userid=$this->getUserID();
+        if($userid===null)
+        {
+            $this->display("showorders");   
+            return;
+        }
+        $oid=$this->_get('oid');
+        $Orders=D('Orders');
+        $goods=D('OrderGoods');
 
-    public function refuse_refund() {
-        $oid = $this->_get('oid');
+        $goodsresult=$goods->searchbyid($oid);
+        $orderresult=$Orders->findorderbyid($oid);
+
+        $this->assign('goods',$goodsresult);
+        $this->assign('order',$orderresult);
+        $this->assign('goodsize',count($goodsresult));
+        $this->display();
+        
+    }
+    public function refuse_refund_complete() {
+        $oid = $this->_post('oid');
+        $reason=$this->_post('refuse_reason');
         $userID = $this->getUserID();
 
+        
         $operations = D('OrderOperation');
         $operations->addOperation($oid, "refuse_refund", $userID);
 
@@ -613,7 +636,10 @@ get isBuyer from group 1
 
             }
         }
-
+        $dispute=D('Dispute');
+        $discon['oid']=$oid;
+        $disdata['seller_reason']=$reason;
+        $dispute->where($discon)->save($disdata);
         $this->success('等待审计', U('Order/showorders'));
     }
 
