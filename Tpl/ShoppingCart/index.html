@@ -73,7 +73,7 @@
 				var good_pairs = $.map(raw, function(val) {
 					return {good_id: $(val).attr('good_id'), good_count: $(val).parent().next().next().children().first().next().text()};
 				});
-				$.post('__URL__/shoppingcartdelete', {good_ids: good_ids}, function(json) {
+				$.post('__URL__/delete', {good_ids: good_ids}, function(json) {
 					if (json.status == 1) {
 						location.reload();
 					} else {

@@ -17,7 +17,7 @@ class OrderAction extends Action{
         if($isBuyer){	//buyer state
             switch($state){
             case 'created': return 'pay';
-            case 'payed': return 'refund';
+            case 'payed': return 'refundall';
             case 'shipping': return 'confirm_receipt';
 
             case 'finished': return "comment";
@@ -60,6 +60,18 @@ class OrderAction extends Action{
 
         return $result;
     }
+	
+	private function removeRufundedGoods($goodsresult) {
+	
+		$result = array();
+        for($i = 0,$j=0; $i < count($goodsresult); ++$i){
+            if($goodsresult[$i]['STATE'] != 'refunded')
+                $result[$j++] = $goodsresult[$i];
+        }
+
+        return $result;
+	}
+	
     private function getusertype($uid){
         $user=D('User');
         $condition['UID']=$uid;
@@ -104,6 +116,14 @@ class OrderAction extends Action{
         }
         return $content;
     }
+    private function comparetime($a,$b){
+    for($i=0;$i<10&&$a[$i]==$b[$i];$i++);
+    if($i==10)
+        return 0;
+    if($a[$i]>$b[$i])return 1;
+    else return -1; 
+        
+    }
     public function index() {
         $this->display('showorders');
     }
@@ -134,12 +154,27 @@ get isBuyer from group 1
         $orderstate=$this->_get('state');
         $keywords=$this->_get('keywords');
         $pagenum=$this->_get('pagenum');
+        $timefrom=$this->_get('timefrom');
+        $timeto=$this->_get('timeto');
         $condition['keywords']=$keywords;
         /*save the orders id*/
         for($i=0;$i<count($userorders);$i++)
         {
-            if($orderstate===null||$orderstate!=null&&$orderstate==$userorders[$i]['STATE'])
+            $isshow=1;
+            $createtime=$operation->getcreatetime($userorders[$i]['ID']);//查找订单的创建时间
+            if(($orderstate!=null&&$orderstate!=$userorders[$i]['STATE']))
+               $isshow=0;
+            if($timefrom!=null&&$this->comparetime($createtime,$timefrom)==-1)
+                $isshow=0;
+            if($timeto!=null&&$this->comparetime($createtime,$timeto)==1)
+                $isshow=0;
+            if($isshow==1)
                 $useroid[$i]=$userorders[$i]['ID'];
+
+           // var_dump($createtime);
+           // var_dump($timefrom);
+           // if($timefrom!=null)
+            
         }
 
         $condition['userorders']=$useroid;
@@ -151,9 +186,9 @@ get isBuyer from group 1
         $searchResult = $this->removeDeletedOrders($searchResult);
 
         $orderresult=null;
-        if($pagenum===null)
+        if($pagenum===null)//排页
             $pagenum=1;
-        $totalpage=count($searchResult)/5+1;
+        $totalpage=ceil(count($searchResult)/5);
         if($pagenum>3)
             $page[0]['num']=$pagenum-3;
         else
@@ -189,11 +224,71 @@ get isBuyer from group 1
         {
             $page[6]['link']="?pagenum=".($pagenum+1);
         }
+        //开始查找当前页面的订单
         for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
             $orderresult[$i]=$orders->findorderbyid($searchResult[$i]['OID']);
             $goodsresult=$ordergoods->searchbyid($orderresult[$i]['ID']);
-            $createtime=$operation->getcreatetime($orderresult[$i]['ID']);
+		//	if($orderresult[$i]['STATE'] != "refunded") $goodsresult = $this->removeRufundedGoods($goodsresult);
+            $createtime=$operation->getcreatetime($orderresult[$i]['ID']);//查找订单的创建时间
+            for($j=0;$j<count($goodsresult);$j++){
+                if($orderresult[$i]['STATE']=="payed"){
+					if($isBuyer){
+						switch ($goodsresult[$j]['STATE']){
+							case 'created':{
+								$goodsresult[$j]['service']="refund";
+								$goodsresult[$j]['goodhref']='__APP__/Order/refundgood?oid='.$orderresult[$i]['ID'].'&gid='.$goodsresult[$j]['GID'];
+								break;
+								}
+                            case 'refunding':{
+                                $goodsresult[$j]['service']="refunding";
+                                break;
+                            }
+                            case 'refunded':{
+                                $goodsresult[$j]['service']="refunded";
+                                break;
+                            }
+							default:{
+								$goodsresult[$j]['service'] = NULL;
+								$goodsresult[$j]['goodhref']=NULL;
+							}
+						}
+					} else {
+						switch ($goodsresult[$j]['STATE']){
+							case 'refunding':{
+								$goodsresult[$j]['service']="confirm_refund";
+								$goodsresult[$j]['goodhref']='__APP__/Order/confirm_refundgood?oid='.$orderresult[$i]['ID'].'&gid='.$goodsresult[$j]['GID'];
+								
+								$orderresult[$i]['OTHER'] = 'refuse_refund';
+								$orderresult[$i]['OTHER_HREF'] = './refuse_refund'.'?oid='.$searchResult[$i]['OID'];
+								break;
+								}
+                            case 'refunded':{
+                                $goodsresult[$j]['service']="refunded";
+                                break;
+                            }
+							default:{
+								$goodsresult[$j]['service'] = NULL;
+								$goodsresult[$j]['goodhref']=NULL;
+							}
+						}
+					}
+                }
+                else
+                {
+						switch ($goodsresult[$j]['STATE']){
+                             case 'refunded':{
+                                $goodsresult[$j]['service']="refunded";
+                                break;
+                            }
+                             case 'refund refused':{
+                                $goodsresult[$j]['service']="refund refused";
+                                break;
+                             }
+
+                        }
+                }
+            }
             $orderresult[$i]['GOODS']=$goodsresult;
             $orderresult[$i]['SIZE']=count($goodsresult);
 
@@ -218,7 +313,10 @@ get isBuyer from group 1
                 break;
             }
 
-            case 'payed' :
+            case 'payed' :{
+				if((!$isBuyer) && ($orderresult[$i]['OTHER'] == 'refuse_refund'))
+					break;
+			}
             case 'shipping':
             case 'auditing':
             case 'wait': {
@@ -248,6 +346,8 @@ get isBuyer from group 1
         $this->assign('page',$page);
         $this->assign('myorders',$orderresult);
         $this->assign('keywords',$keywords);
+        $this->assign('timefrom',$timefrom);
+        $this->assign('timeto',$timeto);
         $this->display();
     }
 
@@ -325,6 +425,25 @@ get isBuyer from group 1
 
         $this->success('请等待退款', U('Order/showorders'));
     }
+	
+	public function refundgood() {
+		$oid = $this->_get('oid');
+		$gid = $this->_get('gid');
+		$userID = $this->getUserID();
+		
+		$operations = D('OrderOperation');
+		$operations->addOperation($oid, "refund_good ".$gid, $userID);
+		
+		$condition['OID'] = $oid;
+		$condition['GID'] = $gid;
+		
+		$data['STATE'] = 'refunding';
+		
+		$ordergoods=D('OrderGoods');
+		$ordergoods->where($condition)->save($data);
+		
+		$this->success('请等待退款', U('Order/showorders'));
+	}
 
     public function confirm_receipt(){
         $oid = $this->_get('oid');
@@ -392,6 +511,54 @@ get isBuyer from group 1
 
         $this->success('确认退款', U('Order/showorders'));
     }
+	
+	public function confirm_refundgood() {
+		$oid = $this->_get('oid');
+		$gid = $this->_get('gid');
+		$userID = $this->getUserID();
+		
+		$operations = D('OrderOperation');
+		$operations->addOperation($oid, "confirm_refundgood ".$gid, $userID);
+		
+		$condition['OID'] = $oid;
+		$condition['GID'] = $gid;
+		
+		$data['STATE'] = 'refunded';
+		
+		$ordergoods=D('OrderGoods');
+		$ordergoods->where($condition)->save($data);
+		$goodsinfo=$ordergoods->where($condition)->select();/*get one order goods information*/
+		
+		$orders=D('Orders');
+		$orderinfo=$orders->findorderbyid($oid);/*get order information*/
+		$totalpricestr = $orderinfo['TOTALPRICE'];
+		$totalprice =  floatval($totalpricestr);
+		$price =  floatval($goodsinfo[0]['PRICE']);
+		$amount =  floatval($goodsinfo[0]['AMOUNT']);
+		$totalprice = $totalprice - $price*$amount;
+		$condition_['ID'] = $oid;
+		$data_['TOTALPRICE'] = $totalprice;
+		$orders->where($condition_)->save($data_);
+		
+		
+		//refund operation with other group        
+        $userdb=D('User');
+        $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$price*$amount);/*transfer the money*/
+
+		$goodsresult=$ordergoods->searchbyid($oid);
+		$judge = true;
+		for($i = 0; $i < count($goodsresult); ++$i){
+			if($goodsresult[$i]['STATE'] != 'refunded'){
+				$judge = false;
+				break;
+			}
+		}
+		if($judge){
+			$orders->changeState($oid, 'refunded');
+		}
+		
+        $this->success('确认退款', U('Order/showorders'));
+	}
 
 
     public function refuse_refund() {
@@ -403,6 +570,22 @@ get isBuyer from group 1
 
         $orders=D('Orders');
         $orders->changeState($oid, 'auditing');
+        
+		$ordergoods=D('OrderGoods');
+
+    	$goodsresult=$ordergoods->searchbyid($oid);
+		
+		for($i = 0; $i < count($goodsresult); ++$i){
+			if($goodsresult[$i]['STATE'] == 'refunding'){
+                $condition['OID'] = $oid;
+                $condition['GID'] = $goodsresult[$i]['GID'];
+
+                $data['STATE'] = 'refund refused';
+
+                $ordergoods->where($condition)->save($data);
+
+            }
+        }
 
         $this->success('等待审计', U('Order/showorders'));
     }
@@ -453,26 +636,27 @@ get isBuyer from group 1
     public function createorder($cartinfo){
         /*cartinfo:good id and good amount list*/
         /*data for test*/        // 
-        // $cartinfo[0]['goods_id']='1';
-        // $cartinfo[0]['goods_count']=1;
-        // $cartinfo[1]['goods_id']='4';
-        // $cartinfo[1]['goods_count']=3;
-        // $cartinfo[2]['goods_id']='2';
-        // $cartinfo[2]['goods_count']=2;
-        for($i=0;$i<count($cartinfo);$i++){
-            $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
-            $seller_id=$goodinfo['seller_id'];
-            $goodlist['GID']=$cartinfo[$i]['goods_id'];
-            $goodlist['PRICE']=$goodinfo['price'];
-            $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
-            $goodlist['NAME']=$goodinfo['name'];
-            $goodlist['IMGURL']=$goodinfo['image_uri'];
-            $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
-            $classifiedinfo[$seller_id]['SELLER']=$seller_id;
-        }
+            // $cartinfo[0]['goods_id']='1';
+            // $cartinfo[0]['goods_count']=1;
+            // $cartinfo[1]['goods_id']='4';
+            // $cartinfo[1]['goods_count']=3;
+            // $cartinfo[2]['goods_id']='2';
+            // $cartinfo[2]['goods_count']=2;
+            for($i=0;$i<count($cartinfo);$i++){
+                $goodinfo=GoodsHelper::getBasicGoodsInfoOfId($cartinfo[$i]['goods_id']);
+                $seller_id=$goodinfo['seller_id'];
+                $goodlist['GID']=$cartinfo[$i]['goods_id'];
+                $goodlist['PRICE']=$goodinfo['price'];
+                $goodlist['AMOUNT']=$cartinfo[$i]['goods_count'];
+                $goodlist['NAME']=$goodinfo['name'];
+                $goodlist['IMGURL']=$goodinfo['image_uri'];
+                $classifiedinfo[$seller_id]['goods'][count($classifiedinfo[$seller_id]['goods'])]=$goodlist;
+                $classifiedinfo[$seller_id]['SELLER']=$seller_id;
+            }
         $orderdb=D('Orders');
         $operation=D('OrderOperation');
         $ordergoodsdb=D('OrderGoods');
+        $i = 0;
         foreach($classifiedinfo as $orderinfo){
             $neworder['SELLER']=$orderinfo['SELLER'];
             $neworder['BUYER']=$this->getUserID();
@@ -480,7 +664,6 @@ get isBuyer from group 1
             foreach($orderinfo['goods'] as $eachgood){
                 $neworder['TOTALPRICE']+=$eachgood['PRICE']*$eachgood['AMOUNT'];
             }
-
             $newoid[$i]['OID']=$orderdb->insertneworder($neworder);
             $operation->addOperation($newoid[$i]['OID'],"created",$this->getUserID());
             $newoid[$i]['result']='success';
@@ -490,8 +673,9 @@ get isBuyer from group 1
                 $ogid=$ordergoodsdb->insertnewgood($newordergood);
                 if($ogid===false)
                     $newoid[$i]['result']='fail';
-                var_dump($newoid);
+                // var_dump($newoid);
             }
+            $i++;
         }
         return $newoid;
     }
@@ -520,7 +704,7 @@ get isBuyer from group 1
             return;
             }}
 
-            $goods=D('OrderGoods');
+                $goods=D('OrderGoods');
             $goodsresult=$goods->searchbyid($oid);
             $linecount=count($goodsresult);
             $time=$operation->getoptime($oid);

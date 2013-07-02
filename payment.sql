@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS `user`;
@@ -52,7 +52,7 @@ CREATE TABLE se_goods(
 		2: hotel room
 		3: airplane ticket
 	It is better to use get funcions in GeneralGoodsModel and other models*/
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 -- --------------------------------------------------------
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE se_orders(
 	foreign key (BUYER) references `se_user`(`UID`) on delete cascade,
 	foreign key (SELLER) references `se_user`(`UID`) on delete cascade,
    	 foreign key (ADDRESSID) references `se_address`(`ADDRESSID`) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 CREATE TABLE IF NOT EXISTS `buyer` (
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
    KEY `se_seller_ibfk_1` (`UID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
 CREATE TABLE IF NOT EXISTS `se_seller` (
   `UID` int(11) NOT NULL,
   `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 CREATE TABLE IF NOT EXISTS `seller` (
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `se_usercard` (
   `CARDID` char(50) NOT NULL,
    PRIMARY KEY (`ID`),
    KEY `se_user_id` (`USERID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -204,12 +204,13 @@ CREATE TABLE se_order_goods(
 	GID INTEGER NOT NULL,
 	PRICE numeric(15,2) NOT NULL,
 	AMOUNT INTEGER NOT NULL,
+	STATE char(20) DEFAULT 'created',
 	NAME VARCHAR(256) CHARACTER SET utf8 NOT NULL,
     IMGURL VARCHAR(256) CHARACTER SET utf8 NOT NULL,
 	PRIMARY KEY(oid,gid),
 	foreign key (OID) references se_orders(ID) on delete cascade,
 	foreign key (GID) references se_goods(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS se_order_operation;
 CREATE TABLE se_order_operation(
     	`OID` INTEGER NOT NULL,
@@ -218,7 +219,7 @@ CREATE TABLE se_order_operation(
 	`OPERATOR` INTEGER NOT NULL DEFAULT 0,
 	primary key(`OID`,`TIME`),
 	foreign key (`OID`) references `se_orders`(`ID`) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /* group 3 */
 
@@ -238,7 +239,7 @@ CREATE TABLE se_general_goods(
 	description VARCHAR(1024),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_hotel_room;
 CREATE TABLE se_hotel_room(
@@ -257,7 +258,7 @@ CREATE TABLE se_hotel_room(
 	suit_type VARCHAR(32),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_airplane_ticket;
 CREATE TABLE se_airplane_ticket(
@@ -279,7 +280,7 @@ CREATE TABLE se_airplane_ticket(
 	carbin_type VARCHAR(32),
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS general_goods;
@@ -351,7 +352,7 @@ CREATE TABLE se_browse_history(
 	date_time BIGINT,
 	foreign key (good_id) references se_goods(id) on delete cascade,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_search_history;
 CREATE TABLE se_search_history(
@@ -362,7 +363,7 @@ CREATE TABLE se_search_history(
 	user_id INTEGER,
 	date_time BIGINT,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_feedback;
 CREATE TABLE se_feedback(
@@ -380,7 +381,7 @@ CREATE TABLE se_feedback(
 	foreign key (goods_id) references se_goods(id) on delete cascade
 	/* if you are using sqlite please use following instead */
 	/* foreign key (transaction_id) references transactions(id) on delete cascade, */
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS se_shopping_cart;
 CREATE TABLE se_shopping_cart(
@@ -392,7 +393,7 @@ CREATE TABLE se_shopping_cart(
 	good_count INTEGER,
 	foreign key (good_id) references se_goods(id) on delete cascade,
 	foreign key (user_id) references se_user(UID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* group 4 */
 CREATE TABLE IF NOT EXISTS `se_auditor` (
   `id` int(10) NOT NULL,
@@ -425,7 +426,7 @@ CREATE TABLE se_sysaccount(
 	record numeric(15,2) NOT NULL,
 	time int(11) NOT NULL,
 	foreign key (oid) references se_orders(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS se_audit_error;
@@ -436,7 +437,7 @@ CREATE TABLE se_audit_error(
 	time DATETIME NOT NULL,
 	iscorrected int(1) DEFAULT'0' NOT NULL,
 	foreign key (oid) references se_orders(ID) on delete cascade
-);
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TRIGGER IF EXISTS `check_error`;
 DELIMITER //
@@ -474,12 +475,16 @@ CREATE TABLE se_admin (
   	type tinyint(1) NOT NULL,
   	PRIMARY KEY (id),
   	UNIQUE KEY (name)
-);
+
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 INSERT INTO se_admin VALUES (1, 'root', '123', 0);
+
+
+
+
 
 DROP TABLE IF EXISTS se_card;
 CREATE TABLE se_card (
-<<<<<<< HEAD
 	`ID` char(32) NOT NULL PRIMARY KEY,
 	`PASSWD` char(32) CHARACTER SET utf8 NOT NULL,
 );
@@ -501,62 +506,6 @@ INSERT INTO se_card VALUES ('4013726753848065', '202cb962ac59075b964b07152d234b7
 INSERT INTO se_card VALUES ('4013733076775470', '202cb962ac59075b964b07152d234b70');
 INSERT INTO se_card VALUES ('4013811357884763', '202cb962ac59075b964b07152d234b70');
 INSERT INTO se_card VALUES ('4013823267318162', '202cb962ac59075b964b07152d234b70');
-
-=======
-	id char(32) NOT NULL PRIMARY KEY,
-	password char(32) CHARACTER SET utf8 NOT NULL,
-	name char(32) CHARACTER SET utf8 NOT NULL
-);
-INSERT INTO se_card VALUES ('3500456655263302', '123', '潘开迎');
-INSERT INTO se_card VALUES ('3503656656782542', '123', '王问峦');
-INSERT INTO se_card VALUES ('3545842856277646', '123', '梁家霞');
-INSERT INTO se_card VALUES ('3558835208007483', '123', '斯巴达');
-INSERT INTO se_card VALUES ('36008670281287', '123', '区向培');
-INSERT INTO se_card VALUES ('36140705258707', '123', '辛楚京');
-INSERT INTO se_card VALUES ('40106654787826', '123', '符穗泳');
-INSERT INTO se_card VALUES ('4013073022054211', '123', '邢鸣木');
-INSERT INTO se_card VALUES ('4013153160103002', '123', '彭振俊');
-INSERT INTO se_card VALUES ('4013277073065063', '123', '元镜察');
-INSERT INTO se_card VALUES ('4013371650118864', '123', '赖窍涛');
-INSERT INTO se_card VALUES ('4013475714876225', '123', '王结达');
-INSERT INTO se_card VALUES ('4013518832253478', '123', '吕友映');
-INSERT INTO se_card VALUES ('4013717753525332', '123', '欧馨友');
-INSERT INTO se_card VALUES ('4013726753848065', '123', '连瓢韦');
-INSERT INTO se_card VALUES ('4013733076775470', '123', '史卿秀');
-INSERT INTO se_card VALUES ('4013811357884763', '123', '庄霞涣');
-INSERT INTO se_card VALUES ('4013823267318162', '123', '廉勉晨');
-INSERT INTO se_card VALUES ('4048058037486606', '123', '方玲儿');
-INSERT INTO se_card VALUES ('4048424664373717', '123', '梁炼菲');
-INSERT INTO se_card VALUES ('4048532365655248', '123', '王士男');
-INSERT INTO se_card VALUES ('4048555225314003', '123', '丘腾曼');
-INSERT INTO se_card VALUES ('4048740765267148', '123', '路丽秋');
-INSERT INTO se_card VALUES ('41483585856064', '123', '卢睿政');
-INSERT INTO se_card VALUES ('41718335046882', '123', '时润菘');
-INSERT INTO se_card VALUES ('42413746232326', '123', '吴乐曼');
-INSERT INTO se_card VALUES ('43085442243838', '123', '江翰竹');
-INSERT INTO se_card VALUES ('43138751844314', '123', '王澜');
-INSERT INTO se_card VALUES ('43553278442212', '123', '褚荣思');
-INSERT INTO se_card VALUES ('44142237537236', '123', '区习慈');
-INSERT INTO se_card VALUES ('44240428716104', '123', '于治诚');
-INSERT INTO se_card VALUES ('44325305548660', '123', '梁传建');
-INSERT INTO se_card VALUES ('4503060253630188', '123', '王肯兵');
-INSERT INTO se_card VALUES ('4503167553580847', '123', '任和歆');
-INSERT INTO se_card VALUES ('4503170242663008', '123', '康亮贯');
-INSERT INTO se_card VALUES ('4503306108065686', '123', '蔡谷冠');
-INSERT INTO se_card VALUES ('4503414278727406', '123', '伍來艾');
-INSERT INTO se_card VALUES ('4503457374527725', '123', '龚仲');
-INSERT INTO se_card VALUES ('4503662584211214', '123', '王觉钧');
-INSERT INTO se_card VALUES ('45364080375303', '123', '连凌功');
-INSERT INTO se_card VALUES ('45738524522887', '123', '欧水娟');
-INSERT INTO se_card VALUES ('4722161736150813', '123', '鲁明康');
-INSERT INTO se_card VALUES ('4722670175338374', '123', '王遍盛');
-INSERT INTO se_card VALUES ('48001235576636', '123', '翁京耿');
-INSERT INTO se_card VALUES ('48237488180805', '123', '翁贤超');
-INSERT INTO se_card VALUES ('4833446167732585', '123', '王问峦');
-INSERT INTO se_card VALUES ('4833478777440200', '123', '司徒宇森');
-INSERT INTO se_card VALUES ('4833621212508285', '123', '汤尘菲');
-INSERT INTO se_card VALUES ('48847483602577', '123', '胡芬');
->>>>>>> d336ac2e35c2d17e0e627a1c79d8268edc9fdc03
 
 DROP TABLE IF EXISTS se_realname;
 CREATE TABLE se_realname (

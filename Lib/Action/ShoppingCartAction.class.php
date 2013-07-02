@@ -33,8 +33,8 @@ class ShoppingCartAction extends Action {
 				// reduce price by VIP discount
 				$newGoods[price] = CommonValue::getVipDiscount() * $newGoods[price];
 			}
-			print_r($item);
-			print_r($newGoods);
+			// print_r($item);
+			// print_r($newGoods);
 			$resultArray = array_merge($resultArray, array(array_merge($item, $newGoods)));
 			// update static info
 			$static['price'] += $newGoods[price] * $item[good_count];
@@ -58,7 +58,8 @@ class ShoppingCartAction extends Action {
 			$ret &= $cart->where('user_id = '.$this->_session('uid').' AND good_id = '.$good_id)->delete();
 		}
 		// return hint, show index page
-		$this->index($ret ? 'Deletion succeeded!' : 'Deletion failed!');
+		// echo 1;
+		$this->redirect('ShoppingCart/index');
 	}
 	
 	// modification will be POSTed here
