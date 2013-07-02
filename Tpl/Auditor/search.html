@@ -17,81 +17,62 @@
 
 <div id = "container" style="margin-top:30px;height:400px;">
 	<div class="hero-unit">
-	<if condition="$orderList">
+	<if condition="$order neq null">
 	<table class = "table table-bordered" style="word-break:break-all; word-wrap:break-all;font-size:12px">
 		<thead>
-			<div class="row-fluid">
-				<div class="span3">Order number: {$orderList.OID}</div>
-				<div class="span9">Creat date: {$orderList.time0|date="y/m/d H:i:s",###}</div>
-			</div>
 			<tr>
-				<th align="center" width = "14%">Goods name</th>
-				<th align="center" width = "8%">Price</th>
-				<th align="center" width = "9%">Amount</th>
-				<th align="center" width = "19%">Order details</th>
-				<th align="center" width = "25%">Buyer id: {$orderList.SELLER}</th>
-				<th align="center" width = "25%">Seller id : {$orderList.SELLER}</th>
+				<th align="center" width = "20%">Goods name</th>
+				<th align="center" width = "10%">Price</th>
+				<th align="center" width = "10%">Amount</th>
+				<th align="center" width = "20%">state</th>
+				<th align="center" width = "20%">Order details</th>
+				<th align="center" width = "20%">Total price</th>
 			</tr>
 		</thead>
 
-		<tbody>				
-			<tr>
-				<td align="center" width = "14%"><a href="__APP__/Purchase/detail?id={$vo.GID}" target="_blank">{$orderList.NAME}</a></th>
-				<td align="center" width = "8%">{$orderList.PRICE}</td>
-				<td align="center" width = "9%">{$orderList.AMOUNT}</td>
-				<td align="center" width = "19%">
-					<if condition="$orderList.op0 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op0}', {$orderList.time0|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op1 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op1}', {$orderList.time1|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op2 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op2}', {$orderList.time2|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op3 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op3}', {$orderList.time3|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op4 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op4}', {$orderList.time4|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op5 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op5}', {$orderList.time5|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op6 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op6}', {$orderList.time6|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$orderList.op7 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$orderList.op7}', {$orderList.time7|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-				</td>
-				<td align="center" width = "25%">{$disputeList.buyer_reason}</td>
-				<td align="center" width = "25%">{$disputeList.seller_reason}</td>
+		<tbody>
+		    <tr class="info">
+				<td colspan="8">order id: {$order.BUYER} &nbsp&nbsp seller: {$order.SELLER} &nbsp&nbsp buyer: {$order.BUYER} &nbsp&nbsp created time: {$state[0]['TIME']}</td> 
 			</tr>
-			<tr></tr>
+			<tr>
+				<td align="center" width = "20%">
+					<br>
+						<img width="80px" src="/SE-Payment/Upload/{$goods[0]['IMGURL']}"></img>
+					</br>
+					<a href="__APP__/Purchase/detail?id={$goods[0]['GID']}" target="_blank">{$vo['goods'][0]['NAME']}</a>				
+				</td>
+
+				<td align="center" width = "10%">{$goods[0]['PRICE']}</td>
+				<td align="center" width = "10%">{$goods[0]['AMOUNT']}</td>
+				<td align="center" width = "20%">{$goods[0]['STATE']}</td>
+				<td rowspan="{$size}" align="center" width = "20%">
+					<volist name="state" id="each_state">
+						<div class="row">
+							<div class="span3 text-left">{$each_state['OPERATION']} --> {$each_state['TIME']}</div>
+						</div>
+					</volist>
+				</td>
+				<td rowspan="{$size}" align="center" width = "20%">{$order.TOTALPRICE}</td>
+			</tr>
+			<volist name="goods" id="each_good" offset="1">
+				<td>
+					<br>
+						<img width="80px" src="/SE-Payment/Upload/{$each_good['IMGURL']}"></img>
+					</br>
+					<a href="__APP__/Purchase/detail?id={$each_good['GID']}" target="_blank">{$each_good['NAME']}</a>
+				</td>
+				<td>{$each_good['PRICE']}</td>
+				<td>{$each_good['AMOUNT']}</td>
+				<td>{$each_good['STATE']}</td>
+			</volist>
 		</tbody>
 	</table>
-	<if condition="$disputeList.aid neq null">
-		<div class="span2 offset9" >Auditor ID: {$disputeList.aid}</div>
+	</if>
+	<if condition="$dispute neq null">
+		<div class="span2 offset9" >Auditor ID: {$dispute.aid}</div>
 	</if>
 	</if>
-	<if condition="$orderList eq null">
+	<if condition="$order eq null">
 	<h2>Order number: {$id} not exists!</h2>
 	</if>
 	</div>

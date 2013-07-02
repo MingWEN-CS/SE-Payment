@@ -47,7 +47,7 @@
 						<td width = "17%">{$vo.seller}</td>
 						<td width = "15%">{$vo.totalprice}</td>
 						<td width = "17%">{$vo.state}</td>
-						<td width = "17%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "17%">{$vo.time}</td>
 					</tr>		
 					</volist>
 				</tbody>
@@ -63,15 +63,12 @@
 				<caption><br></br><FONT SIZE=+2><B>Reconciliation Data List</B></FONT>&nbsp&nbsp&nbsp&nbsp&nbsp {$data}, items count: {$dis_count}<br></br></caption>			
 				<thead>
 					<tr>
-						<th align="center" width = "13%">Order number</th>
-						<th align="center" width = "10%">Good id</th>
-						<th align="center" width = "7%">Price</th>
-						<th align="center" width = "8%">Amount</th>
-						<th align="center" width = "13%">Buyer id</th>
-						<th align="center" width = "12%">Seller id</th>
-						<th align="center" width = "8%">Auditor</th>
-						<th align="center" width = "15%">Date</th>
-						<th align="center" width = "14%">Result</th>
+						<th align="center" width = "15%">Order number</th>
+						<th align="center" width = "15%">Buyer id</th>
+						<th align="center" width = "15%">Seller id</th>
+						<th align="center" width = "15%">Auditor</th>
+						<th align="center" width = "25%">Date</th>
+						<th align="center" width = "15%">Result</th>
 					</tr>
 				</thead>
 			</if>
@@ -80,28 +77,22 @@
 					<volist name="dis_list" id="vo" empty="No dispute record!">
 					<if condition="$vo.result eq 1">
 					<tr class="success">
-						<td width = "13%">{$vo.oid}</td>
-						<td width = "10%">{$vo.GID}</td>
-						<td width = "7%">{$vo.PRICE}</td>
-						<td width = "8%">{$vo.AMOUNT}</td>
-						<td width = "13%">{$vo.BUYER}</td>
-						<td width = "12%">{$vo.SELLER}</td>
-						<td width = "8%">{$vo.aid}</td>
-						<td width = "15%">{$vo.time|date="y/m/d H:i:s",###}</td>
-						<td width = "14%">Refund</td>
+						<td width = "15%">{$vo.oid}</td>
+						<td width = "15%">{$vo.BUYER}</td>
+						<td width = "15%">{$vo.SELLER}</td>
+						<td width = "15%">{$vo.aid}</td>
+						<td width = "25%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "15%">Refund</td>
 					</tr>
 					</if>
 					<if condition="$vo.result eq 0">
 					<tr class="warning">
-						<td width = "13%">{$vo.oid}</td>
-						<td width = "10%">{$vo.GID}</td>
-						<td width = "7%">{$vo.PRICE}</td>
-						<td width = "8%">{$vo.AMOUNT}</td>
-						<td width = "13%">{$vo.BUYER}</td>
-						<td width = "12%">{$vo.SELLER}</td>
-						<td width = "8%">{$vo.aid}</td>
-						<td width = "15%">{$vo.time|date="y/m/d H:i:s",###}</td>
-						<td width = "14%">No refund</td>
+						<td width = "15%">{$vo.oid}</td>
+						<td width = "15%">{$vo.BUYER}</td>
+						<td width = "15%">{$vo.SELLER}</td>
+						<td width = "15%">{$vo.aid}</td>
+						<td width = "25%">{$vo.time|date="y/m/d H:i:s",###}</td>
+						<td width = "15%">No refund</td>
 					</tr>
 					</if>
 					</volist>
