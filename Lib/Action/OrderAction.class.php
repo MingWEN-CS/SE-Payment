@@ -435,11 +435,18 @@ get isBuyer from group 1
     }
     public function refundcomplete(){
         $oid = $this->_post('oid');
+        $reason=$this->_post('refund_reason');
         $userID = $this->getUserID();
 
-        $operations = D('OrderOperation');
+        $operations = D('OrderOperation');//change order state
         $operations->addOperation($oid, "refund", $userID);
 
+        $dispute=D('Dispute');
+        $refunddata['oid']=$oid;
+        $refunddata['buyer_reason']=$reason;
+        $refunddata['time']=time();
+        $dispute->add($refunddata);
+        
         $orders=D('Orders');
         $orders->changeState($oid, 'refunding');
 
