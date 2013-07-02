@@ -20,39 +20,42 @@ $(function(){
 
 <body>
 <include file="../header"/>
-<div id = "container" style="margin-top:10px;">
+<div id="container" style="margin-top:10px;">
 <include file="User:userheader"/>
-<div class="span8">
-<form class="form-inline">
-<label>Year</label>
-<select name="year">
-<option>2010</option>
-<option>2011</option>
-<option>2012</option>
-<option>2013</option>
-</select>
-<label>Month</label>
-<select name="month">
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-<option>6</option>
-<option>7</option>
-<option>8</option>
-<option>9</option>
-<option>10</option>
-<option>11</option>
-<option>12</option>
-</select>
-<button class="btn btn-info">Search</button>
-</from>
+
+<div class="span12">
+  <form class="form-inline">
+  <label>Year</label>
+  <select name="year">
+    <option>2010</option>
+    <option>2011</option>
+    <option>2012</option>
+    <option>2013</option>
+  </select>
+  <label>Month</label>
+  <select name="month">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+    <option>11</option>
+    <option>12</option>
+  </select>
+  <button class="btn btn-info">Search </button>
+  </form>
 </div>
 
+<hr>
+<h3>Outcome</h3>
 <table class="table">
   <thead>
-    <tr>
+    <tr class = "danger">
       <th>ID</th>
       <th>Paid to</th>
       <th>Date</th>
@@ -60,16 +63,40 @@ $(function(){
     </tr>
   </thead>
   <tbody>
-  <volist name="payments" id="payment" key="k">  
-    <tr>
+  <volist name="outcome" id="outcome" key="k">  
+    <tr class = "error">
       <td>{$k}</td>
-      <td>{$payment.payto}</td>
-      <td>{$payment.time}</td>
-      <td>{$payment.money}</td>
+      <td>{$outcome.payto}</td>
+      <td>{$outcome.time}</td>
+      <td>-{$outcome.money}</td>
     </tr>
   </volist>  
   </tbody>
 </table>
+
+<h3>Income</h3>
+<table class="table">
+  <thead>
+    <tr class="success">
+      <th>ID</th>
+      <th>Get From</th>
+      <th>Date</th>
+      <th>Money</th>
+    </tr>
+  </thead>
+  <tbody>
+  <volist name="income" id="income" key="k">  
+    <tr class="success">
+      <td>{$k}</td>
+      <td>{$income.payto}</td>
+      <td>{$income.time}</td>
+      <td>+{$income.money}</td>
+    </tr>
+  </volist>  
+  </tbody>
+</table>
+
+
 </div>
 <include file="../footer"/>
 </body>

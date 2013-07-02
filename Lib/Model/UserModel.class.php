@@ -91,10 +91,21 @@ class UserModel extends Model{
         $receivercondition['UID']=$receiver;
         $payerbalance=$this->where($payercondition)->field('BALANCE')->find();
         $receiverbalance=$this->where($receivercondition)->field('BALANCE')->find();
-        $payernewdata['BALANCE']=$payerbalance['BALANCE']-$money;
-        $receivernewdata['BALANCE']=$receiverbalance['BALANCE']+$money;
-        $this->where($payercondition)->save($payernewdata);
-        $this->where($receivercondition)->save($receivernewdata);
+        
+        if ($payerbalance['BALANCE']-$money >= 0){
+      		$payernewdata['BALANCE']=$payerbalance['BALANCE']-$money;
+        	$receivernewdata['BALANCE']=$receiverbalance['BALANCE']+$money;
+        	$this->where($payercondition)->save($payernewdata);
+        	$this->where($receivercondition)->save($receivernewdata);
+  			/*
+			Means transaction suffessfully
+  			*/
+  			return 1;
+        }
+        /*
+        Means transaction failed!
+        */
+        else return 0;
 
     }
 }

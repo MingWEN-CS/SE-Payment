@@ -157,6 +157,10 @@ class AdminAction extends Action {
         return $this->ajaxReturn($data, "Complete", 1);
     }
 
+    Public function appeal(){
+        $this->display();
+    }
+
     Public function autoSetBL() {
         $Model = new Model();
         $Model->table('se_order, se_user')->query('UPDATE se_user, se_orders SET se_user.BLACKLIST = 1 where se_orders.STATE = "payed" 
