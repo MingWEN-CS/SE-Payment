@@ -6,13 +6,20 @@ function postRegister(){
 	var pwd2 = $('#registerPwd2').val();
 	var repwd2 = $('#registerRepwd2').val();
 	var tmp = $('#registerType').val();
-	var phone = $('registerPhone').val();
+	var phone = $('#registerPhone').val();
+	var cellPhone = /^1[3|4|5|8][0-9]\d{4,8}$/;
 	var type;
 	if (tmp == 'Buyer') type = 0;
 	else type = 1;
 	var reg = /^\w+$/;
 	var emailReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-	if (!name.match(reg)){
+
+	if (repwd == '' || pwd == '' || email == '' || name == '' ||
+		pwd2 == '' || repwd2 == ''){
+		$('#registerInfo').text('Information is not complete.').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (!name.match(reg)){
 		$('#registerInfo').text('Make sure that your money only contains characters,digits or underline!').addClass('alert-error').slideDown();
 		return false;
 	}
@@ -30,17 +37,19 @@ function postRegister(){
 		return false;
 	
 	}
-	else if (repwd == '' || pwd == '' || email == '' || name == '' ||
-		pwd2 == '' || repwd2 == ''){
-		$('#registerInfo').text('Information is not complete.').addClass('alert-error').slideDown();
-		return false;
-	}
 	else if (repwd != pwd){
 		$('#registerInfo').text('Your passwords for login do not match!').addClass('alert-error').slideDown();
 		return false;
 	}
 	else if (repwd2 != pwd2){
 		$('#registerInfo').text('Your passwords for payment or consignment do not match').addClass('alert-error').slideDown();
+		return false;
+	}
+	else if (phone != ''){
+		if (!(phone.match(cellPhone))){
+			$('#registerInfo').text('The number you filled is not a phone number').addClass('alert-error').slideDown();
+			return false;
+		}
 	}
 	else if (pwd.length > 40 || pwd2.length > 40)
 	{
@@ -172,12 +181,12 @@ function changePaymentPwd(){
 
 function setPhone(){
 	var phone = $('#setPhoneNumber').val();
-
+	var cellPhone = /^1[3|4|5|8][0-9]\d{4,8}$/;
 	if (phone == ''){
 		$('#setPhoneInfo').text('Information is not complete').addClass('alert-error').slideDown();
 		return false;
 	}
-	else if (/*test for phone number or not*/ false){
+	else if (!(phone.match(cellPhone))){
 		$('#setPhoneInfo').text('The number you filled is not a phone number').addClass('alert-error').slideDown();
 		return false;
 	}
@@ -190,6 +199,10 @@ function setPhone(){
 			else {
 				$('#setPhoneInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
 				setTimeout(function(){
+										$('#modifyPhone input').each(function() {
+						$(this).val('');
+					});
+
 					location.href = ROOT + '/User/home';
 				},1000)
 			}
@@ -218,6 +231,9 @@ function modifyPhone(){
 			else {
 				$('#modifyPhoneInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
 				setTimeout(function(){
+					$('#modifyPhone input').each(function() {
+						$(this).val('');
+					});
 					location.href = ROOT + '/User/home';
 				},1000)
 			}
@@ -283,11 +299,13 @@ function modifyOther(){
 	var realName = $('#modifyRealName').val();
 	var idNumber = $('#modifyIdNumber').val();
 	var emailReg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+	/*
 	if (!newEmail.match(emailReg)){
 		$('#modifyInfo').text('Your email format is wrong').addClass('alert-error').slideDown();
 		return false;
 	}
-	else if (newEmail.length > 40){
+	*/
+	if (newEmail.length > 40){
 		$('#modifyInfo').text('Your email is too long, Please control it within 40 characters!!').addClass('alert-error').slideDown();
 		return false;
 

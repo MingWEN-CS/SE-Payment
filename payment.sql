@@ -17,16 +17,19 @@ CREATE TABLE IF NOT EXISTS `se_user` (
   `UID` int(10) NOT NULL AUTO_INCREMENT,
   `USERNAME` char(20) CHARACTER SET utf8 NOT NULL,
   `PASSWD` char(32) CHARACTER SET utf8 NOT NULL,
-  `EMAIL` char(30) CHARACTER SET utf8 NOT NULL,
+  `EMAIL` char(40) CHARACTER SET utf8 NOT NULL,
   `TYPE` tinyint(1) NOT NULL,
-  `BALANCE` int(11) DEFAULT '0',
+  `BALANCE` decimal(11,2) DEFAULT '0.00',
   `PHONE` char(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `VIP` tinyint(1) NOT NULL DEFAULT '0',
   `BLACKLIST` tinyint(1) NOT NULL DEFAULT '0',
+  `REALNAME` char(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `IDENTITY` char(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`),
   UNIQUE KEY `ID` (`UID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS `user`;
@@ -115,7 +118,6 @@ CREATE TABLE IF NOT EXISTS `se_buyer` (
   `PASSWDPAYMENT` char(32) CHARACTER SET utf8 NOT NULL,
   `CREDIT` int(11) NOT NULL DEFAULT '0',
   `VIP` tinyint(1) NOT NULL DEFAULT '0',
-  `AUTHENTICATED` tinyint(1) NOT NULL DEFAULT '0',
    PRIMARY KEY (`UID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /* if you are using sqlite please use following instead */
@@ -147,10 +149,7 @@ CREATE TABLE IF NOT EXISTS `se_seller` (
 --
 
 
-CREATE TABLE IF NOT EXISTS `se_seller` (
-  `UID` int(11) NOT NULL,
-  `PASSWDCONSIGN` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 /* if you are using sqlite please use following instead */
 /*
 CREATE TABLE IF NOT EXISTS `seller` (
@@ -281,6 +280,7 @@ CREATE TABLE se_airplane_ticket(
 	foreign key (id) references se_goods(id) on delete cascade,
 	foreign key (seller_id) references se_user(UID) on delete cascade
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
 /* if you are using sqlite please use following instead */
 /*
 DROP TABLE IF EXISTS general_goods;
