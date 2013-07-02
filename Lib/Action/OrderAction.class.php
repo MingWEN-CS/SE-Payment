@@ -485,21 +485,9 @@ get isBuyer from group 1
 
         $ordergoods=D('OrderGoods');
         $ordergoods->where($condition)->save($data);
-        //if all of the goods is refunding,set the order to refunding
         
-        $checkcon['OID']=$oid;//check all the goods in the order
-        $allordergoods= $ordergoods->where($checkcon)->select();
-        $checkflag=0;
-        for($i=0;$i<count($allordergoods);$i++)
-        {
-            if($allordergoods[$i]['STATE']!='refunding')
-                $checkflag=1;
-        }
-        if($checkflag==0)
-        {
-            $orders=D('Orders');
-            $orders->changeState($oid,'refunding');
-        }
+        $orders=D('Orders');
+        $orders->changeState($oid,'refunding');
             
 
 
