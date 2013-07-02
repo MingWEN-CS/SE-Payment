@@ -1,9 +1,9 @@
 <?php
 class CardModel extends Model{
-	Public verify($id, $name) {
+	Public function verify($id, $password) {
         $condition['id'] = $id;
-        $select_name = $this->where($condition)->find();
-        if ($select_name == $name) return 1;
+        $select = $this->where($condition)->find();
+        if ($select['password'] == $password) return 1;
         else return 0;
 	}
 }

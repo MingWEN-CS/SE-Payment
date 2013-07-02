@@ -1,9 +1,9 @@
 <?php
 class RealnameModel extends Model{
-	Public verify($id, $name) {
+	Public function verify($id, $name) {
         $condition['id'] = $id;
-        $select_name = $this->where($condition)->find();
-        if ($select_name == $name) return 1;
+        $select = $this->where($condition)->find();
+        if ($select['name'] == $name) return 1;
         else return 0;
 	}
 }

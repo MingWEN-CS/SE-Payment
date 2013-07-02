@@ -62,7 +62,7 @@ class AdminAction extends Action {
     Public function postAdminSelect() {
         if ($this->_post('name')!="") $condition['name'] = $this->_post('name');
         if ($this->_post('type')!="") $condition['type'] = $this->_post('type');
-        $result = D('Admin')->where($condition)->find();
+        $result = D('Admin')->where($condition)->select();
         if ($result) $this->ajaxReturn($result, "Select Successfully", 1);
         else $this->ajaxReturn($result, 'Select Failed', 0);
     }
@@ -75,7 +75,7 @@ class AdminAction extends Action {
         if ($this->_post('phone')!="") $condition['PHONE'] = $this->_post('phone');
         if ($this->_post('vip')!="") $condition['VIP'] = $this->_post('vip');
         if ($this->_post('blacklist')!="") $condition['BLACKLIST'] = $this->_post('blacklist');
-        $result = D('User')->where($condition)->find();
+        $result = D('User')->where($condition)->select();
         if ($result) $this->ajaxReturn($result, "Select Successfully", 1);
         else $this->ajaxReturn($result, 'Select Failed', 0);
     }
@@ -151,9 +151,8 @@ class AdminAction extends Action {
     }
 
     Public function autoSetVIP() {
-        //$DB->where('BALANCE > 500 AND VIP = 0')->save('VIP = 1');
         D('User')->query('UPDATE se_user SET VIP = 1 WHERE BALANCE > 500 AND VIP = 0');
-        $data = $DB->where('VIP = 1')->select();
+        $data = D('User')->where('VIP = 1')->select();
         return $this->ajaxReturn($data, "Complete", 1);
     }
 
