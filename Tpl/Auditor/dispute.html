@@ -12,33 +12,33 @@
 	<script src="../Public/auditor/bootstrap-datetimepicker.fr.js"></script>
 </head>
 <script>
-function agree($id){
+function agree($oid){
     $.post("__APP__/Auditor/refundAgree",
     {
-      id:$id
+      oid:$oid
     },
     function(data,status){
 		if(!status) {
 			alert("Error!");
 		}
 		else {
-			$('#'+$id).fadeOut();
-			$('#'+$id+'title').fadeOut();
+			$('#'+$oid).fadeOut();
+			$('#'+$oid+'title').fadeOut();
 		}
     });		
 }
-function disagree($id){
+function disagree($oid){
     $.post("__APP__/Auditor/refundDisagree",
     {
-      id:$id
+      oid:$oid
     },
     function(data,status){
 		if(!status) {
 			alert("Error!");
 		}
 		else {
-			$('#'+$id).fadeOut();
-			$('#'+$id+'title').fadeOut();
+			$('#'+$oid).fadeOut();
+			$('#'+$oid+'title').fadeOut();
 		}
     });		
 }
@@ -52,51 +52,50 @@ function disagree($id){
 	<div id={$vo.OID} class="hero-unit">
 	<table class = "table table-bordered" style="word-break:break-all; word-wrap:break-all;font-size:12px">
 		<thead>
-			<div class="row-fluid">
-				<div class="span3">Order number: {$vo.OID}</div>
-				<div class="span9">Creat date: {$vo.time0|date="y/m/d H:i:s",###}</div>
-			</div>
 			<tr>
-				<th align="center" width = "14%">Goods name</th>
-				<th align="center" width = "8%">Price</th>
-				<th align="center" width = "9%">Amount</th>
-				<th align="center" width = "19%">Order details</th>
-				<th align="center" width = "25%">Buyer id: {$vo.SELLER}</th>
-				<th align="center" width = "25%">Seller id : {$vo.SELLER}</th>
+				<th align="center" width = "20%">Goods name</th>
+				<th align="center" width = "10%">Price</th>
+				<th align="center" width = "10%">Amount</th>
+				<th align="center" width = "20%">Order details</th>
+				<th align="center" width = "20%">Buyer reason</th>
+				<th align="center" width = "20%">Seller reason</th>
 			</tr>
 		</thead>
 
-		<tbody>				
-			<tr>
-				<td align="center" width = "14%"><a href="__APP__/Purchase/detail?id={$vo.GID}" target="_blank">{$vo.NAME}</a></th>
-				<td align="center" width = "8%">{$vo.PRICE}</td>
-				<td align="center" width = "9%">{$vo.AMOUNT}</td>
-				<td align="center" width = "19%">
-					<if condition="$vo.op0 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$vo.op0}', {$vo.time0|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$vo.op1 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$vo.op1}', {$vo.time1|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$vo.op2 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$vo.op2}', {$vo.time2|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-					<if condition="$vo.op3 neq null">
-						<div class="row">
-							<div class="span3 text-left">'{$vo.op3}', {$vo.time3|date="y/m/d H:i:s",###}</div>
-						</div>
-					</if>
-				</td>
-				<td align="center" width = "25%">{$vo.buyer_reason}</td>
-				<td align="center" width = "25%">{$vo.seller_reason}</td>
+		<tbody>
+		    <tr class="info">
+				<td colspan="8">order id: {$vo.BUYER} &nbsp&nbsp seller: {$vo.SELLER} &nbsp&nbsp buyer: {$vo.BUYER} &nbsp&nbsp created time: {$vo.created}</td> 
 			</tr>
-			<tr></tr>
+			<tr>
+				<td align="center" width = "20%">
+					<br>
+						<img width="80px" src="/SE-Payment/Upload/{$vo['goods'][0]['IMGURL']}"></img>
+					</br>
+					<a href="__APP__/Purchase/detail?id={$vo['goods'][0]['GID']}" target="_blank">{$vo['goods'][0]['NAME']}</a>				
+				</td>
+
+				<td align="center" width = "10%">{$vo['goods'][0]['PRICE']}</td>
+				<td align="center" width = "10%">{$vo['goods'][0]['AMOUNT']}</td>
+				<td rowspan="{$vo['size']}" align="center" width = "20%">
+					<volist name="vo['state']" id="each_state">
+						<div class="row">
+							<div class="span3 text-left">{$each_state['OPERATION']} --> {$each_state['TIME']}</div>
+						</div>
+					</volist>
+				</td>
+				<td rowspan="{$vo['size']}" align="center" width = "20%">{$vo.buyer_reason}</td>
+				<td rowspan="{$vo['size']}" align="center" width = "20%">{$vo.seller_reason}</td>
+			</tr>
+			<volist name="vo['goods']" id="each_good" offset="1">
+				<td>
+					<br>
+						<img width="80px" src="/SE-Payment/Upload/{$each_good['IMGURL']}"></img>
+					</br>
+					<a href="__APP__/Purchase/detail?id={$each_good['GID']}" target="_blank">{$each_good['NAME']}</a>
+				</td>
+				<td>{$each_good['PRICE']}</td>
+				<td>{$each_good['AMOUNT']}</td>
+			</volist>
 		</tbody>
 	</table>
 	<div class="span2 offset8" >

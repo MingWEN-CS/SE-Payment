@@ -48,26 +48,27 @@ class AuditorAction extends Action {
 	public function dispute() {
 		if(!session('?name'))
 			$this->redirect('Index/index');
-		import('ORG.Util.Page');
+
 		$Model = new Model();
-		$orders = M('orders');
-		
-		$count = $orders->lock(true)->where('state = "auditing"')->count();
 		
 		//select unhandled disputes from database
-		$list =  $Model->table('se_orders, se_order_goods, se_dispute')->where('se_orders.ID = se_order_goods.OID AND se_orders.ID = se_dispute.oid AND STATE = "auditing"')->order('ID')->field('se_order_goods.OID, GID, SELLER, BUYER, PRICE, AMOUNT, NAME, IMGURL, buyer_reason, seller_reason')->select();
+		$list =  $Model->table('se_orders, se_dispute')->where('se_orders.ID = se_dispute.oid AND se_orders.STATE = "auditing"')->order('ID')->field('se_orders.ID as OID, SELLER, BUYER, buyer_reason, seller_reason')->select();
+		$count = count($list);
+
 		for($i = 0; $i < $count; $i++) {
 			$oid = $list[$i]['OID'];
-			$state = $Model->table('se_order_operation')->where('OID='.$oid)->order('TIME')->field('OPERATION, TIME')->select();
+			$op = $Model->table('se_order_operation')->where('OID='.$oid)->field('OPERATION, TIME')->select();
 
-			//dump($state);
-			for($j = 0; $j < count($state); $j++) {
-				$list[$i][ "op{$j}"] = $state[$j]['OPERATION'];
-				$list[$i]["time{$j}"] = $state[$j]['TIME'];
-			}
+			$goods = $Model->table('se_order_goods')->where('OID='.$oid.' AND STATE="auditing"')->order('GID')->field('GID, PRICE, AMOUNT, NAME, IMGURL')->select();
+
+			$list[$i]['goods'] = $goods;
+			$list[$i]['size'] = count($goods);
+			$list[$i]['state'] = $op;
+			$list[$i]['created'] = $op[0]['TIME'];
 		}
 		$this->assign('list', $list); 
-
+		
+		//dump($list);
 		$this->display();
 	}
 	
@@ -75,31 +76,42 @@ class AuditorAction extends Action {
 	public function refundAgree() {
 		if(!session('?name'))
 			$this->redirect('Index/index');
-		$Dispute = D('Dispute');
-		$oid = $_POST['id'];
+
+		$oid = $_POST['oid'];
 		$model = new Model();
 
 		//update balance
 		$order = $model->table('se_orders')->where('ID='.$oid)->find();
-		$model->table('se_user')->where('UID='.$order['BUYER'])->setInc('BALANCE', $order['TOTALPRICE']);
-		$model->table('se_user')->where('UID=1')->setDec('BALANCE', $order['TOTALPRICE']);
+		$all = $model->table('se_order_goods')->where('OID='.$oid.' AND STATE="auditing"')->field('PRICE, AMOUNT')->select();
+		$num = count($all);
+		$sum = 0;
+		for($i = 0; $i < $num; $i++) {
+			$sum += $all[$i]['PRICE']*$all[$i]['AMOUNT'];
+		}
+
+		$model->table('se_user')->where('UID='.$order['BUYER'])->setInc('BALANCE', $sum);
+		$model->table('se_user')->where('UID=1')->setDec('BALANCE', $sum);
 		$account['oid'] = $oid;
-		$account['record'] = 0 - $order['TOTALPRICE'];
+		$account['record'] = 0 - $sum;
 		$account['time'] = time();
 		$model->table('se_sysaccount')->add($account);
-
+		
 		//change order state
 		$data['OPERATION'] = 'refunded';
-		$data['TIME'] = time();
 		$data['OID'] = $oid;
-		$data['OPERATOR'] = 'auditor';
+		$data['OPERATOR'] = 1;
 		$model->table('se_order_operation')->add($data);
 		$tmp['STATE'] = 'refunded';
 		$tmp['ISAUDIT'] = 'YES';
 		$model->table('se_orders')->where('ID='.$oid)->save($tmp);
 
+		//change goods state
+		$tmp2['STATE'] = 'refunded';
+		$model->table('se_order_goods')->where('OID='.$oid.' AND STATE="auditing"')->save($tmp2);
+
 		//record in auditor_result
 		$record['oid'] = $oid;
+		$record['gid'] = $gid;
 		$record['aid'] = $_SESSION['id'];
 		$record['time'] = time();
 		$record['result'] = 1;
@@ -112,19 +124,23 @@ class AuditorAction extends Action {
 	public function refundDisagree() {
 		if(!session('?name'))
 			$this->redirect('Index/index');
-		$Dispute = D('Dispute');
-		$oid = $_POST['id'];
+
+		$oid = $_POST['oid'];
 		$model = new Model();
 
 		//change order state
 		$data['OPERATION'] = 'payed';
-		$data['TIME'] = time();
 		$data['OID'] = $oid;
-		$data['OPERATOR'] = 'auditor';
+		$data['OPERATOR'] = 1;
 		$model->table('se_order_operation')->add($data);
+
 		$tmp['STATE'] = 'payed';
 		$tmp['ISAUDIT'] = 'YES';
 		$model->table('se_orders')->where('ID='.$oid)->save($tmp);
+
+		//change goods state
+		$tmp2['STATE'] = 'payed';
+		$model->table('se_order_goods')->where('OID='.$oid.' AND STATE="auditing"')->save($tmp2);
 
 		//record in auditor_result
 		$record['oid'] = $oid;
@@ -145,13 +161,12 @@ class AuditorAction extends Action {
 		$Model = new Model();
 		$query = $Model->query("	select count(distinct oid) as num
 									from se_order_operation
-									where time >= $day
-										and time < $nextday
+									where time like '$data%'
 										and operation = 'created'");
 		$count = $query[0]['num'];
 		
 		//show the Reconciliation Data List in pages
-		import('ORG.Util.Page');
+		import('@.Org.Util.Page');
 		$rec_page = new page($count, 30);
 		$rec_show = $rec_page->show();
 		$up = $rec_page->firstRow;
@@ -159,8 +174,7 @@ class AuditorAction extends Action {
 		$rec_sql = "select id, buyer, seller, totalprice, state, time
 				from se_orders, (	select oid, time 
 									from se_order_operation
-									where time >= $day
-										and time < $nextday
+									where time like '$data%'
 										and operation = 'created') as temp
 				where id = oid 
 				order by id "
@@ -169,7 +183,7 @@ class AuditorAction extends Action {
 		$rec_list = $Model->query($rec_sql);
 
 		//show dispute list
-		$dis_list = $Model->table('se_dispute_result, se_dispute, se_order_goods, se_orders')->where('se_dispute_result.oid = se_dispute.oid AND se_dispute.oid = se_order_goods.OID AND se_orders.ID = se_order_goods.OID AND se_dispute_result.time>='.$day.' AND se_dispute_result.time <'.$nextday)->order('se_dispute.oid')->field('se_dispute.oid, se_dispute_result.time, GID, PRICE, AMOUNT, BUYER, SELLER, result, aid')->select();
+		$dis_list = $Model->table('se_dispute_result, se_dispute, se_orders')->where('se_dispute_result.oid = se_dispute.oid AND se_dispute.oid = se_orders.ID AND se_dispute_result.time>='.$day.' AND se_dispute_result.time <'.$nextday)->order('se_dispute.oid')->field('se_dispute.oid, se_dispute_result.time, BUYER, SELLER, result, aid')->select();
 		$dis_count = count($dis_list);
 		
 		//show error list 
@@ -198,8 +212,7 @@ class AuditorAction extends Action {
 								from se_orders, 
 								(select oid, time 
 								from se_order_operation
-								where time >= $day
-								and time < $nextday
+								where time like '$data%'
 								and operation = 'created') as temp
 								where id = oid 
 								order by id");
@@ -221,7 +234,8 @@ class AuditorAction extends Action {
 			$seller = $list[$i]['seller'];
 			$totalprice = $list[$i]['totalprice'];
 			$state = $list[$i]['state'];
-			$create_time = date("H:i:s", $list[$i]['time']);
+			$tmp = strtotime($list[$i]['time']);
+			$create_time = date("H:i:s", $tmp);
 			echo "$id\t";
 			echo "$buyer\t";
 			echo "$seller\t";
@@ -302,29 +316,50 @@ class AuditorAction extends Action {
 	}
 
 	public function test() {
-		$Model = new Model();
-		$day = strtotime('2013-6-22');
-		$nextday = $day + 86400;
-		$dis_list = $Model->table('se_dispute_result, se_dispute, se_order_goods, se_orders')->where('se_dispute_result.oid = se_dispute.oid AND se_dispute.oid = se_order_goods.OID AND se_orders.ID = se_dispute_result.oid AND se_dispute_result.time>='.$day.' AND se_dispute_result.time <'.$nextday)->order('se_dispute.oid')->field('se_dispute.oid, se_dispute_result.time, GID, PRICE, AMOUNT, BUYER, SELLER, result, aid')->select();
-		dump($dis_list);
+		$model = new Model();
+	
+		$oid = 2;
+		//change order state
+		$data['OPERATION'] = 'payed';
+		$data['OID'] = $oid;
+		$data['OPERATOR'] = 1;
+		$model->table('se_order_operation')->add($data);
+		$tmp['STATE'] = 'payed';
+		$tmp['ISAUDIT'] = 'YES';
+		$model->table('se_orders')->where('ID='.$oid)->save($tmp);
+
+		//change goods state
+		$tmp2['STATE'] = 'payed';
+		$model->table('se_order_goods')->where('OID='.$oid.' AND STATE="auditing"')->save($tmp2);
+
+		//record in auditor_result
+		$record['oid'] = $oid;
+		$record['aid'] = $_SESSION['id'];
+		$record['time'] = time();
+		$record['result'] = 0;
+		$model->table('se_dispute_result')->add($record);
 	}
 
 	public function search() {
 		$id = $_GET['id'];
-		$Model = new Model();
-		$orderList =  $Model->table('se_orders, se_order_goods')->where('se_orders.ID = se_order_goods.OID AND ID='.$id)->order('ID')->field('se_order_goods.OID, GID, SELLER, BUYER, PRICE, AMOUNT, NAME, IMGURL')->find();
-		$state = $Model->table('se_order_operation')->where('OID='.$id)->order('TIME')->field('OPERATION, TIME')->select();
+		$model = new Model();
 
-		for($j = 0; $j < count($state); $j++) {
-			$orderList[ "op{$j}"] = $state[$j]['OPERATION'];
-			$orderList["time{$j}"] = $state[$j]['TIME'];
-		}
+		$order =  $model->table('se_orders')->where('ID='.$id)->find();
 
-		$disputeList = $Model->table('se_dispute, se_dispute_result')->where('se_dispute.oid = se_dispute_result.oid AND se_dispute.oid='.$id)->field('se_dispute.oid, buyer_reason, seller_reason, aid, se_dispute_result.time, result')->find();
+		$state = $model->table('se_order_operation')->where('OID='.$id)->order('TIME')->field('OPERATION, TIME')->select();
 
-		$this->assign('orderList', $orderList);
-		$this->assign('disputeList', $disputeList);
+		$goods = $model->table('se_order_goods')->where('OID='.$id)->select();
+		
+		$dispute = $model->table('se_dispute_result')->where('oid='.$id)->find();
+
+		$this->assign('size', count($goods));
+		$this->assign('order', $order);
+		$this->assign('state', $state);
+		$this->assign('goods', $goods);
+		$this->assign('dispute', $dispute);
 		$this->assign('id', $id);
+		
+		//dump($dispute);
 		$this->display();
 	}
 }

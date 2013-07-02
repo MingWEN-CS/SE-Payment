@@ -205,7 +205,7 @@ CREATE TABLE se_order_goods(
 	AMOUNT INTEGER NOT NULL,
 	STATE char(20) DEFAULT 'created',
 	NAME VARCHAR(256) CHARACTER SET utf8 NOT NULL,
-    IMGURL VARCHAR(256) CHARACTER SET utf8 NOT NULL,
+    IMGURL VARCHAR(256) CHARACTER SET utf8,
 	PRIMARY KEY(oid,gid),
 	foreign key (OID) references se_orders(ID) on delete cascade,
 	foreign key (GID) references se_goods(ID) on delete cascade

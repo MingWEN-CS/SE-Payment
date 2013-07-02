@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>Online Payment System</title>
+        <link rel="stylesheet" href="../Public/css/bootstrap.css"/>
+        <link rel="stylesheet" href="../Public/css/index.css"/>
+        <script src="../Public/js/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="../Public/js/bootstrap.min.js" type="text/javascript"></script>
+
+    </head>
+    <body>
+        <include file="../header"/>
+        <div id="container" style="margin-top:100px;">
+                    <div>
+                        <table class="table table-bordered">
+                            <thead style="background-color:#DFF0D8">
+                                <tr>
+                                    <th>good</th>
+                                    <th>price</th>
+                                    <th>amount</th>
+                                    <th>state</th>
+                                    <th>payed money</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img width="80px" src="/SE-Payment/Upload/{$goods[0]['IMGURL']}"></img>
+                                        {$goods[0]['NAME']}</td>
+                                    <td>{$goods[0]['PRICE']}</td>
+                                    <td>{$goods[0]['AMOUNT']}</td>
+                                    <td>{$goods[0]['STATE']}</td>
+                                    <td rowspan="{$goodsize}">{$order['TOTALPRICE']}</td>
+                                </tr>
+                                <volist name="goods" id="each_good" offset="1">
+                                <tr>
+                                    <td>
+                                        <img width="80px" src="/SE-Payment/Upload/{$each_good['IMGURL']}">
+                                        </img>
+                                        {$each_good['NAME']}</td>
+                                    <td>{$each_good['PRICE']}</td>
+                                    <td>{$each_good['AMOUNT']}</td>
+                                    <td>{$each_good['STATE']}</td>
+                                </tr>
+                                </volist>
+                            </body>
+                        </table>
+                    </div>
+		    <div>
+			<form method="post" action="__APP__/Order/refuse_refund_complete">
+			<div><h4>refuse reason</h4></div>
+			<input type="hidden" value="{$order['ID']}" name="oid">
+			<div>
+                        <textarea style="width:600px" placeholder="Less than 100 words..." name="refuse_reason"></textarea>		
+			<div>
+			<button class="btn btn-success" type="submit">commit refuse</button>
+                    </div>
+                    </form>
+			
+		</div>
+                </div>
+                <include file="../footer"/>
+            </body>
+        </html>
