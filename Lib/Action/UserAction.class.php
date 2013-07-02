@@ -99,6 +99,8 @@ class UserAction extends Action {
                                 if ($bid){
                                     session('uid',$uid);
                                     session('username',$name);
+                                    session('type',0);
+
                                     $this->ajaxReturn($bid,'Register successfully!',1);
                                 }
                                 else  $this->ajaxReturn(0,'Register failed',0);
@@ -116,6 +118,8 @@ class UserAction extends Action {
                                 if ($sid){
                                     session('uid',$uid);
                                     session('username',$name);
+                                    session('type',1);
+
                                     $this->ajaxReturn($sid,'Register successfully!',1);
                                 }
                                 else  $this->ajaxReturn(0,'Register failed',0);
@@ -187,7 +191,7 @@ class UserAction extends Action {
         $address = $Address->findAddressById($id);
         //print_r($address);
         $this->address = $address;
-        $pp = GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead();
+        $pp = GeneralGoodsModel::getSourcePlaceObjectsArray();
         //print_r($pp);
         $this->province = $pp;
         //$this->assign('province', GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead());

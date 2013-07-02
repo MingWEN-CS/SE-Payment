@@ -224,6 +224,7 @@ get isBuyer from group 1
         {
             $page[6]['link']="?pagenum=".($pagenum+1);
         }
+        //var_dump($searchResult);
         //开始查找当前页面的订单
         for($i=$pagenum*5-5;$i<count($searchResult)&&$i<$pagenum*5;$i++)
         {
@@ -749,7 +750,6 @@ get isBuyer from group 1
                 $ogid=$ordergoodsdb->insertnewgood($newordergood);
                 if($ogid===false)
                     $newoid[$i]['result']='fail';
-                // var_dump($newoid);
             }
             $i++;
         }
