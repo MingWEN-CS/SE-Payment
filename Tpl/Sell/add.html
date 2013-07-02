@@ -132,14 +132,14 @@
 			<p>
 				<label for='suit_type'>Stars:</label>
 				<select class="span2" name="stars">
-					<!-- <volist name="hotel_room_suit" id="suit_type">
-						<eq name='good.suit_type' value='$suit_type:value'>
-							<option value='{$suit_type->value}' selected='selected'>{$suit_type->display}</option>
+					<volist name="hotel_stars" id="hotel_stars">
+						<eq name='good.stars' value='$hotel_stars'>
+							<option value='{$hotel_stars}' selected='selected'>{$hotel_stars}</option>
 						</eq>
-						<neq name='good.suit_type' value='$suit_type:value'>
-							<option value='{$suit_type->value}'>{$suit_type->display}</option>
+						<neq name='good.stars' value='$hotel_stars'>
+							<option value='{$hotel_stars}'>{$hotel_stars}</option>
 						</neq>
-					</volist> -->
+					</volist>
 				</select>
 			</p>
 		</case>

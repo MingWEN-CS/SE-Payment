@@ -92,11 +92,18 @@ function postLogin(){
 	}
 	else {	
 		$.post(ROOT + '/User/login',{'name':name, 'pwd':pwd},function(json){
-			if (!json.status){
+			if (json.status == 0){
 				$('#loginInfo').text(json.info).addClass('alert-error').slideDown();
 				return false;
 			}
-			else {
+			else if (json.status == 2){
+				$('#loginInfo').text(json.info).addClass('alert-error').slideDown();
+				setTimeout(function(){
+					location.href = ROOT + '/Admin/appeal';
+				},1000);
+
+			}
+			else if (json.status == 1){
 				$('#loginInfo').text(json.info).removeClass('alert-error').addClass('alert-success').slideDown();
 				setTimeout(function(){
 					location.href = ROOT + '/User/home';

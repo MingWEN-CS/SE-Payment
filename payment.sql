@@ -573,3 +573,10 @@ INSERT INTO se_realname VALUES ('370500198310056593', '彭振俊');
 INSERT INTO se_realname VALUES ('370500198310057510', '王结达');
 INSERT INTO se_realname VALUES ('370500198310058476', '任和歆');
 
+DROP TABLE IF EXISTS se_blacklistapeal;
+CREATE TABLE se_blacklistapeal (
+  	name char(32) CHARACTER SET utf8 NOT NULL PRIMARY KEY,
+  	reason char(256) CHARACTER SET utf8 NOT NULL,
+  	
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
