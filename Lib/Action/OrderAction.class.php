@@ -485,7 +485,12 @@ get isBuyer from group 1
 
         $ordergoods=D('OrderGoods');
         $ordergoods->where($condition)->save($data);
-        //if all of the goods is refunding,set the order to refunding
+        
+        $orders=D('Orders');
+        $orders->changeState($oid,'refunding');
+            
+
+
 
 
         $this->success('请等待退款', U('Order/showorders'));
@@ -553,15 +558,14 @@ get isBuyer from group 1
         $oid = $this->_get('oid');
         $userID = $this->getUserID();
 
-        $operations = D('OrderOperation');
-        $operations->addOperation($oid, "confirm_refund", $userID);
-
-        //refund operation with other group
+        $userdb=D('User');
         $orders=D('Orders');
+        $operations = D('OrderOperation');
+
+        $operations->addOperation($oid, "confirm_refund", $userID);
         $orders->changeState($oid, 'refunded');
 
         $orderinfo=$orders->findorderbyid($oid);/*get order information*/
-        $userdb=D('User');
         $userdb->moneyTransfer($orderinfo['SELLER'],$orderinfo['BUYER'],$orderinfo['TOTALPRICE']);/*transfer the money*/
 
         $this->success('确认退款', U('Order/showorders'));
