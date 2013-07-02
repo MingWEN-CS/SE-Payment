@@ -1,10 +1,11 @@
 <?php
 class CardModel extends Model{
-	Public verify($id, $name) {
-        $condition['id'] = $id;
-        $select_name = $this->where($condition)->find();
-        if ($select_name == $name) return 1;
-        else return 0;
+	public function verify($id, $name) {
+        $condition['ID'] = $id;
+        $user = $this->where($condition)->find();
+        $select_name = $user['PASSWD'];
+        if ($select_name == $name) return true;
+        else return false;
 	}
 }
 ?>

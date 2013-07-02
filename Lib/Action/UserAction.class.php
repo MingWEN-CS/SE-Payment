@@ -1,4 +1,6 @@
 <?php
+import("@.Util.Goods.SourcePlace");
+
 // 本类由系统自动生成，仅供测试用途
 class UserAction extends Action {
     
@@ -177,9 +179,14 @@ class UserAction extends Action {
         $this->isAuth = $user['AUTHENTICATED'];
         $Address = D('Address');
         
-        $address = $Address->findAddressById($id);
-        $this->address = $address;
 
+        $address = $Address->findAddressById($id);
+        //print_r($address);
+        $this->address = $address;
+        $pp = GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead();
+        //print_r($pp);
+        $this->province = $pp;
+        //$this->assign('province', GeneralGoodsModel::getSourcePlaceObjectsArrayWithHead());
         $this->display();
         }
         else redirect(U('/User/login'));
@@ -210,15 +217,36 @@ class UserAction extends Action {
             $id = $_SESSION[uid];
             $year = $this->_get("year");
             $month = $this->_get("month");
-            $Order = D('Orders');
+            $model = new Model();
+            $record = $model->table('se_orders,se_order_operation')->where(
+                'se_orders.ID = se_order_operation.OID and 
+                 se_order_operation.OPERATION = "created" and se_orders.BUYER = '.$id)->select();
             
+            $payments = array();
+            $i = 0;
+            foreach ($record as $value){
+                      
+                $time = $value['TIME'];
+                $yyear = (int)substr($time,0,4);
+                $mmongth = (int)substr($time,6,2);
+
+                $User = D('USER');
+                $user = $User->where('UID ='.$value['SELLER'])->find();
+
+                if ($year == $yyear && $month == $mmongth){
+                    $payment = array(
+                    'payto' => $user['USERNAME'],
+                    'money'  => $value['TOTALPRICE'],
+                    'time' => $time,
+                    );
+                    array_push($payments,$payment);
+                }
+            }
+            //print_r($record);
             /*
             Get the record from group 2
-
             $payments = $Order->searchPaymentRecord($id,$year,$month);
-            
             */
-
             $this->payments = $payments;
             $this->display();
         }
@@ -362,6 +390,9 @@ class UserAction extends Action {
         $Admin = D('Admin');
         $flag = $Admin->AuthCard($cardId,$cardNo);
         */
+        $Card = D('Card');
+        $flag = $Card->verify($cardId,md5($cardPwd));
+
         if ($flag == false){
             $this->ajaxReturn(0,'Password for card is wrong!',0);
         }
@@ -428,7 +459,8 @@ class UserAction extends Action {
         $Admin = D('Admin');
         $flag = $Admin->AuthCard($cardId,$cardNo);
         */
-
+        $Card = D('Card');
+        $flag = $Card->verify($cardId,md5($cardPwd));
         if ($flag){
             $UserCard = D('Usercard');
             $data = array(
@@ -452,6 +484,7 @@ class UserAction extends Action {
             else $this->ajaxReturn(0,'You have already added this card!',0);
 
         }
+    else $this->ajaxReturn(0,'Card Authentication failed',0);
 
     }
     else redirect(U('User/login'));
@@ -473,7 +506,7 @@ class UserAction extends Action {
         $msg = "";
         $User = D('User');
         $user = $User->where('UID ='.$id)->find();
-        $pattern = "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i";
+        $pattern = "/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/";
         if ($email != NULL){
             if (preg_match($pattern,$email)){
             if (!$User->where('UID ='.$id)->setField('EMAIL',$email)){
@@ -495,6 +528,9 @@ class UserAction extends Action {
             $Authenticate = D('Authenticate');
             $flag = $Authenticate->Auth($realName,$idNumber);
             */
+            $RealName = D('Realname');
+            $realNameAuth = $RealName->verify($idNumber,$realName);
+
             if ($realNameAuth){
                 if ($User->authenticate($id,$realName,$idNumber)){
                     $msg = $msg .' Real Name informaton modify Successfully!';
@@ -531,6 +567,9 @@ class UserAction extends Action {
         $Authenticate = D('Authenticate');
         $flag = $Authenticate->Auth($realName,$idNumber);
         */
+        $RealName = D('Realname');
+        $flag = $RealName->verify($idNumber,$realName);
+
         if ($flag){
             $User = D('User');
             if ($User->authenticate($id,$realName,$idNumber))
