@@ -128,6 +128,7 @@ class SellAction extends Action {
 			$this->assign('airplane_ticket_arrival_place', AirplaneTicketModel::getArrivalPlaceObjectsArray());
 			// hotel suit options
 			$this->assign('hotel_room_suit', HotelRoomModel::getHotelRoomSuitArray());
+			$this->assign('hotel_stars', array(1,2,3,4,5));
 			// airplane carbin options
 			$this->assign('airpalne_ticket_carbin', AirplaneTicketModel::getAirplaneTicketCarbinArray());
 			

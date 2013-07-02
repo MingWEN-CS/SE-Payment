@@ -36,8 +36,8 @@ class HotelRoomModel extends GeneralGoodsModel{
 		}
 		//where cause of dete_time
 		if(($arrivalPlace = $purchaseAction->_get('date_time'))) {
-			$startTime = strtotime($arrivalPlace . " +0000");
-			$condition['date_time'] = array('between',array($startTime - 60, $startTime + 60 * 5));
+			$startTime = strtotime($arrivalPlace);
+			$condition['date_time'] = array('between',array($startTime - 5, $startTime + 60 * 60));
 		}
 		//where cause of stars
 		if(($stars = $purchaseAction->_get('stars'))) {
