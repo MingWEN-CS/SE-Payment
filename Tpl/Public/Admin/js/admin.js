@@ -73,6 +73,16 @@ $(function() {
     }
   });
 
+//Submit appeal
+$('#submit').click( function(){
+  alert(1);
+  var name = $('#appeal_name').val();
+  var reason = $('#reason').val();
+  $.post(ROOT + '/addBLAppeal', {name:name, reason:reason}, function( result ){
+    alert(result.info);
+  },'json');
+})
+
 });
 // ================= EVENT BINDING FUNCTIONS ===================================
 //Change background
@@ -277,23 +287,16 @@ $('.delete_blacklist').live('click', function(){
   },'json');
   $('#Blacklist_select_btn').click();
 })
-//Submit appeal
-$('#submit').live('click', function(){
-  var name = $('#appeal_name').val();
-  var reason = $('#reason').val();
-  $.post(ROOT + '/addBLAppeal', {name:name, reason:reason}, function( result ){
-    alert(result.info);
-  },'json');
-})
+
 
 // ================= COMMON FUNCTIONS ==========================================
 
 
 // string formatter
 String.prototype.format = function() {
-	var pattern = /\{\d+\}/g;
-	var args = arguments;
-	return this.replace(pattern, function(capture) {
-		return args[capture.match(/\d+/)];
-	});
+  var pattern = /\{\d+\}/g;
+  var args = arguments;
+  return this.replace(pattern, function(capture) {
+    return args[capture.match(/\d+/)];
+  });
 };

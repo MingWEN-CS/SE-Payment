@@ -233,7 +233,8 @@ class AdminAction extends Action {
     //get a user's blacklist appeal reason
     Public function getBLAppeal() {
         //select appeal for the user
-        $data = D('Blacklistappeal')->where('name ='.$this->_post('name'))->find();
+        $condition['name'] = $this->_post('name');
+        $data = D('Blacklistappeal')->where($condition)->find();
         if ($data)
             return $this->ajaxReturn($data, '', 1);//return data and 1 if there is appeal for the user
         else

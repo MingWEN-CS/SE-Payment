@@ -574,7 +574,7 @@ INSERT INTO se_realname VALUES ('370500198310056593', '彭振俊');
 INSERT INTO se_realname VALUES ('370500198310057510', '王结达');
 INSERT INTO se_realname VALUES ('370500198310058476', '任和歆');
 
-DROP TABLE IF EXISTS se_blacklistapeal;
+DROP TABLE IF EXISTS se_blacklistappeal;
 CREATE TABLE se_blacklistapeal (
   	name char(32) CHARACTER SET utf8 NOT NULL PRIMARY KEY,
   	reason char(255) CHARACTER SET utf8 NOT NULL
