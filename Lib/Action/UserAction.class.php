@@ -249,12 +249,12 @@ class UserAction extends Action {
             if ($type == 0){
                 $t_income = $model->table('se_orders,se_order_operation')->where(
                 'se_orders.ID = se_order_operation.OID and 
-                 se_orders.STATE = "refunded" and 
+                 (se_orders.STATE = "refunded") and 
                  se_order_operation.OPERATION = "refund" and se_orders.BUYER = '.$id)->select();
 
                 $t_outcome = $model->table('se_orders,se_order_operation')->where(
                 'se_orders.ID = se_order_operation.OID and 
-                 se_orders.STATE = "finished" and 
+                 (se_orders.STATE = "finished" or se_orders.STATE = "payed") and 
                  se_order_operation.OPERATION = "pay" and se_orders.BUYER = '.$id)->select();
 
 
@@ -302,7 +302,7 @@ class UserAction extends Action {
             }else if ($type == 1){
                 $t_income = $model->table('se_orders,se_order_operation')->where(
                 'se_orders.ID = se_order_operation.OID and 
-                 se_orders.STATE = "finished" and 
+                 (se_orders.STATE = "finished" or se_orders.STATE = "pay") and 
                  se_order_operation.OPERATION = "pay" and se_orders.SELLER = '.$id)->select();
 
                 $t_outcome = $model->table('se_orders,se_order_operation')->where(
