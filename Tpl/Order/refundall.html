@@ -49,6 +49,8 @@
 			<form method="post" action="__APP__/Order/refundcomplete">
 			<div><h4>refund reason</h4></div>
 			<input type="hidden" value="{$order['ID']}" name="oid">
+            <input type="hidden" value="{$type}" name="refundtype">
+            <input type="hidden" value="{$gid}" name="gid">
 			<div>
                         <textarea style="width:600px" placeholder="Less than 100 words..." name="refund_reason"></textarea>		
 			<div>

@@ -85,13 +85,14 @@
                             </th>
                             <th>operation</th>
                             <th>others</th>
+                            <th>isaudit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <volist name="myorders" id="each_orders" empty="暂时没有数据">
                         <if condition="$each_orders['GOODS'] neq null">
                         <tr class="success">
-                            <td colspan="8">order id：{$each_orders['ID']}
+                            <td colspan="9">order id：{$each_orders['ID']}
                                 &nbsp;  seller：{$each_orders['SELLER']}
                                 &nbsp;  closing time: {$each_orders['createtime']}</td> 
                         </tr>
@@ -130,6 +131,7 @@
                                 <a class="btn btn-small btn-warning" style="width:100px" href="{$each_orders['OTHER_HREF']}">{$each_orders['OTHER']}</a>
                                 <else/>   &nbsp; </if>
                             </td>
+                            <td rowspan="{$each_orders['SIZE']}">{$each_orders['ISAUDIT']}</td>
                         </tr>
                         <volist name="each_orders['GOODS']" id="each_good" offset="1">
                         <tr>
