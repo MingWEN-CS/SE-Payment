@@ -75,11 +75,11 @@ $(function() {
 
 //Submit appeal
 $('#submit').click( function(){
-  alert(1);
   var name = $('#appeal_name').val();
   var reason = $('#reason').val();
   $.post(ROOT + '/addBLAppeal', {name:name, reason:reason}, function( result ){
     alert(result.info);
+    location.href = '/SE-Payment/index.php';
   },'json');
 })
 
