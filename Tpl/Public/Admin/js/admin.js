@@ -16,7 +16,7 @@ var PARAM_TYPE_ICON_LIST = {
 var PARAM_ITEM_TPL = '<div class="control-group"><label class="control-label">{0}</label><div class="controls"><div class="input-medium"><input id={0} class="span12"></div></div></div>';
 var BUTTON_TPL = '<div id={0} class="btn btn-inverse verify_btn" style="position:absolute;left:36%">{1}</div>';
 var ADMIN_SELECT_RESULT_TPL = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td><a href="#"><i id={3} class="delete_admin icon-minus"></i></a></td></tr>';
-var USER_SELECT_RESULT_TPL = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td><a id={8} class="delete_user" href="#"><i class="icon-minus"></i></a></td></tr>';
+var USER_SELECT_RESULT_TPL = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td><a id={7} class="delete_user" href="#"><i class="icon-minus"></i></a></td></tr>';
 var VIP_SELECT_RESULT_TPL = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td><a href="#"><i id={5} class="delete_vip icon-minus"></i></a></td></tr>';
 var BLACKLIST_SELECT_RESULT_TPL = 
 '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td>'+
@@ -134,9 +134,10 @@ $('#Admin_select_btn').live('click', function(){
    $.post(ROOT + '/postAdminSelect', {name:name, type:type}, function( result ){
 	    if (result.data!=null)
 	    	$.each(result.data, function(index, obj){
-	    		if (obj["TYPE"] == "0")
+          //alert(obj["type"]);
+	    		   if (obj["type"] == 1)
                    type = "Auditor";
-                else
+              else
                    type = "Admistrator";
  		    	results += ADMIN_SELECT_RESULT_TPL.format(index, obj["name"], type, "delete_"+obj["name"]);               
 		    })
@@ -151,7 +152,7 @@ $('#User_select_btn').live('click', function(){
    var balance = $('#Balance_select_user').val();
    var type = $('#Type_select_user').val();
    results = '';
-   $.post(ROOT + '/postUserSelect', {name:name, email:email, phone:phone, balance:balance, type:type, vip:vip, blacklist:blacklist}, function( result ){
+   $.post(ROOT + '/postUserSelect', {name:name, email:email, phone:phone, balance:balance, type:type}, function( result ){
 	if (result.data!=null)
 	$.each(result.data, function(index, obj){
         if (obj["BLACKLIST"]=="1")

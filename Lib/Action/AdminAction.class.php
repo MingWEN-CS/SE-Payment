@@ -61,8 +61,6 @@ class AdminAction extends Action {
         $data['EMAIL'] = $this->_post('email');
         $data['PHONE'] = $this->_post('phone');
         $data['TYPE'] = $this->_post('type');
-        $data['VIP'] = $this->_post('vip');
-        $data['BLACKLIST'] = $this->_post('blacklist');
         $status = D('User')->add($data);
         if ($status) $this->ajaxReturn('', 'Add Successfully', 1);
         else $this->ajaxReturn('', 'Add Failed', 0);
@@ -109,6 +107,8 @@ class AdminAction extends Action {
     Public function postUserDelete() {
         if ($this->_post('name')) {
             $condition['USERNAME'] = $this->_post('name');
+            $user = D('User')->where($condition)->find();
+            $status = D('Buyer')->where('UID ='.$user['UID'])->delete();
             $status = D('User')->where($condition)->delete();
             if ($status) $this->ajaxReturn('', 'Delete Successfully', 1);
             else $this->ajaxReturn('', 'Delete Failed', 0);
