@@ -16,32 +16,33 @@
 		<script src="../Public/Admin/js/admin.js"></script>
 	</head>
 	<body>
-		<header class="navbar navbar-inverse navbar-fixed-top">
+	    <!--header-->
+		<header class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
-				<div class="container-fluid">
-					<a class="brand">Management System</a>
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li>
-								<a id="logout-btn" href="../Admin/index">Logout</a>
-							</li>
-						</ul>
-					</div>
+				<div class="container">
+					<a id="title" class="brand" href="#"><img src="../Public/img/group5/logo.png"> Management System</a>
+					<ul class="nav pull-right">
+						<li>
+							<a id="logout_btn" href="#"> <i class="icon-cog icon-white"></i>Logout </a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</header>
-       		<div class="span3 tabbable" id="operation_list">
+		<!--Option List-->
+       		<div class="tabbable span3" id="operation_list">
 				<ul id="operation_list_body" class="nav nav-tabs nav-stacked">
 					<li class="active"><a data-toggle="tab" href="#Admin" class="operation_item">Admin Maintain</a></li>
 					<li><a data-toggle="tab" href="#User" class="operation_item">User Maintain</a></li>
 					<li><a data-toggle="tab" href="#VIP"  class="operation_item">VIP Maintain</a></li>
 					<li><a data-toggle="tab" href="#Blacklist" class="operation_item">Blacklist Maintain</a></li>
-					<li><a data-toggle="tab" href="#Verify" class="operation_item">Verification</a></li>
+					<li><a data-toggle="tab" href="#Verify" class="operation_item">Realname Verification</a></li>
 				</ul>
 			</div>
 			<div class="tab-content">
-		<!--------------USER------------- -->
+		<!--------------Admin------------- -->
     			<div id="Admin" class="tab-pane active well span10">
+    				<!--Add Admin-->
 					<div id="Admin_add">
 						<form class="form-inline">
      						<input class="attributes" id="Name_add" placeholder="Name">
@@ -53,6 +54,7 @@
 							<button id="Admin_add_btn" class="attributes_btn btn btn-small btn-inverse" type="button">Add</button>	
 						</form>
 					</div>
+					<!--Select Admin-->
 					<div id="Admin_select">
 						<form class="form-inline">
       						<input class="attributes" id="Name_select" placeholder="Name">
@@ -63,6 +65,7 @@
 							<button id="Admin_select_btn" class="btn btn-small btn-inverse" type="button">Select</button>			
 						</form>
 					</div>
+					<!--Show Result-->
 					<div id="result_list" class="well span6">
 						<table class="table table-striped">
 							<thead>
@@ -78,7 +81,8 @@
 					</div>
 				</div>
 		<!--------------USER------------- -->
-    			<div id="User" class="tab-pane well span12">
+    			<div id="User" class="tab-pane well span11">
+    				<!--Add User-->
 					<div id="User_add">
 						<form class="form-inline">
      						<input class="attributes" id="Name_add_user" placeholder="Name">
@@ -89,15 +93,10 @@
   								<option value = "0">Buyer</option>
   								<option value = "1">Seller</option>
 							</select>
-							<label class="checkbox">
-								<input id="VIP_add_user" type="checkbox"> VIP
-                            </label>
-							<label class="checkbox">
-								<input id="Blacklist_add_user" type="checkbox"> Blacklist
-                            </label>
 							<button id="User_add_btn" class="attributes_btn btn btn-small btn-inverse" type="button">Add</button>	
 						</form>
 					</div>
+					<!--Select User-->
 					<div id="User_select">
 						<form class="form-inline">
      						<input class="attributes" id="Name_select_user" placeholder="Name">
@@ -108,18 +107,13 @@
   								<option value = "0">Buyer</option>
   								<option value = "1">Seller</option>
 							</select>
-							<label class="checkbox">
-								<input id="VIP_select_user" type="checkbox"> VIP
-                            </label>
-							<label class="checkbox">
-								<input id="Blacklist_select_user" type="checkbox"> Blacklist
-                            </label>
 							<button id="User_select_btn" class="attributes_btn btn btn-small btn-inverse" type="button">
 								Select
 							</button>				
 						</form>
 					</div>
-					<div id="result_list" class="well span11">
+					<!--Show Result-->
+					<div id="result_list" class="well span10">
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -129,7 +123,6 @@
 									<th>Phone</th>
 									<th>Balance</th>
 									<th>Type</th>
-									<th>VIP</th>
 									<th>Blacklist</th>
 									<th></th>
                                 </tr>
@@ -141,14 +134,15 @@
 				</div>
         <!--------------VIP------------- -->
 				<div id="VIP" class="tab-pane well span10">
+					<!--VIP Operation: Select & Add-->
 					<div id="VIP_operation">
 						<form class="form-inline">
-							<button id="VIP_add_btn" class="attributes_btn btn btn-small btn-inverse" type="button">Add</button>	
 							<button id="VIP_select_btn" class="attributes_btn btn btn-small btn-inverse" type="button">
 								Select
 							</button>
 						</form>
 					</div>
+					<!--Show Result-->
 					<div id="result_list" class="well span9">
 						<table class="table table-striped">
 							<thead>
@@ -158,7 +152,6 @@
 									<th>Email</th>
 									<th>Phone</th>
 									<th>Balance</th>
-									<th>Blacklist</th>
 									<th></th>
                                 </tr>
 							</thead>
@@ -168,6 +161,7 @@
 					</div>				
 				</div>
 		<!--------------BLACKLIST------------- -->
+				<!--Blacklist Operation: Select & Add-->
 				<div id="Blacklist" class="tab-pane well span11">
 					<div id="Blacklist_operation">
 						<form class="form-inline">
@@ -179,6 +173,7 @@
 							</button>
 						</form>
 					</div>
+					<!--Show Result-->
 					<div id="result_list" class="well span9">
 						<table class="table table-striped">
 							<thead>
@@ -189,6 +184,8 @@
 									<th>Phone</th>
 									<th>Balance</th>
 									<th>VIP</th>
+									<th>Reason</th>
+									<th>Appeal</th>
 									<th></th>
                                 </tr>
 							</thead>
@@ -197,6 +194,7 @@
 						</table>
 					</div>					
 				</div>
+				<!--Verify-->
     			<div id="Verify" class="tab-pane well span5">
 					<div id="Realname_verify">
 						<form class="form-inline">
@@ -215,7 +213,7 @@
 				</div>
 
 			</div>
-		<footer style="position:absolute;top:500px;left:45%">
+		<footer style="position:absolute;bottom:5%;left:45%">
 			<hr>
 			<p>
 				&copy; Red Group 5 2013

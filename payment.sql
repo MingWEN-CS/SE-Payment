@@ -577,6 +577,6 @@ INSERT INTO se_realname VALUES ('370500198310058476', '任和歆');
 DROP TABLE IF EXISTS se_blacklistapeal;
 CREATE TABLE se_blacklistapeal (
   	name char(32) CHARACTER SET utf8 NOT NULL PRIMARY KEY,
-  	reason char(255) CHARACTER SET utf8 NOT NULL,
+  	reason char(255) CHARACTER SET utf8 NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

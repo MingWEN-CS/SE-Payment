@@ -44,7 +44,7 @@ class AdminAction extends Action {
             $this->redirect('login');
     }
 
-    //add admin
+     //add admin
     Public function postAdminAdd() {
         $data['name'] = $this->_post('name');
         $data['password'] = $this->_post('password');
@@ -118,37 +118,37 @@ class AdminAction extends Action {
         }
     }
 
-    //set a user to be a vip return 1 if setted 0 otherwise
-    Public function postSetVIP() {
-        if ($this->_post('name')) {
-            $condition['USERNAME'] = $this->_post('name');
-            $status = D('User')->where($condition.'AND VIP = 0')->save('VIP = 1');
-            if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
-            else {
-                 $status = D('User')->where($condition.'AND VIP = 1')->save('VIP = 0');
-                 $this->ajaxReturn('', 'Set VIP Successfully', 1);
-            }
-        }
-        else {
-            $this->ajaxReturn('', 'Set VIP Failed', 0);
-        }
-    }
+    // //set a user to be a vip return 1 if setted 0 otherwise
+    // Public function postSetVIP() {
+    //     if ($this->_post('name')) {
+    //         $condition['USERNAME'] = $this->_post('name');
+    //         $status = D('User')->where($condition.'AND VIP = 0')->save('VIP = 1');
+    //         if ($status) $this->ajaxReturn('', 'Set VIP Successfully', 1);
+    //         else {
+    //              $status = D('User')->where($condition.'AND VIP = 1')->save('VIP = 0');
+    //              $this->ajaxReturn('', 'Set VIP Successfully', 1);
+    //         }
+    //     }
+    //     else {
+    //         $this->ajaxReturn('', 'Set VIP Failed', 0);
+    //     }
+    // }
 
-    //set a user to be in blacklist return 1 if setted 0 otherwise
-    Public function postSetBL() {
-        if ($this->_post('name')) {
-            $condition['USERNAME'] = $this->_post('name');
-            $status = D('User')->where($condition.'AND BLACKLIST = 0')->save('BLACKLIST = 1');
-            if ($status) $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
-            else {
-                 $status = D('User')->where($condition.'AND BLACKLIST = 1')->save('BLACKLIST = 0');
-                 $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
-            }
-        }
-        else {
-            $this->ajaxReturn('', 'Set Blacklist Failed', 0);
-        }
-    }
+    // //set a user to be in blacklist return 1 if setted 0 otherwise
+    // Public function postSetBL() {
+    //     if ($this->_post('name')) {
+    //         $condition['USERNAME'] = $this->_post('name');
+    //         $status = D('User')->where($condition.'AND BLACKLIST = 0')->save('BLACKLIST = 1');
+    //         if ($status) $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
+    //         else {
+    //              $status = D('User')->where($condition.'AND BLACKLIST = 1')->save('BLACKLIST = 0');
+    //              $this->ajaxReturn('', 'Set Blacklist Successfully', 1);
+    //         }
+    //     }
+    //     else {
+    //         $this->ajaxReturn('', 'Set Blacklist Failed', 0);
+    //     }
+    // }
 
     //match realname return 1 if the name and id matched 0 if not
     Public function postVRN() {
@@ -176,18 +176,14 @@ class AdminAction extends Action {
         return $this->ajaxReturn($data, "Complete", 1);
     }
 
-    Public function appeal(){
-        $this->display();
-    }
-
     Public function autoSetBL() {
         $Model = new Model();
         //if an order of a buyer isaudit and the state is payed then he should be in blacklist
-        $Model->table('se_order, se_user')->query('UPDATE se_user, se_orders SET se_user.BLACKLIST = 1 where se_orders.STATE = "payed" 
-            AND se_orders.ISAUDIT = "YES" AND se_order.BUYER = se_user.UID AND se_user.BLACKLIST = 0');
+        $Model->table('se_orders, se_user')->query('UPDATE se_user, se_orders SET se_user.BLACKLIST = 1 where se_orders.STATE = "payed" 
+            AND se_orders.ISAUDIT = "YES" AND se_orders.BUYER = se_user.UID AND se_user.BLACKLIST = 0');
         //if an order of a seller isaudit and the state is refunded then he should be in blacklist
-        $Model->table('se_order, se_user')->query('UPDATE se_user, se_orders SET se_user.BLACKLIST = 1 where se_orders.STATE = "refunded" 
-            AND se_orders.ISAUDIT = "YES" AND se_order.SELLER = se_user.UID AND se_user.BLACKLIST = 0');
+        $Model->table('se_orders, se_user')->query('UPDATE se_user, se_orders SET se_user.BLACKLIST = 1 where se_orders.STATE = "refunded" 
+            AND se_orders.ISAUDIT = "YES" AND se_orders.SELLER = se_user.UID AND se_user.BLACKLIST = 0');
         $data = D('User')->where('blacklist = 1')->select();
         //return all user data who is in blacklist
         return $this->ajaxReturn($data, "Complete", 1);
@@ -195,9 +191,9 @@ class AdminAction extends Action {
 
     //get why the user is in the blacklist aka the invalid order records of a user
     Public function getBLReason() {
-        $name = $this->_post('name');
+        $name['USERNAME'] = $this->_post('name');
         //select user by username.
-        $user = D('User')->where('USERNAME ='.$name)->find();
+        $user = D('User')->where($name)->find();
         //check the user type: buyer for 0 seller for 1
         if($user['TYPE'] == 0) {
             $condition['BUYER'] = $user['UID'];
@@ -209,7 +205,7 @@ class AdminAction extends Action {
         }
         $condition['ISAUDIT'] = "YES";
         //select user invalid order record from database;
-        $data = D('Order')->where($condition)->select();
+        $data = D('Orders')->where($condition)->select();
         //return 1 for nonempty selection
         if($data)
             return $this->ajaxReturn($data, '', 1);
@@ -225,12 +221,12 @@ class AdminAction extends Action {
         if($isExist) { //if there is already an appeal reason for the user, then update the reason with new one
             D('Blacklistappeal')->where('name ='.$data['name'])->save('reason='.$data['reason']);
             //return 0 for updated
-            return $this->ajaxReturn('', '', 0);
+            return $this->ajaxReturn('', 'Update Success!', 0);
         }
         else { //else add an appeal reason for the user into blacklistappeal database
-            D('Blacklistappeal')->add($data);
+            $state = D('Blacklistappeal')->add($data);
             //return 1 for added
-            return $this->ajaxReturn('', '', 1);
+            return $this->ajaxReturn('', 'Add Success!', 1);
         }
     }
 
@@ -242,6 +238,30 @@ class AdminAction extends Action {
             return $this->ajaxReturn($data, '', 1);//return data and 1 if there is appeal for the user
         else
             return $this->ajaxReturn('N/A', '', 0);//return N/A and 0 if not
+    }
+
+    Public function postSelectVIP(){
+        $Model = new Model();
+        $data = $Model->table('se_user, se_buyer')->query('SELECT * FROM se_user, se_buyer
+            WHERE se_user.UID = se_buyer.UID AND se_buyer.VIP = 1');
+        if ($data) $this->ajaxReturn($data, "Select VIP Successfully", 1);
+        else $this->ajaxReturn($data, 'Select VIP Failed', 0);
+    }
+
+    Public function postDeleteVIP() {
+        $condition['USERNAME'] = $this->_post('name');
+        $user = D('User')->where($condition)->find();
+        var_dump($user);
+        $status = D('Buyer')->where('UID='.$user['UID'])->setField('VIP', 0);
+        if ($status) $this->ajaxReturn('', 'Delete VIP Successfully', 1);
+        else $this->ajaxReturn('', 'Delete VIP Failed', 0);
+    }
+
+    Public function postDeleteBL() {
+        $condition['USERNAME'] = $this->_post('name');
+        $status = D('User')->where($condition)->setField('BLACKLIST', 0);
+        if ($status) $this->ajaxReturn('', 'Delete Blacklist Successfully', 1);
+        else $this->ajaxReturn('', 'Delete Blacklist Failed', 0);
     }
 }
 ?>
