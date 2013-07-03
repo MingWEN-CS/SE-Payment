@@ -23,7 +23,8 @@ class AdminAction extends Action {
                     $this->ajaxReturn('', 'Loading Admin System', 1);
                 }
                 else {//if the user is auditor jump to audit html
-                    session('?name', $admin['name']);
+					session('id', $admin['id']);
+                    session('name', $admin['name']);
                     $this->ajaxReturn('', 'Loading Audit System', 2);
                 }
             }
